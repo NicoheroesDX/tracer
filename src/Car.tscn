@@ -4,9 +4,9 @@
 [ext_resource type="Script" uid="uid://ci0mjog5vugh7" path="res://src/car.gd" id="1_h7m2n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h7m2n"]
-size = Vector2(34, 30)
+size = Vector2(30, 34)
 
-[node name="Car" type="RigidBody2D"]
+[node name="Car" type="CharacterBody2D"]
 script = ExtResource("1_h7m2n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
