@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5iv5vbfa6rt7"]
+
+[ext_resource type="Script" uid="uid://cnomqw3pclhre" path="res://src/world.gd" id="1_e2u31"]
+[ext_resource type="Texture2D" uid="uid://bfdqnme0p8a58" path="res://src/assets/testWorld.png" id="2_16hkc"]
+[ext_resource type="PackedScene" uid="uid://dxf28h17xo3sj" path="res://src/Car.tscn" id="3_4g5kh"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_e2u31")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_16hkc")
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[node name="Player" parent="." instance=ExtResource("3_4g5kh")]
+position = Vector2(-21, -305)
