@@ -1,0 +1,28 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://cmwg5ogwr1r7v"]
+
+[ext_resource type="Texture2D" uid="uid://dvx7cv52dbkg6" path="res://src/assets/tiles/tileset.png" id="1_ywyw6"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_16hkc"]
+texture = ExtResource("1_ywyw6")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/custom_data_0 = "asphalt"
+1:0/0 = 0
+1:0/0/custom_data_0 = "grass"
+0:1/0 = 0
+0:1/0/custom_data_0 = "asphalt"
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:1/0/custom_data_0 = "wood"
+0:2/0 = 0
+0:2/0/custom_data_0 = "asphalt"
+1:2/0 = 0
+1:2/0/custom_data_0 = "finish"
+
+[resource]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 4
+physics_layer_0/collision_mask = 0
+custom_data_layer_0/name = "RoadType"
+custom_data_layer_0/type = 4
+sources/1 = SubResource("TileSetAtlasSource_16hkc")

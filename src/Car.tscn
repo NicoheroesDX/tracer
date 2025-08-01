@@ -4,13 +4,15 @@
 [ext_resource type="Script" uid="uid://ci0mjog5vugh7" path="res://src/car.gd" id="1_h7m2n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h7m2n"]
-size = Vector2(30, 34)
+size = Vector2(26, 31)
 
 [node name="Car" type="CharacterBody2D"]
+collision_mask = 7
 script = ExtResource("1_h7m2n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_7ff8f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_h7m2n")

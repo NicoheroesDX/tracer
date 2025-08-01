@@ -48,6 +48,12 @@ car_reverse={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Car"
+2d_physics/layer_2="Trail"
+2d_physics/layer_3="Track"
+
 [physics]
 
 2d/default_gravity_vector=Vector2(0, 0)
