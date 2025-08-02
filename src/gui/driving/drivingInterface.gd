@@ -13,6 +13,7 @@ extends CanvasLayer;
 @onready var countdown_progress: ProgressBar = $Center/Margin/CountdownProgress;
 
 @onready var animation: AnimationPlayer = $AnimationPlayer;
+@onready var end_screen: EndScreen = $EndScreen;
 
 var is_race_frozen: bool = false;
 
@@ -22,6 +23,7 @@ var is_lap_3_frozen: bool = false;
 
 func _ready() -> void:
 	toggle_side_ui(false);
+	end_screen.hide();
 	lap_2_time.hide();
 	lap_3_time.hide();
 	
@@ -33,7 +35,6 @@ func toggle_side_ui(is_visible: bool):
 		grid.show();
 	else:
 		grid.hide();
-
 
 func start_countdown():
 	animation.play("countdown");
@@ -75,6 +76,9 @@ func freeze_time(lap: int, text: String):
 			is_lap_2_frozen = true;
 		3:
 			is_lap_3_frozen = true;
+
+func show_end_screen():
+	end_screen.show();
 
 static func format_time(msec: int):
 	var minutes = msec / 60000

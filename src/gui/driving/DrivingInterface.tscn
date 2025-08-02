@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cquisj7vtrreh"]
+[gd_scene load_steps=10 format=3 uid="uid://cquisj7vtrreh"]
 
 [ext_resource type="Script" uid="uid://by1rr6kulop7p" path="res://src/gui/driving/drivingInterface.gd" id="1_inayc"]
+[ext_resource type="PackedScene" uid="uid://ba7ll0ksgd800" path="res://src/gui/driving/EndScreen.tscn" id="2_b6iiy"]
 
 [sub_resource type="Gradient" id="Gradient_47t6m"]
 offsets = PackedFloat32Array(0.285124, 0.92562)
@@ -376,6 +377,8 @@ layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_inayc")
 theme_override_styles/fill = SubResource("StyleBoxFlat_b6iiy")
 show_percentage = false
+
+[node name="EndScreen" parent="." instance=ExtResource("2_b6iiy")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

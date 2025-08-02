@@ -119,7 +119,7 @@ func on_player_lap_finished():
 
 func on_player_race_finished():
 	is_race_over = true;
-	Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn")
+	gui.show_end_screen();
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
