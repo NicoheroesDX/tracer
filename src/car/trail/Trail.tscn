@@ -2,5 +2,10 @@
 
 [ext_resource type="Script" uid="uid://u2vrrhndkedi" path="res://src/car/trail/trail.gd" id="1_x1qms"]
 
-[node name="Trail" type="Line2D"]
+[node name="Trail" type="Node2D"]
 script = ExtResource("1_x1qms")
+
+[node name="Visuals" type="Line2D" parent="."]
+
+[node name="Collision" type="StaticBody2D" parent="."]
+collision_layer = 2

@@ -6,8 +6,8 @@ extends Node2D
 @onready var checkpoint_list: Node = $CheckPoints;
 @onready var finish_line: FinishLine = %FinishLine;
 
-@onready var trail_first: Trail = Trail.new();
-@onready var trail_second: Trail = Trail.new();
+@onready var trail_first: Trail = $TrailFirst;
+@onready var trail_second: Trail = $TrailSecond;
 @onready var trail_boost_area: BoostArea = $BoostArea;
 
 @onready var gui: DrivingInterface = $DrivingInterface;
@@ -25,11 +25,8 @@ func _ready() -> void:
 	player.connect_to_map(tile_map);
 	finish_line.player_crossed.connect(on_player_crossed_finish);
 	
-	trail_first.default_color = Color.AQUA;
-	trail_second.default_color = Color.HOT_PINK;
-	
-	add_child(trail_first);
-	add_child(trail_second);
+	trail_first.set_color(Color.AQUA);
+	trail_second.set_color(Color.HOT_PINK);
 	
 	trail_first.attach_to_car(player)
 	trail_second.attach_to_car(player)
@@ -93,6 +90,8 @@ func on_player_lap_finished():
 			gui.display_time(2);
 		2:
 			reset_all_checkpoints();
+			trail_first.remove_collision();
+			trail_second.remove_collision();
 			trail_boost_area.generate_booster(trail_first, trail_second);
 			gui.display_time(3);
 		3:

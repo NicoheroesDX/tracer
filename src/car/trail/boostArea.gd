@@ -8,8 +8,8 @@ var is_active: bool = false;
 
 func generate_booster(first_trail: Trail, second_trail: Trail):
 	var poly_points = [];
-	var first_trail_points = first_trail.points;
-	var second_trail_points_reversed = second_trail.points.duplicate();
+	var first_trail_points = first_trail.visuals.points;
+	var second_trail_points_reversed = second_trail.visuals.points.duplicate();
 	second_trail_points_reversed.reverse();
 	
 	for point in first_trail_points:
