@@ -12,6 +12,7 @@ extends Node2D
 
 @onready var gui: DrivingInterface = $DrivingInterface;
 
+var is_race_started: bool = false
 var is_race_over: bool = false
 
 var current_lap: int = 1;
@@ -34,6 +35,8 @@ func _ready() -> void:
 	for checkpoint in checkpoint_list.get_children():
 		checkpoint_amount += 1;
 		checkpoint.player_crossed.connect(on_player_crossed_checkpoint);
+	
+	Global.transition_complete.connect(start_race);
 
 func _process(delta: float) -> void:
 	update_camera_position();
@@ -48,13 +51,14 @@ func _physics_process(delta: float) -> void:
 				player.is_in_boost_area = true;
 
 func update_lap_time() -> void:
-	if not is_race_over:
+	if is_race_started and not is_race_over:
 		var current_time_msec = Time.get_ticks_msec();
 		set_current_lap_time(current_time_msec - current_lap_start_msec);
 		gui.update_race_time(DrivingInterface.format_time(get_race_time()));
 		gui.update_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
 
 func start_race() -> void:
+	is_race_started = true;
 	current_lap_start_msec = Time.get_ticks_msec();
 
 func reset_all_checkpoints():
@@ -104,7 +108,7 @@ func on_player_lap_finished():
 
 func on_player_race_finished():
 	is_race_over = true;
-	print("You won!");
+	Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn")
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):

@@ -76,4 +76,4 @@ func update_trail(new_point: Vector2):
 
 func _on_collision_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
-		print("death!");
+		Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn")

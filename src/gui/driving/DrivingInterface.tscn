@@ -68,7 +68,7 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "0:00.000"
+text = "00:00.000"
 vertical_alignment = 1
 
 [node name="Lap1Container" type="CenterContainer" parent="Grid/TopLeft"]
@@ -101,7 +101,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "0:00.000"
+text = "00:00.000"
 vertical_alignment = 1
 
 [node name="Lap2Container" type="CenterContainer" parent="Grid/TopLeft"]
@@ -134,7 +134,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "0:00.000"
+text = "00:00.000"
 vertical_alignment = 1
 
 [node name="Lap3Container" type="CenterContainer" parent="Grid/TopLeft"]
@@ -167,7 +167,7 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "0:00.000"
+text = "00:00.000"
 vertical_alignment = 1
 
 [node name="TopRight" type="VBoxContainer" parent="Grid"]
