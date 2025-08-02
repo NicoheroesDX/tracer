@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="tracer"
-run/main_scene="uid://b5iv5vbfa6rt7"
+run/main_scene="uid://b8otoqdr4i7ff"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Global="*res://src/global/Global.gd"
 
 [global_group]
 

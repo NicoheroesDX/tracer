@@ -1,5 +1,12 @@
-[gd_scene format=3 uid="uid://b8otoqdr4i7ff"]
+[gd_scene load_steps=3 format=3 uid="uid://b8otoqdr4i7ff"]
+
+[ext_resource type="PackedScene" uid="uid://53khnnwnfmxe" path="res://src/transition/TransitionLayer.tscn" id="1_4gxt3"]
+[ext_resource type="PackedScene" uid="uid://csf5lsgu5afao" path="res://src/gui/menu/MainMenu.tscn" id="1_hk4rc"]
 
 [node name="MainScene" type="Node"]
 
 [node name="MainDisplay" type="Node" parent="."]
+
+[node name="MainMenu" parent="MainDisplay" instance=ExtResource("1_hk4rc")]
+
+[node name="TransitionLayer" parent="." instance=ExtResource("1_4gxt3")]

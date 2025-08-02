@@ -7,5 +7,7 @@ script = ExtResource("1_x1qms")
 
 [node name="Visuals" type="Line2D" parent="."]
 
-[node name="Collision" type="StaticBody2D" parent="."]
+[node name="Collision" type="Area2D" parent="."]
 collision_layer = 2
+
+[connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]

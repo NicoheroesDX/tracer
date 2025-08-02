@@ -9,7 +9,7 @@ var is_emitting: bool = false;
 var last_point = null;
 
 @onready var visuals: Line2D = $Visuals;
-@onready var collision: StaticBody2D = $Collision;
+@onready var collision: Area2D = $Collision;
 
 const MAX_LENGTH: int = 2000;
 const THICKNESS: float = 12.0;
@@ -73,3 +73,7 @@ func update_trail(new_point: Vector2):
 		)
 		
 		last_point = local_new
+
+func _on_collision_body_entered(body: Node2D) -> void:
+	if (body.get_groups().has("player")):
+		print("death!");

@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://csf5lsgu5afao"]
+
+[ext_resource type="Texture2D" uid="uid://cm8y0wsyh416w" path="res://src/gui/menu/assets/graphics/logo.png" id="1_aerc4"]
+[ext_resource type="Script" uid="uid://cai1est2dedi8" path="res://src/gui/menu/mainMenu.gd" id="1_s2s2c"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_s2s2c")
+
+[node name="Background" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(5000, 5000)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2500.0
+offset_top = -2500.0
+offset_right = 2500.0
+offset_bottom = 2500.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.101961, 0.101961, 1)
+
+[node name="Logo" type="Sprite2D" parent="."]
+position = Vector2(584, 248)
+texture = ExtResource("1_aerc4")
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 448.0
+offset_top = 512.0
+offset_right = 704.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "Start"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
