@@ -10,7 +10,13 @@ extends Node2D
 @onready var trail_second: Trail = Trail.new();
 @onready var trail_boost_area: BoostArea = $BoostArea;
 
+@onready var gui: DrivingInterface = $DrivingInterface;
+
+var is_race_over: bool = false
+
 var current_lap: int = 1;
+var current_lap_start_msec: int = -1;
+var lap_times: Array[int] = [0, 0, 0]
 
 var checkpoint_amount = 0;
 var checkpoints_crossed = 0;
@@ -34,6 +40,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	update_camera_position();
+	update_lap_time();
 
 func _physics_process(delta: float) -> void:
 	player.is_in_boost_area = false;
@@ -43,6 +50,16 @@ func _physics_process(delta: float) -> void:
 			if (body.get_groups().has("player")):
 				player.is_in_boost_area = true;
 
+func update_lap_time() -> void:
+	if not is_race_over:
+		var current_time_msec = Time.get_ticks_msec();
+		set_current_lap_time(current_time_msec - current_lap_start_msec);
+		gui.update_race_time(DrivingInterface.format_time(get_race_time()));
+		gui.update_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
+
+func start_race() -> void:
+	current_lap_start_msec = Time.get_ticks_msec();
+
 func reset_all_checkpoints():
 	checkpoints_crossed = 0;
 	for checkpoint in checkpoint_list.get_children():
@@ -50,6 +67,15 @@ func reset_all_checkpoints():
 
 func update_camera_position():
 	player_camera.global_position = player.global_position;
+
+func get_race_time() -> int:
+	return lap_times[0] + lap_times[1] + lap_times[2];
+
+func get_current_lap_time():
+	return lap_times[current_lap-1];
+
+func set_current_lap_time(msec: int):
+	lap_times[current_lap-1] = msec;
 
 func on_player_crossed_checkpoint():
 	checkpoints_crossed += 1;
@@ -59,19 +85,26 @@ func on_player_crossed_finish():
 		on_player_lap_finished();
 
 func on_player_lap_finished():
+	gui.freeze_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
+	
 	match (current_lap):
 		1:
 			reset_all_checkpoints();
+			gui.display_time(2);
 		2:
 			reset_all_checkpoints();
 			trail_boost_area.generate_booster(trail_first, trail_second);
+			gui.display_time(3);
 		3:
 			on_player_race_finished();
-	
-	current_lap += 1;
-	print("You are now on Lap: " + str(current_lap));
+
+	if (current_lap < 3):
+		current_lap_start_msec = Time.get_ticks_msec();
+		current_lap += 1;
+		print("You are now on Lap: " + str(current_lap));
 
 func on_player_race_finished():
+	is_race_over = true;
 	print("You won!");
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
