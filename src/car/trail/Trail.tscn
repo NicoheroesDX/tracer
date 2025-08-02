@@ -1,6 +1,42 @@
-[gd_scene load_steps=2 format=3 uid="uid://crjr0g5bvumdn"]
+[gd_scene load_steps=5 format=3 uid="uid://crjr0g5bvumdn"]
 
 [ext_resource type="Script" uid="uid://u2vrrhndkedi" path="res://src/car/trail/trail.gd" id="1_x1qms"]
+
+[sub_resource type="Animation" id="Animation_x1qms"]
+resource_name = "fadeOut"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [12.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_w4uum"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [10.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l0qa4"]
+_data = {
+&"RESET": SubResource("Animation_w4uum"),
+&"fadeOut": SubResource("Animation_x1qms")
+}
 
 [node name="Trail" type="Node2D"]
 script = ExtResource("1_x1qms")
@@ -9,5 +45,10 @@ script = ExtResource("1_x1qms")
 
 [node name="Collision" type="Area2D" parent="."]
 collision_layer = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_l0qa4")
+}
 
 [connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]

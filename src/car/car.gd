@@ -2,6 +2,11 @@ class_name Car;
 extends CharacterBody2D;
 
 signal crossed_finish;
+signal destroyed;
+signal destroyed_animation_ended;
+
+@onready var death_particles: GPUParticles2D = $DeathParticles;
+@onready var animation: AnimationPlayer = $AnimationPlayer;
 
 var map: TileMap;
 
@@ -9,6 +14,7 @@ var current_speed: float = 0.0;
 
 var is_in_boost_area: bool = false;
 var is_allowed_to_move: bool = false;
+var is_destroyed: bool = false;
 
 const BOOST_MULTIPLIER = 2.0;
 
@@ -71,9 +77,20 @@ func apply_effects(new_speed_effect: float, new_steering_effect: float):
 func apply_default_effects():
 	apply_effects(1.0, 1.0);
 
+func destroy():
+	if not is_destroyed:
+		death_particles.emitting = true;
+		is_destroyed = true;
+		destroyed.emit();
+		animation.play("death");
+
 func apply_effects_for_road_type(road_type: String):	
 	match road_type:
 		"grass":
 			apply_effects(0.3, 0.8);
 		"asphalt", "finish", _:
 			apply_default_effects();
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if (anim_name == "death"):
+		destroyed_animation_ended.emit()

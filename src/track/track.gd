@@ -26,6 +26,8 @@ var checkpoints_crossed = 0;
 
 func _ready() -> void:
 	player.connect_to_map(tile_map);
+	player.destroyed.connect(on_player_destroyed);
+	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);
 	finish_line.player_crossed.connect(on_player_crossed_finish);
 	
 	trail_first.set_color(Color.AQUA);
@@ -119,7 +121,7 @@ func on_player_lap_finished():
 
 func on_player_race_finished():
 	is_race_over = true;
-	gui.show_end_screen();
+	gui.show_victory_screen();
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
@@ -141,3 +143,12 @@ func _on_countdown_timer_timeout() -> void:
 	current_lap_start_msec = Time.get_ticks_msec();
 	is_race_started = true;
 	gui.toggle_side_ui(true);
+
+func on_player_destroyed() -> void:
+	if not is_race_over:
+		is_race_over = true;
+		trail_first.trail_fade_out();
+		trail_second.trail_fade_out();
+
+func on_player_destroyed_animation_ended() -> void:
+	gui.show_lose_screen();

@@ -1,10 +1,75 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxf28h17xo3sj"]
+[gd_scene load_steps=13 format=3 uid="uid://dxf28h17xo3sj"]
 
-[ext_resource type="Texture2D" uid="uid://dy4xu3irpsar8" path="res://src/car/assets/car.png" id="1_7ff8f"]
+[ext_resource type="Texture2D" uid="uid://dy4xu3irpsar8" path="res://src/car/assets/graphics/car.png" id="1_7ff8f"]
 [ext_resource type="Script" uid="uid://ci0mjog5vugh7" path="res://src/car/car.gd" id="1_h7m2n"]
+[ext_resource type="Texture2D" uid="uid://di0na0g0ttsit" path="res://src/car/assets/graphics/particles/star_09.png" id="3_bhc0i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h7m2n"]
 size = Vector2(26, 31)
+
+[sub_resource type="Curve" id="Curve_sjvqp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.901786, 0.460674), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3c6cu"]
+curve = SubResource("Curve_sjvqp")
+
+[sub_resource type="Gradient" id="Gradient_btxpe"]
+colors = PackedColorArray(0, 1, 1, 1, 1, 0.411765, 0.705882, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hddxh"]
+gradient = SubResource("Gradient_btxpe")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_brkc7"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(2, 2, 1)
+angular_velocity_min = -39.63
+angular_velocity_max = 79.27
+orbit_velocity_min = 9.49949e-08
+orbit_velocity_max = 9.49949e-08
+radial_velocity_min = -50.0
+radial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.15
+color_ramp = SubResource("GradientTexture1D_hddxh")
+alpha_curve = SubResource("CurveTexture_3c6cu")
+
+[sub_resource type="Animation" id="Animation_bhc0i"]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.0807833, 0.0807833, 0.0807833, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_sjvqp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3c6cu"]
+_data = {
+&"RESET": SubResource("Animation_sjvqp"),
+&"death": SubResource("Animation_bhc0i")
+}
 
 [node name="Car" type="CharacterBody2D" groups=["player"]]
 collision_mask = 7
@@ -16,3 +81,19 @@ texture = ExtResource("1_7ff8f")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["player"]]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_h7m2n")
+
+[node name="DeathParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 20
+texture = ExtResource("3_bhc0i")
+lifetime = 2.0
+one_shot = true
+speed_scale = 4.0
+process_material = SubResource("ParticleProcessMaterial_brkc7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_3c6cu")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

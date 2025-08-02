@@ -77,7 +77,12 @@ func freeze_time(lap: int, text: String):
 		3:
 			is_lap_3_frozen = true;
 
-func show_end_screen():
+func show_victory_screen():
+	end_screen.toggle_mood(true);
+	end_screen.show();
+
+func show_lose_screen():
+	end_screen.toggle_mood(false);
 	end_screen.show();
 
 static func format_time(msec: int):

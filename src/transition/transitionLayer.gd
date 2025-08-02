@@ -3,7 +3,7 @@ extends Node
 @onready var animationPlayer = $AnimationPlayer;
 @onready var mainDisplay = get_parent().get_node("MainDisplay");
 
-var nextScene = null
+var nextScene = null;
 
 func _ready():
 	animationPlayer.play("gameStart");

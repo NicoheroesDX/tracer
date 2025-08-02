@@ -10,6 +10,7 @@ var last_point = null;
 
 @onready var visuals: Line2D = $Visuals;
 @onready var collision: Area2D = $Collision;
+@onready var animation: AnimationPlayer = $AnimationPlayer;
 
 const MAX_LENGTH: int = 2000;
 const THICKNESS: float = 12.0;
@@ -76,4 +77,7 @@ func update_trail(new_point: Vector2):
 
 func _on_collision_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
-		Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn")
+		car.destroy();
+
+func trail_fade_out():
+	animation.play("fadeOut");
