@@ -1,6 +1,7 @@
+class_name Car;
 extends CharacterBody2D;
 
-class_name Car;
+signal crossed_finish;
 
 var map: TileMap;
 
@@ -34,8 +35,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("car_reverse"):
 		velocity -= direction * DECELERATION * speed_effect;
 	
-	print(speed_effect);
-	
 	velocity *= RESITANCE;
 	move_and_slide();
 
@@ -51,11 +50,16 @@ func get_current_road_type() -> String:
 			return tile_data.get_custom_data("RoadType")
 	return "";
 
+func apply_effects(new_speed_effect: float, new_steering_effect: float):
+	speed_effect = new_speed_effect;
+	steering_effect = new_steering_effect;
+
+func apply_default_effects():
+	apply_effects(1.0, 1.0);
+
 func apply_effects_for_road_type(road_type: String):	
 	match road_type:
 		"grass":
-			speed_effect = 0.3;
-			steering_effect = 0.8;
+			apply_effects(0.3, 0.8);
 		"asphalt", "finish", _:
-			speed_effect = 1.0;
-			steering_effect = 1.0;
+			apply_default_effects();
