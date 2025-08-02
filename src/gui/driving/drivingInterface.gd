@@ -1,11 +1,18 @@
 class_name DrivingInterface;
 extends CanvasLayer;
 
+@onready var grid: GridContainer = $Grid;
+
 @onready var race_time: Label = %TimeCount;
 
 @onready var lap_1_time: Label = %Lap1Time;
 @onready var lap_2_time: Label = %Lap2Time;
 @onready var lap_3_time: Label = %Lap3Time;
+
+@onready var countdown: Label = $Center/Countdown;
+@onready var countdown_progress: ProgressBar = $Center/Margin/CountdownProgress;
+
+@onready var animation: AnimationPlayer = $AnimationPlayer;
 
 var is_race_frozen: bool = false;
 
@@ -14,8 +21,22 @@ var is_lap_2_frozen: bool = false;
 var is_lap_3_frozen: bool = false;
 
 func _ready() -> void:
+	toggle_side_ui(false);
 	lap_2_time.hide();
 	lap_3_time.hide();
+	
+	countdown.hide();
+	countdown_progress.hide();
+
+func toggle_side_ui(is_visible: bool):
+	if (is_visible):
+		grid.show();
+	else:
+		grid.hide();
+
+
+func start_countdown():
+	animation.play("countdown");
 
 func update_race_time(text: String):
 	if not is_race_frozen: 

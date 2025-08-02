@@ -76,8 +76,13 @@ position = Vector2(112, -24)
 
 [node name="DrivingInterface" parent="." instance=ExtResource("7_3twuj")]
 
+[node name="CountdownTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="body_entered" from="ChargeZone" to="." method="_on_charge_zone_body_entered"]
 [connection signal="body_exited" from="ChargeZone" to="." method="_on_charge_zone_body_exited"]
+[connection signal="timeout" from="CountdownTimer" to="." method="_on_countdown_timer_timeout"]
 
 [editable path="FinishLine"]
 [editable path="CheckPoints/Checkpoint01"]

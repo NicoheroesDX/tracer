@@ -12,6 +12,8 @@ extends Node2D
 
 @onready var gui: DrivingInterface = $DrivingInterface;
 
+@onready var countdown_delay: Timer = $CountdownTimer;
+
 var is_race_started: bool = false
 var is_race_over: bool = false
 
@@ -36,13 +38,18 @@ func _ready() -> void:
 		checkpoint_amount += 1;
 		checkpoint.player_crossed.connect(on_player_crossed_checkpoint);
 	
-	Global.transition_complete.connect(start_race);
+	Global.transition_complete.connect(start_countdown);
 
 func _process(delta: float) -> void:
 	update_camera_position();
 	update_lap_time();
 
 func _physics_process(delta: float) -> void:
+	if (is_race_started and not is_race_over):
+		player.is_allowed_to_move = true;
+	else:
+		player.is_allowed_to_move = false;
+	
 	player.is_in_boost_area = false;
 	
 	if trail_boost_area.is_active:
@@ -56,6 +63,10 @@ func update_lap_time() -> void:
 		set_current_lap_time(current_time_msec - current_lap_start_msec);
 		gui.update_race_time(DrivingInterface.format_time(get_race_time()));
 		gui.update_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
+
+func start_countdown():
+	countdown_delay.start();
+	gui.start_countdown();
 
 func start_race() -> void:
 	is_race_started = true;
@@ -125,3 +136,8 @@ func _on_charge_zone_body_exited(body: Node2D) -> void:
 				trail_first.is_emitting = true;
 			2:
 				trail_second.is_emitting = true;
+
+func _on_countdown_timer_timeout() -> void:
+	current_lap_start_msec = Time.get_ticks_msec();
+	is_race_started = true;
+	gui.toggle_side_ui(true);

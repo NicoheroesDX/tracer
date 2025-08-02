@@ -8,6 +8,7 @@ var map: TileMap;
 var current_speed: float = 0.0;
 
 var is_in_boost_area: bool = false;
+var is_allowed_to_move: bool = false;
 
 const BOOST_MULTIPLIER = 2.0;
 
@@ -25,6 +26,9 @@ func _physics_process(delta: float) -> void:
 	var input_direction: float = Input.get_axis("car_steer_left", "car_steer_right");
 	var turn_power: float = HANDLING / 200000;
 	
+	if not is_allowed_to_move:
+		input_direction = 0.0;
+	
 	if abs(velocity.x) > abs(velocity.y):
 		current_speed = abs(velocity.x)
 	else:
@@ -39,9 +43,9 @@ func _physics_process(delta: float) -> void:
 	if is_in_boost_area:
 		boost = BOOST_MULTIPLIER;
 	
-	if Input.is_action_pressed("car_accelerate"):
+	if is_allowed_to_move and Input.is_action_pressed("car_accelerate"):
 		velocity += direction * ACCELERATION * speed_effect * boost;
-	if Input.is_action_pressed("car_reverse"):
+	if is_allowed_to_move and Input.is_action_pressed("car_reverse"):
 		velocity -= direction * DECELERATION * speed_effect;
 	
 	velocity *= RESITANCE;
