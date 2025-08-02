@@ -7,6 +7,10 @@ var map: TileMap;
 
 var current_speed: float = 0.0;
 
+var is_in_boost_area: bool = false;
+
+const BOOST_MULTIPLIER = 2.0;
+
 const HANDLING: float = 60;
 const ACCELERATION: float = 30;
 const DECELERATION: float = 10;
@@ -30,8 +34,13 @@ func _physics_process(delta: float) -> void:
 	
 	var direction = Vector2.UP.rotated(rotation);
 	
+	var boost = 1.0;
+	
+	if is_in_boost_area:
+		boost = BOOST_MULTIPLIER;
+	
 	if Input.is_action_pressed("car_accelerate"):
-		velocity += direction * ACCELERATION * speed_effect;
+		velocity += direction * ACCELERATION * speed_effect * boost;
 	if Input.is_action_pressed("car_reverse"):
 		velocity -= direction * DECELERATION * speed_effect;
 	

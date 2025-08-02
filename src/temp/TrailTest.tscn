@@ -3,8 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://dxf28h17xo3sj" path="res://src/car/Car.tscn" id="2_6lfea"]
 
 [sub_resource type="GDScript" id="GDScript_whmrr"]
-script/source = "
-"
 
 [node name="TrailTest" type="Node2D"]
 script = SubResource("GDScript_whmrr")

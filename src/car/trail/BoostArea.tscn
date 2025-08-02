@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp4j67ajkpxq6"]
+
+[ext_resource type="Script" uid="uid://bw1ifnx4asb1l" path="res://src/car/trail/boostArea.gd" id="1_bnfeo"]
+
+[node name="BoostArea" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_bnfeo")
+
+[node name="Visuals" type="Polygon2D" parent="."]
+color = Color(0.729412, 0.572549, 1, 1)
+
+[node name="Collision" type="CollisionPolygon2D" parent="."]
