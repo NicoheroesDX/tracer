@@ -6,6 +6,7 @@ signal destroyed;
 signal destroyed_animation_ended;
 
 @onready var death_particles: GPUParticles2D = $DeathParticles;
+@onready var boost_particles: GPUParticles2D = $BoostParticles;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
 
 var map: TileMap;
@@ -47,7 +48,10 @@ func _physics_process(delta: float) -> void:
 	var boost = 1.0;
 	
 	if is_in_boost_area:
+		boost_particles.emitting = true;
 		boost = BOOST_MULTIPLIER;
+	else:
+		boost_particles.emitting = false;
 	
 	if is_allowed_to_move and Input.is_action_pressed("car_accelerate"):
 		velocity += direction * ACCELERATION * speed_effect * boost;

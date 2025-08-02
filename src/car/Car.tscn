@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxf28h17xo3sj"]
+[gd_scene load_steps=17 format=3 uid="uid://dxf28h17xo3sj"]
 
 [ext_resource type="Texture2D" uid="uid://dy4xu3irpsar8" path="res://src/car/assets/graphics/car.png" id="1_7ff8f"]
 [ext_resource type="Script" uid="uid://ci0mjog5vugh7" path="res://src/car/car.gd" id="1_h7m2n"]
 [ext_resource type="Texture2D" uid="uid://di0na0g0ttsit" path="res://src/car/assets/graphics/particles/star_09.png" id="3_bhc0i"]
+[ext_resource type="Texture2D" uid="uid://cpcojodsheb62" path="res://src/car/assets/graphics/particles/spark_02.png" id="4_sjvqp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h7m2n"]
 size = Vector2(26, 31)
@@ -34,6 +35,24 @@ scale_min = 0.1
 scale_max = 0.15
 color_ramp = SubResource("GradientTexture1D_hddxh")
 alpha_curve = SubResource("CurveTexture_3c6cu")
+
+[sub_resource type="Curve" id="Curve_3c6cu"]
+_data = [Vector2(0, 0.348315), 0.0, 0.0, 0, 0, Vector2(0.709821, 0.460674), 0.0, 0.0, 0, 0, Vector2(1, 0.0337079), -1.21783, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_btxpe"]
+curve = SubResource("Curve_3c6cu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hddxh"]
+particle_flag_disable_z = true
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.2
+alpha_curve = SubResource("CurveTexture_btxpe")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
 [sub_resource type="Animation" id="Animation_sjvqp"]
 length = 0.001
@@ -90,6 +109,11 @@ lifetime = 2.0
 one_shot = true
 speed_scale = 4.0
 process_material = SubResource("ParticleProcessMaterial_brkc7")
+
+[node name="BoostParticles" type="GPUParticles2D" parent="."]
+emitting = false
+texture = ExtResource("4_sjvqp")
+process_material = SubResource("ParticleProcessMaterial_hddxh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
