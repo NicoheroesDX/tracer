@@ -23,6 +23,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EndTime" type="Label" parent="EndVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "01:23.45"
@@ -38,6 +39,7 @@ theme_override_constants/margin_bottom = 32
 layout_mode = 2
 
 [node name="EndTimeLap1" type="Label" parent="EndVBox/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "LAP 1   00:00.00"
@@ -45,6 +47,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EndTimeLap2" type="Label" parent="EndVBox/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "LAP 2   00:00.00"
@@ -52,6 +55,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EndTimeLap3" type="Label" parent="EndVBox/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "LAP 3   00:00.00"

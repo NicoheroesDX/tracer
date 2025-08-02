@@ -77,6 +77,9 @@ func freeze_time(lap: int, text: String):
 		3:
 			is_lap_3_frozen = true;
 
+func refresh_end_screen(lap_times: Array[int]):
+	end_screen.refresh_data(lap_times);
+
 func show_victory_screen():
 	end_screen.toggle_mood(true);
 	end_screen.show();

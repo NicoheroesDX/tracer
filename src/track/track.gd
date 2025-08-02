@@ -121,6 +121,7 @@ func on_player_lap_finished():
 
 func on_player_race_finished():
 	is_race_over = true;
+	gui.refresh_end_screen(lap_times);
 	gui.show_victory_screen();
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
@@ -151,4 +152,5 @@ func on_player_destroyed() -> void:
 		trail_second.trail_fade_out();
 
 func on_player_destroyed_animation_ended() -> void:
+	gui.refresh_end_screen(lap_times);
 	gui.show_lose_screen();
