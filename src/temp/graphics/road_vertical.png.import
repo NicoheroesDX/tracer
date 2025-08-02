@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmkg1kxy4ypba"
-path="res://.godot/imported/grass.png-49d6383b7f4818cc406ad2399de6caf9.ctex"
+uid="uid://b7stiuup6g1tm"
+path="res://.godot/imported/road_vertical.png-0b8c09cdaf80ce4c4927798f87244501.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/temp/tiles/grass.png"
-dest_files=["res://.godot/imported/grass.png-49d6383b7f4818cc406ad2399de6caf9.ctex"]
+source_file="res://src/temp/graphics/road_vertical.png"
+dest_files=["res://.godot/imported/road_vertical.png-0b8c09cdaf80ce4c4927798f87244501.ctex"]
 
 [params]
 

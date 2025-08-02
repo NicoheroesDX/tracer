@@ -42,12 +42,13 @@ func connect_to_map(tile_map: TileMap) -> void:
 	map = tile_map;
 
 func get_current_road_type() -> String:
-	var current_tile = map.local_to_map(map.to_local(global_position))
-	var tile_data = map.get_cell_tile_data(-1, current_tile)
-	
-	if tile_data:
-		if tile_data.has_custom_data("RoadType"):
-			return tile_data.get_custom_data("RoadType")
+	if (map != null):
+		var current_tile = map.local_to_map(map.to_local(global_position))
+		var tile_data = map.get_cell_tile_data(-1, current_tile)
+		
+		if tile_data:
+			if tile_data.has_custom_data("RoadType"):
+				return tile_data.get_custom_data("RoadType")
 	return "";
 
 func apply_effects(new_speed_effect: float, new_steering_effect: float):
