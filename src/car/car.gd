@@ -52,7 +52,7 @@ func _physics_process(delta: float) -> void:
 		boost = BOOST_MULTIPLIER;
 	else:
 		boost_particles.emitting = false;
-	
+		
 	if is_allowed_to_move and Input.is_action_pressed("car_accelerate"):
 		velocity += direction * ACCELERATION * speed_effect * boost;
 	if is_allowed_to_move and Input.is_action_pressed("car_reverse"):
