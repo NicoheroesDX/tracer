@@ -51,4 +51,9 @@ libraries = {
 &"": SubResource("AnimationLibrary_l0qa4")
 }
 
+[node name="PlacementTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
 [connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]
+[connection signal="timeout" from="PlacementTimer" to="." method="_on_placement_timer_timeout"]

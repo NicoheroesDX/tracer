@@ -11,18 +11,20 @@ var last_point = null;
 @onready var visuals: Line2D = $Visuals;
 @onready var collision: Area2D = $Collision;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
+@onready var timer: Timer = $PlacementTimer;
 
-const MAX_LENGTH: int = 2000;
+const MAX_LENGTH: int = 5000;
 const THICKNESS: float = 12.0;
 
 func attach_to_car(attached_car: Car):
 	car = attached_car;
 
 func set_color(color: Color):
+	visuals.modulate = Color(1, 1, 1, 0);
 	if (visuals != null):
 		visuals.default_color = color;
 
-func _process(delta: float) -> void:
+func place_trail_spot() -> void:
 	if (car != null and is_emitting):
 		curve.add_point(car.global_position);
 		
@@ -81,3 +83,6 @@ func _on_collision_body_entered(body: Node2D) -> void:
 
 func trail_fade_out():
 	animation.play("fadeOut");
+
+func _on_placement_timer_timeout() -> void:
+	place_trail_spot();
