@@ -15,6 +15,8 @@ extends CanvasLayer;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
 @onready var end_screen: EndScreen = $EndScreen;
 
+@onready var boost_label: Label = $BoostLabelContainer/BoostLabel
+
 var is_race_frozen: bool = false;
 
 var is_lap_1_frozen: bool = false;
@@ -26,6 +28,8 @@ func _ready() -> void:
 	end_screen.hide();
 	lap_2_time.hide();
 	lap_3_time.hide();
+	
+	boost_label.hide();
 	
 	countdown.hide();
 	countdown_progress.hide();

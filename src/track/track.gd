@@ -13,9 +13,10 @@ extends Node2D
 @onready var gui: DrivingInterface = $DrivingInterface;
 
 @onready var countdown_delay: Timer = $CountdownTimer;
+@onready var slowmo_timer: Timer = $SlowmoTimer;
 
-var is_race_started: bool = false
-var is_race_over: bool = false
+var is_race_started: bool = false;
+var is_race_over: bool = false;
 
 var current_lap: int = 1;
 var current_lap_start_msec: int = -1;
@@ -59,6 +60,14 @@ func _physics_process(delta: float) -> void:
 			if (body.get_groups().has("player")):
 				player.is_in_boost_area = true;
 
+func apply_slowo_effect():
+	gui.boost_label.show();
+	Engine.time_scale = 0.01;
+	slowmo_timer.start();
+	gui.toggle_side_ui(false);
+	gui.animation.speed_scale = 100;
+	gui.start_countdown();
+
 func update_lap_time() -> void:
 	if is_race_started and not is_race_over:
 		var current_time_msec = Time.get_ticks_msec();
@@ -100,7 +109,6 @@ func on_player_crossed_finish():
 
 func on_player_lap_finished():
 	gui.freeze_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
-	
 	match (current_lap):
 		1:
 			reset_all_checkpoints();
@@ -109,6 +117,7 @@ func on_player_lap_finished():
 			reset_all_checkpoints();
 			trail_first.remove_collision();
 			trail_second.remove_collision();
+			apply_slowo_effect();
 			trail_boost_area.generate_booster(trail_first, trail_second);
 			gui.display_time(3);
 		3:
@@ -154,3 +163,9 @@ func on_player_destroyed() -> void:
 func on_player_destroyed_animation_ended() -> void:
 	gui.refresh_end_screen(lap_times);
 	gui.show_lose_screen();
+
+func _on_slowmo_timer_timeout() -> void:
+	gui.boost_label.hide();
+	Engine.time_scale = 1.0;
+	gui.animation.speed_scale = 1;
+	gui.toggle_side_ui(true);

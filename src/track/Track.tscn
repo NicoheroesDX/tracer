@@ -126,9 +126,15 @@ position = Vector2(-336, 102)
 wait_time = 3.0
 one_shot = true
 
+[node name="SlowmoTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+ignore_time_scale = true
+
 [connection signal="body_entered" from="ChargeZone" to="." method="_on_charge_zone_body_entered"]
 [connection signal="body_exited" from="ChargeZone" to="." method="_on_charge_zone_body_exited"]
 [connection signal="timeout" from="CountdownTimer" to="." method="_on_countdown_timer_timeout"]
+[connection signal="timeout" from="SlowmoTimer" to="." method="_on_slowmo_timer_timeout"]
 
 [editable path="FinishLine"]
 [editable path="CheckPoints/Checkpoint01"]
