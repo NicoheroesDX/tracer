@@ -17,12 +17,12 @@ var is_in_boost_area: bool = false;
 var is_allowed_to_move: bool = false;
 var is_destroyed: bool = false;
 
-const BOOST_MULTIPLIER = 2.0;
+const BOOST_MULTIPLIER = 1.5;
 
-const HANDLING: float = 60;
+const HANDLING: float = 70;
 const ACCELERATION: float = 30;
-const DECELERATION: float = 10;
-const RESITANCE: float = 0.90;
+const DECELERATION: float = 20;
+const RESITANCE: float = 0.91;
 
 var steering_effect: float = 1.0;
 var speed_effect: float = 1.0;

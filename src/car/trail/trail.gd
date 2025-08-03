@@ -8,11 +8,13 @@ var is_collidable: bool = true;
 var is_emitting: bool = false;
 var last_point = null;
 
+var last_time: int = 0;
+
 @onready var visuals: Line2D = $Visuals;
 @onready var collision: Area2D = $Collision;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
 
-const MAX_LENGTH: int = 2000;
+const MAX_LENGTH: int = 200000000;
 const THICKNESS: float = 12.0;
 
 func attach_to_car(attached_car: Car):
@@ -22,8 +24,12 @@ func set_color(color: Color):
 	if (visuals != null):
 		visuals.default_color = color;
 
-func _process(delta: float) -> void:
-	if (car != null and is_emitting):
+func _process(delta) -> void:
+	
+	var current_time = Time.get_ticks_msec();
+	
+	if (((current_time - last_time) > 16) and car != null and is_emitting):
+		last_time = current_time;
 		curve.add_point(car.global_position);
 		
 		if (curve.get_baked_points().size() > MAX_LENGTH):
@@ -57,13 +63,12 @@ func update_trail(new_point: Vector2):
 		
 		var polygon = CollisionPolygon2D.new()
 		polygon.polygon = PackedVector2Array([p1, p2, p3, p4])
-		polygon.disabled = true  # Disable physics for now
+		polygon.disabled = true
 		collision.add_child(polygon)
 
-		# Create a timer to enable it later
 		var timer = Timer.new()
 		timer.one_shot = true
-		timer.wait_time = 1.0  # Delay in seconds
+		timer.wait_time = 1.0
 		add_child(timer)
 		timer.start()
 

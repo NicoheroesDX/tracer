@@ -18,6 +18,8 @@ func generate_booster(first_trail: Trail, second_trail: Trail):
 	for point in second_trail_points_reversed:
 		poly_points.append(point);
 	
+	print(collision.build_mode)
+	
 	visuals.polygon = poly_points;
 	collision.polygon = poly_points;
 	

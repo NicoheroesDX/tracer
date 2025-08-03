@@ -7,6 +7,6 @@ collision_layer = 2
 script = ExtResource("1_bnfeo")
 
 [node name="Visuals" type="Polygon2D" parent="."]
-color = Color(0.729412, 0.572549, 1, 1)
+color = Color(0.729412, 0.572549, 1, 0.784314)
 
 [node name="Collision" type="CollisionPolygon2D" parent="."]
