@@ -8,8 +8,6 @@ var is_collidable: bool = true;
 var is_emitting: bool = false;
 var last_point = null;
 
-var last_time: int = 0;
-
 @onready var visuals: Line2D = $Visuals;
 @onready var collision: Area2D = $Collision;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
@@ -25,11 +23,7 @@ func set_color(color: Color):
 		visuals.default_color = color;
 
 func _process(delta) -> void:
-	
-	var current_time = Time.get_ticks_msec();
-	
-	if (((current_time - last_time) > 16) and car != null and is_emitting):
-		last_time = current_time;
+	if (car != null and is_emitting):
 		curve.add_point(car.global_position);
 		
 		if (curve.get_baked_points().size() > MAX_LENGTH):

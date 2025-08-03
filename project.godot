@@ -11,6 +11,8 @@ config_version=5
 [application]
 
 config/name="tracer"
+config/description="Racing Game Loop"
+config/version="1.0"
 run/main_scene="uid://b8otoqdr4i7ff"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -18,6 +20,11 @@ config/icon="res://icon.svg"
 [autoload]
 
 Global="*res://src/global/Global.gd"
+
+[display]
+
+window/size/mode=2
+window/stretch/mode="canvas_items"
 
 [global_group]
 

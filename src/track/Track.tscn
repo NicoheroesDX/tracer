@@ -114,7 +114,7 @@ shape = SubResource("RectangleShape2D_n2lqg")
 [node name="TrailSecond" parent="." instance=ExtResource("6_eqjh1")]
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(1.5, 1.5)
 
 [node name="Player" parent="." instance=ExtResource("5_ydi2n")]
 z_index = 10
