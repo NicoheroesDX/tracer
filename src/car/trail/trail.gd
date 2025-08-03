@@ -20,7 +20,6 @@ func attach_to_car(attached_car: Car):
 	car = attached_car;
 
 func set_color(color: Color):
-	visuals.modulate = Color(1, 1, 1, 0);
 	if (visuals != null):
 		visuals.default_color = color;
 
