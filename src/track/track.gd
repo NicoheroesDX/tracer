@@ -26,6 +26,7 @@ var checkpoint_amount = 0;
 var checkpoints_crossed = 0;
 
 func _ready() -> void:
+	Global.toggle_music(true);
 	player.connect_to_map(tile_map);
 	player.destroyed.connect(on_player_destroyed);
 	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);

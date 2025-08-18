@@ -2,6 +2,14 @@ extends Node
 
 signal transition_complete;
 
+func toggle_music(is_playing: bool):
+	var music_player = get_tree().root.get_node("MainScene").get_node("RaceMusic")
+	if (music_player != null):
+		if is_playing and not music_player.playing:
+			music_player.play();
+		elif not is_playing:
+			music_player.stop();
+
 func change_scene_with_transition(pathToScene):
 	var transitionLayer = get_tree().root.get_node("MainScene").get_node("TransitionLayer")
 	if (transitionLayer != null):

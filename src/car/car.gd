@@ -10,6 +10,7 @@ signal destroyed_animation_ended;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
 
 @onready var engine_sound: AudioStreamPlayer2D = $EngineSound;
+@onready var trail_decay_sound: AudioStreamPlayer2D = $TrailDecaySound;
 
 var map: TileMap;
 
@@ -34,6 +35,9 @@ func _physics_process(delta: float) -> void:
 	
 	var input_direction: float = Input.get_axis("car_steer_left", "car_steer_right");
 	var turn_power: float = HANDLING / 200000;
+	
+	if is_destroyed:
+		engine_sound.stop();
 	
 	if not is_allowed_to_move:
 		input_direction = 0.0;
@@ -61,6 +65,7 @@ func _physics_process(delta: float) -> void:
 		velocity -= direction * DECELERATION * speed_effect;
 	
 	engine_sound.pitch_scale = 0.5 + (current_speed * 0.003)
+	engine_sound.volume_db = min(-12 + (current_speed * 0.02), 0.0)
 	
 	velocity *= RESITANCE;
 	move_and_slide();
@@ -87,6 +92,7 @@ func apply_default_effects():
 
 func destroy():
 	if not is_destroyed:
+		trail_decay_sound.play();
 		death_particles.emitting = true;
 		is_destroyed = true;
 		destroyed.emit();

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b8otoqdr4i7ff"]
+[gd_scene load_steps=4 format=3 uid="uid://b8otoqdr4i7ff"]
 
 [ext_resource type="PackedScene" uid="uid://53khnnwnfmxe" path="res://src/transition/TransitionLayer.tscn" id="1_4gxt3"]
 [ext_resource type="PackedScene" uid="uid://csf5lsgu5afao" path="res://src/gui/menu/MainMenu.tscn" id="1_hk4rc"]
+[ext_resource type="AudioStream" uid="uid://drqt55a635k5c" path="res://src/car/assets/sounds/race.wav" id="3_chrbn"]
 
 [node name="MainScene" type="Node"]
 
@@ -10,3 +11,7 @@
 [node name="MainMenu" parent="MainDisplay" instance=ExtResource("1_hk4rc")]
 
 [node name="TransitionLayer" parent="." instance=ExtResource("1_4gxt3")]
+
+[node name="RaceMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_chrbn")
+volume_db = 2.0
