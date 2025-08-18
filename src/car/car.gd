@@ -9,6 +9,8 @@ signal destroyed_animation_ended;
 @onready var boost_particles: GPUParticles2D = $BoostParticles;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
 
+@onready var engine_sound: AudioStreamPlayer2D = $EngineSound;
+
 var map: TileMap;
 
 var current_speed: float = 0.0;
@@ -57,6 +59,8 @@ func _physics_process(delta: float) -> void:
 		velocity += direction * ACCELERATION * speed_effect * boost;
 	if is_allowed_to_move and Input.is_action_pressed("car_reverse"):
 		velocity -= direction * DECELERATION * speed_effect;
+	
+	engine_sound.pitch_scale = 0.5 + (current_speed * 0.003)
 	
 	velocity *= RESITANCE;
 	move_and_slide();
