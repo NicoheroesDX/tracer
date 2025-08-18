@@ -60,6 +60,7 @@ autostart = true
 stream = ExtResource("2_w4uum")
 volume_db = 7.0
 pitch_scale = 0.7
+bus = &"SFXBus"
 
 [connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

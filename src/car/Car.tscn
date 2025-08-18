@@ -126,13 +126,16 @@ libraries = {
 [node name="EngineSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_3c6cu")
 autoplay = true
+bus = &"SFXBus"
 
 [node name="TrailDecaySound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_btxpe")
 volume_db = -3.0
+bus = &"SFXBus"
 
 [node name="BoostSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_hddxh")
 pitch_scale = 1.5
+bus = &"SFXBus"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
