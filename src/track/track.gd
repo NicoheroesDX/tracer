@@ -32,6 +32,9 @@ func _ready() -> void:
 	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);
 	finish_line.player_crossed.connect(on_player_crossed_finish);
 	
+	trail_first.set_pitch(0.5);
+	trail_second.set_pitch(0.7);
+	
 	trail_first.set_color(Color.AQUA);
 	trail_second.set_color(Color.HOT_PINK);
 	
@@ -130,6 +133,7 @@ func on_player_lap_finished():
 		print("You are now on Lap: " + str(current_lap));
 
 func on_player_race_finished():
+	player.turn_off_engine_sounds();
 	is_race_over = true;
 	gui.refresh_end_screen(lap_times);
 	gui.show_victory_screen();
@@ -166,6 +170,7 @@ func on_player_destroyed_animation_ended() -> void:
 	gui.show_lose_screen();
 
 func _on_slowmo_timer_timeout() -> void:
+	current_lap_start_msec = Time.get_ticks_msec();
 	gui.boost_label.hide();
 	Engine.time_scale = 1.0;
 	gui.animation.speed_scale = 1;

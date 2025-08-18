@@ -13,9 +13,13 @@ var last_time: int = 0;
 @onready var visuals: Line2D = $Visuals;
 @onready var collision: Area2D = $Collision;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
+@onready var trail_sound: AudioStreamPlayer2D = $TrailSound;
 
 const MAX_LENGTH: int = 200000000;
 const THICKNESS: float = 12.0;
+
+func set_pitch(pitch_value: float):
+	trail_sound.pitch_scale = pitch_value;
 
 func attach_to_car(attached_car: Car):
 	car = attached_car;
@@ -26,6 +30,11 @@ func set_color(color: Color):
 
 func _process(delta) -> void:
 	var current_time = Time.get_ticks_msec();
+	
+	if is_emitting and not trail_sound.playing:
+		trail_sound.play();
+	elif not is_emitting:
+		trail_sound.stop();
 
 	if (((current_time - last_time) > 80) and car != null and is_emitting):
 		last_time = current_time;

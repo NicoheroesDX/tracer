@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dxf28h17xo3sj"]
+[gd_scene load_steps=20 format=3 uid="uid://dxf28h17xo3sj"]
 
 [ext_resource type="Texture2D" uid="uid://dy4xu3irpsar8" path="res://src/car/assets/graphics/car.png" id="1_7ff8f"]
 [ext_resource type="Script" uid="uid://ci0mjog5vugh7" path="res://src/car/car.gd" id="1_h7m2n"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cpcojodsheb62" path="res://src/car/assets/graphics/particles/spark_02.png" id="4_sjvqp"]
 [ext_resource type="AudioStream" uid="uid://c10tnamyrod6s" path="res://src/car/assets/sounds/car_sound.ogg" id="5_3c6cu"]
 [ext_resource type="AudioStream" uid="uid://bkkncdf0tg047" path="res://src/car/assets/sounds/trail_decay.ogg" id="6_btxpe"]
+[ext_resource type="AudioStream" uid="uid://ck05bi8iargom" path="res://src/car/assets/sounds/trail_sound.ogg" id="7_hddxh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h7m2n"]
 size = Vector2(26, 31)
@@ -129,5 +130,9 @@ autoplay = true
 [node name="TrailDecaySound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_btxpe")
 volume_db = -3.0
+
+[node name="BoostSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_hddxh")
+pitch_scale = 1.5
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

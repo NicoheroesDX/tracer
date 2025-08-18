@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://crjr0g5bvumdn"]
+[gd_scene load_steps=6 format=3 uid="uid://crjr0g5bvumdn"]
 
 [ext_resource type="Script" uid="uid://u2vrrhndkedi" path="res://src/car/trail/trail.gd" id="1_x1qms"]
+[ext_resource type="AudioStream" uid="uid://ck05bi8iargom" path="res://src/car/assets/sounds/trail_sound.ogg" id="2_w4uum"]
 
 [sub_resource type="Animation" id="Animation_w4uum"]
 length = 0.001
@@ -54,6 +55,11 @@ libraries = {
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
+
+[node name="TrailSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_w4uum")
+volume_db = 7.0
+pitch_scale = 0.7
 
 [connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

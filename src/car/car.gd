@@ -11,6 +11,7 @@ signal destroyed_animation_ended;
 
 @onready var engine_sound: AudioStreamPlayer2D = $EngineSound;
 @onready var trail_decay_sound: AudioStreamPlayer2D = $TrailDecaySound;
+@onready var boost_sound: AudioStreamPlayer2D = $BoostSound;
 
 var map: TileMap;
 
@@ -37,7 +38,7 @@ func _physics_process(delta: float) -> void:
 	var turn_power: float = HANDLING / 200000;
 	
 	if is_destroyed:
-		engine_sound.stop();
+		turn_off_engine_sounds();
 	
 	if not is_allowed_to_move:
 		input_direction = 0.0;
@@ -54,9 +55,12 @@ func _physics_process(delta: float) -> void:
 	var boost = 1.0;
 	
 	if is_in_boost_area:
+		if not boost_sound.playing:
+			boost_sound.play();
 		boost_particles.emitting = true;
 		boost = BOOST_MULTIPLIER;
 	else:
+		boost_sound.stop();
 		boost_particles.emitting = false;
 		
 	if is_allowed_to_move and Input.is_action_pressed("car_accelerate"):
@@ -89,6 +93,9 @@ func apply_effects(new_speed_effect: float, new_steering_effect: float):
 
 func apply_default_effects():
 	apply_effects(1.0, 1.0);
+
+func turn_off_engine_sounds():
+	engine_sound.stop();
 
 func destroy():
 	if not is_destroyed:
