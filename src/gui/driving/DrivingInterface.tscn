@@ -453,7 +453,9 @@ libraries = {
 [node name="CountdownSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_ndpky")
 volume_db = -8.0
+bus = &"SFXBus"
 
 [node name="StartSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_aop6t")
 volume_db = -6.0
+bus = &"SFXBus"
