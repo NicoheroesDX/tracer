@@ -9,6 +9,7 @@ extends Node2D
 @onready var trail_first: Trail = $TrailFirst;
 @onready var trail_second: Trail = $TrailSecond;
 @onready var trail_boost_area: BoostArea = $BoostArea;
+@onready var trail_pen: TrailPen = $TrailPen;
 
 @onready var gui: DrivingInterface = $DrivingInterface;
 
@@ -20,12 +21,13 @@ var is_race_over: bool = false;
 
 var current_lap: int = 1;
 var current_lap_start_msec: int = -1;
-var lap_times: Array[int] = [0, 0, 0]
+var lap_times: Array[int] = [0, 0, 0];
 
 var checkpoint_amount = 0;
 var checkpoints_crossed = 0;
 
 func _ready() -> void:
+	trail_pen.connect_to_world(trail_first, trail_second, trail_boost_area);
 	player.connect_to_map(tile_map);
 	player.destroyed.connect(on_player_destroyed);
 	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);

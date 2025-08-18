@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2okg0o0l8cwl"]
+
+[ext_resource type="Script" uid="uid://dhv515ql2ui8l" path="res://src/temp/trailPen.gd" id="1_iimbm"]
+
+[node name="TrailPen" type="Node2D"]
+script = ExtResource("1_iimbm")

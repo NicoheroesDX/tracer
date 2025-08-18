@@ -7,6 +7,7 @@ var is_active: bool = false;
 @onready var visuals: Polygon2D = $Visuals;
 
 func generate_booster(first_trail: Trail, second_trail: Trail):
+	visuals.modulate = Color.TRANSPARENT;
 	var poly_points = [];
 	var first_trail_points = first_trail.visuals.points;
 	var second_trail_points_reversed = second_trail.visuals.points.duplicate();
@@ -17,8 +18,6 @@ func generate_booster(first_trail: Trail, second_trail: Trail):
 		
 	for point in second_trail_points_reversed:
 		poly_points.append(point);
-	
-	print(collision.build_mode)
 	
 	visuals.polygon = poly_points;
 	collision.polygon = poly_points;
