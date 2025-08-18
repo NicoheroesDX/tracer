@@ -8,6 +8,8 @@ var is_collidable: bool = true;
 var is_emitting: bool = false;
 var last_point = null;
 
+var last_time: int = 0;
+
 @onready var visuals: Line2D = $Visuals;
 @onready var collision: Area2D = $Collision;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
@@ -23,14 +25,20 @@ func set_color(color: Color):
 		visuals.default_color = color;
 
 func _process(delta) -> void:
-	if (car != null and is_emitting):
-		curve.add_point(car.global_position);
-		
-		if (curve.get_baked_points().size() > MAX_LENGTH):
-			curve.remove_point(0);
-		
-		visuals.points = curve.get_baked_points();
-		update_trail(car.global_position);
+	var current_time = Time.get_ticks_msec();
+
+	if (((current_time - last_time) > 80) and car != null and is_emitting):
+		last_time = current_time;
+		add_point(car.global_position);
+
+func add_point(point_position: Vector2):
+	curve.add_point(point_position);
+
+	if (curve.get_baked_points().size() > MAX_LENGTH):
+		curve.remove_point(0);
+
+	visuals.points = curve.get_baked_points();
+	update_trail(point_position);
 
 func remove_collision():
 	is_collidable = false;
@@ -45,8 +53,6 @@ func update_trail(new_point: Vector2):
 	var distance = last_point.distance_to(local_new)
 
 	if distance >= 10.0:
-		visuals.add_point(local_new)
-		
 		var dir = (local_new - last_point).normalized()
 		var normal = Vector2(-dir.y, dir.x) * (THICKNESS / 2.0)
 		
