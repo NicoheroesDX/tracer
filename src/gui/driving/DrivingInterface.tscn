@@ -6,7 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://bxq4xacar2i3y" path="res://src/car/assets/sounds/countdown_start.ogg" id="4_aop6t"]
 
 [sub_resource type="Gradient" id="Gradient_47t6m"]
-offsets = PackedFloat32Array(0.285124, 0.92562)
+offsets = PackedFloat32Array(0.603896, 0.92562)
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_inayc"]
@@ -321,6 +321,10 @@ theme_override_font_sizes/font_size = 24
 text = "00:00.000"
 vertical_alignment = 1
 
+[node name="Lap1Difference" type="Label" parent="Grid/TopLeft/Lap1Container/Lap1Rect/Lap1Information"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="Lap2Container" type="CenterContainer" parent="Grid/TopLeft"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -354,6 +358,10 @@ theme_override_font_sizes/font_size = 24
 text = "00:00.000"
 vertical_alignment = 1
 
+[node name="Lap2Difference" type="Label" parent="Grid/TopLeft/Lap2Container/Lap2Rect/Lap2Information"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="Lap3Container" type="CenterContainer" parent="Grid/TopLeft"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -386,6 +394,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "00:00.000"
 vertical_alignment = 1
+
+[node name="Lap3Difference" type="Label" parent="Grid/TopLeft/Lap3Container/Lap3Rect/Lap3Information"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="TopRight" type="VBoxContainer" parent="Grid"]
 custom_minimum_size = Vector2(648, 280)

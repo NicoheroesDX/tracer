@@ -10,7 +10,7 @@ script = ExtResource("1_vkx1j")
 [node name="EndBG" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(1152, 648)
 layout_mode = 2
-color = Color(0, 0, 0, 0.588235)
+color = Color(0, 0, 0, 0.784314)
 
 [node name="EndVBox" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -30,6 +30,12 @@ text = "01:23.45"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="EndDifference" type="Label" parent="EndVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="MarginContainer" type="MarginContainer" parent="EndVBox"]
 layout_mode = 2
 theme_override_constants/margin_top = 32
@@ -38,7 +44,11 @@ theme_override_constants/margin_bottom = 32
 [node name="VBoxContainer" type="VBoxContainer" parent="EndVBox/MarginContainer"]
 layout_mode = 2
 
-[node name="EndTimeLap1" type="Label" parent="EndVBox/MarginContainer/VBoxContainer"]
+[node name="Lap1HBox" type="HBoxContainer" parent="EndVBox/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="EndTimeLap1" type="Label" parent="EndVBox/MarginContainer/VBoxContainer/Lap1HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
@@ -46,7 +56,15 @@ text = "LAP 1   00:00.00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EndTimeLap2" type="Label" parent="EndVBox/MarginContainer/VBoxContainer"]
+[node name="DifferenceLap1" type="Label" parent="EndVBox/MarginContainer/VBoxContainer/Lap1HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Lap2HBox" type="HBoxContainer" parent="EndVBox/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="EndTimeLap2" type="Label" parent="EndVBox/MarginContainer/VBoxContainer/Lap2HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
@@ -54,7 +72,15 @@ text = "LAP 2   00:00.00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EndTimeLap3" type="Label" parent="EndVBox/MarginContainer/VBoxContainer"]
+[node name="DifferenceLap2" type="Label" parent="EndVBox/MarginContainer/VBoxContainer/Lap2HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Lap3HBox" type="HBoxContainer" parent="EndVBox/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="EndTimeLap3" type="Label" parent="EndVBox/MarginContainer/VBoxContainer/Lap3HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
@@ -62,11 +88,20 @@ text = "LAP 3   00:00.00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RetryButton" type="Button" parent="EndVBox"]
+[node name="DifferenceLap3" type="Label" parent="EndVBox/MarginContainer/VBoxContainer/Lap3HBox"]
+unique_name_in_owner = true
 layout_mode = 2
+
+[node name="RetryButton" type="Button" parent="EndVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../ButtonMargin/MenuButton")
+focus_next = NodePath("../ButtonMargin/MenuButton")
+focus_previous = NodePath("../ButtonMargin/MenuButton")
 theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 40
+disabled = true
 text = "Try Again"
 
 [node name="ButtonMargin" type="MarginContainer" parent="EndVBox"]
@@ -74,10 +109,15 @@ layout_mode = 2
 theme_override_constants/margin_top = 30
 
 [node name="MenuButton" type="Button" parent="EndVBox/ButtonMargin"]
+unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_top = NodePath("../../RetryButton")
+focus_next = NodePath("../../RetryButton")
+focus_previous = NodePath("../../RetryButton")
 theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
+disabled = true
 text = "Menu"
 
 [connection signal="pressed" from="EndVBox/RetryButton" to="." method="_on_retry_button_pressed"]

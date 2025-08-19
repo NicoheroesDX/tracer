@@ -37,6 +37,9 @@ offset_right = 704.0
 offset_bottom = 616.0
 grow_horizontal = 2
 grow_vertical = 0
+focus_neighbor_right = NodePath("../VBoxContainer/MusicButton")
+focus_neighbor_bottom = NodePath("../VBoxContainer/MusicButton")
+focus_next = NodePath("../VBoxContainer/MusicButton")
 theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 40
@@ -60,12 +63,52 @@ size_flags_vertical = 4
 [node name="MusicButton" type="CheckButton" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_left = NodePath("../../Button")
+focus_neighbor_bottom = NodePath("../SFXButton")
+focus_next = NodePath("../SFXButton")
+focus_previous = NodePath("../../Button")
 text = "Mute Music"
 
 [node name="SFXButton" type="CheckButton" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_left = NodePath("../../Button")
+focus_neighbor_top = NodePath("../MusicButton")
+focus_next = NodePath("../../Button")
+focus_previous = NodePath("../MusicButton")
 text = "Mute Sound"
+
+[node name="ScoreContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 448.0
+offset_top = 408.0
+offset_right = 704.0
+offset_bottom = 512.0
+grow_vertical = 0
+
+[node name="HighscoreTitle" type="Label" parent="ScoreContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_font_sizes/font_size = 24
+text = "- RECORD TIME -"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HighscoreTime" type="Label" parent="ScoreContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "00:00.000"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="toggled" from="VBoxContainer/MusicButton" to="." method="_on_music_button_toggled"]

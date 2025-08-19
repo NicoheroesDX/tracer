@@ -1,9 +1,15 @@
 extends Node2D
 
-var music_audio_bus: int = AudioServer.get_bus_index("MusicBus")
-var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus")
+var music_audio_bus: int = AudioServer.get_bus_index("MusicBus");
+var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus");
 
 func _ready() -> void:
+	Global.current_highscore = Global.load_highscore();
+	if (Global.current_highscore == null):
+		%ScoreContainer.visible = false;
+	else:
+		%HighscoreTime.text = DrivingInterface.format_time(Global.current_highscore.get_combined_time());
+	$Button.grab_focus();
 	%MusicButton.button_pressed = AudioServer.is_bus_mute(music_audio_bus);
 	%SFXButton.button_pressed = AudioServer.is_bus_mute(sfx_audio_bus);
 

@@ -15,8 +15,13 @@ extends Node2D
 @onready var countdown_delay: Timer = $CountdownTimer;
 @onready var slowmo_timer: Timer = $SlowmoTimer;
 
+@onready var barrier_front: Area2D = $FrontDeathBarrier;
+@onready var barrier_back: Area2D = $BackDeathBarrier;
+
 var is_race_started: bool = false;
 var is_race_over: bool = false;
+
+var is_race_restarting: bool = false;
 
 var current_lap: int = 1;
 var current_lap_start_msec: int = -1;
@@ -41,6 +46,9 @@ func _ready() -> void:
 	trail_first.attach_to_car(player)
 	trail_second.attach_to_car(player)
 	
+	toggle_barrier_active(barrier_front, false);
+	toggle_barrier_active(barrier_back, true);
+	
 	for checkpoint in checkpoint_list.get_children():
 		checkpoint_amount += 1;
 		checkpoint.player_crossed.connect(on_player_crossed_checkpoint);
@@ -48,6 +56,10 @@ func _ready() -> void:
 	Global.transition_complete.connect(start_countdown);
 
 func _process(delta: float) -> void:
+	if is_race_started and not is_race_over and not is_race_restarting and Input.is_action_just_pressed("race_restart"):
+		is_race_restarting = true;
+		Global.change_scene_with_transition("res://src/track/Track.tscn");
+	
 	update_camera_position();
 	update_lap_time();
 
@@ -58,6 +70,13 @@ func _physics_process(delta: float) -> void:
 		player.is_allowed_to_move = false;
 	
 	player.is_in_boost_area = false;
+	
+	if (checkpoints_crossed < checkpoint_amount):
+		toggle_barrier_active(barrier_front, false);
+		toggle_barrier_active(barrier_back, true);
+	else:
+		toggle_barrier_active(barrier_front, true);
+		toggle_barrier_active(barrier_back, false);
 	
 	if trail_boost_area.is_active:
 		for body in trail_boost_area.get_overlapping_bodies():
@@ -79,6 +98,19 @@ func update_lap_time() -> void:
 		gui.update_race_time(DrivingInterface.format_time(get_race_time()));
 		gui.update_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
 
+func update_difference_to_highscore():
+	if (Global.current_highscore != null):
+		match(current_lap):
+			1:
+				print("CLT: " + str(Global.current_highscore.lap_1_time - get_current_lap_time()));
+				gui.update_time_difference(1, Global.current_highscore.lap_1_time - get_current_lap_time())
+			2:
+				print("CLT: " + str(Global.current_highscore.lap_2_time - get_current_lap_time()));
+				gui.update_time_difference(2, Global.current_highscore.lap_2_time - get_current_lap_time())
+			3:
+				print("CLT: " + str(Global.current_highscore.lap_3_time - get_current_lap_time()));
+				gui.update_time_difference(3, Global.current_highscore.lap_3_time - get_current_lap_time())
+
 func start_countdown():
 	countdown_delay.start();
 	gui.start_countdown();
@@ -91,6 +123,10 @@ func reset_all_checkpoints():
 	checkpoints_crossed = 0;
 	for checkpoint in checkpoint_list.get_children():
 		checkpoint.reset();
+
+func toggle_barrier_active(barrier: Area2D, is_now_active: bool):
+	barrier.visible = is_now_active;
+	barrier.monitoring = is_now_active;
 
 func update_camera_position():
 	player_camera.global_position = player.global_position;
@@ -115,9 +151,11 @@ func on_player_lap_finished():
 	gui.freeze_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
 	match (current_lap):
 		1:
+			update_difference_to_highscore();
 			reset_all_checkpoints();
 			gui.display_time(2);
 		2:
+			update_difference_to_highscore();
 			reset_all_checkpoints();
 			trail_first.remove_collision();
 			trail_second.remove_collision();
@@ -125,18 +163,23 @@ func on_player_lap_finished():
 			trail_boost_area.generate_booster(trail_first, trail_second);
 			gui.display_time(3);
 		3:
+			update_difference_to_highscore();
 			on_player_race_finished();
 
 	if (current_lap < 3):
 		current_lap_start_msec = Time.get_ticks_msec();
 		current_lap += 1;
-		print("You are now on Lap: " + str(current_lap));
 
 func on_player_race_finished():
 	player.turn_off_engine_sounds();
 	is_race_over = true;
-	gui.refresh_end_screen(lap_times);
-	gui.show_victory_screen();
+	
+	var score_from_current_race = Highscore.new(lap_times[0], lap_times[1], lap_times[2]);
+	
+	gui.show_victory_screen(lap_times);
+	if (Global.current_highscore == null or score_from_current_race.get_combined_time() < Global.current_highscore.get_combined_time()):
+		Global.save_highscore(score_from_current_race);
+		Global.current_highscore = score_from_current_race;
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
@@ -166,8 +209,7 @@ func on_player_destroyed() -> void:
 		trail_second.trail_fade_out();
 
 func on_player_destroyed_animation_ended() -> void:
-	gui.refresh_end_screen(lap_times);
-	gui.show_lose_screen();
+	gui.show_lose_screen(lap_times);
 
 func _on_slowmo_timer_timeout() -> void:
 	current_lap_start_msec = Time.get_ticks_msec();
@@ -175,3 +217,11 @@ func _on_slowmo_timer_timeout() -> void:
 	Engine.time_scale = 1.0;
 	gui.animation.speed_scale = 1;
 	gui.toggle_side_ui(true);
+
+func _on_front_death_barrier_body_entered(body: Node2D) -> void:
+	if (body.get_groups().has("player")):
+		player.destroy();
+
+func _on_back_death_barrier_body_entered(body: Node2D) -> void:
+	if (body.get_groups().has("player")):
+		player.destroy();

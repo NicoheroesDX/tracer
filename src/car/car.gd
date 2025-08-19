@@ -21,6 +21,8 @@ var is_in_boost_area: bool = false;
 var is_allowed_to_move: bool = false;
 var is_destroyed: bool = false;
 
+var is_preloading_particles = false;
+
 const BOOST_MULTIPLIER = 1.5;
 
 const HANDLING: float = 70;
@@ -30,6 +32,15 @@ const RESITANCE: float = 0.91;
 
 var steering_effect: float = 1.0;
 var speed_effect: float = 1.0;
+
+func _ready():
+	preload_particles();
+
+func _process(delta: float) -> void:
+	if (is_preloading_particles):
+		is_preloading_particles = false;
+		death_particles.emitting = false;
+		boost_particles.emitting = false;
 
 func _physics_process(delta: float) -> void:
 	apply_effects_for_road_type(get_current_road_type());
@@ -64,9 +75,9 @@ func _physics_process(delta: float) -> void:
 		boost_particles.emitting = false;
 		
 	if is_allowed_to_move and Input.is_action_pressed("car_accelerate"):
-		velocity += direction * ACCELERATION * speed_effect * boost;
+		velocity += direction * (ACCELERATION * Input.get_action_strength("car_accelerate")) * speed_effect * boost;
 	if is_allowed_to_move and Input.is_action_pressed("car_reverse"):
-		velocity -= direction * DECELERATION * speed_effect;
+		velocity -= direction * (DECELERATION * Input.get_action_strength("car_reverse")) * speed_effect;
 	
 	engine_sound.pitch_scale = 0.5 + (current_speed * 0.003)
 	engine_sound.volume_db = min(-12 + (current_speed * 0.02), 0.0)
@@ -115,3 +126,8 @@ func apply_effects_for_road_type(road_type: String):
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if (anim_name == "death"):
 		destroyed_animation_ended.emit()
+
+func preload_particles():
+	is_preloading_particles = true;
+	death_particles.emitting = true;
+	boost_particles.emitting = true;
