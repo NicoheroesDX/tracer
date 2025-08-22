@@ -62,6 +62,7 @@ func _process(delta: float) -> void:
 	
 	update_camera_position();
 	update_lap_time();
+	update_speedometer();
 
 func _physics_process(delta: float) -> void:
 	if (is_race_started and not is_race_over):
@@ -102,14 +103,14 @@ func update_difference_to_highscore():
 	if (Global.current_highscore != null):
 		match(current_lap):
 			1:
-				print("CLT: " + str(Global.current_highscore.lap_1_time - get_current_lap_time()));
 				gui.update_time_difference(1, Global.current_highscore.lap_1_time - get_current_lap_time())
 			2:
-				print("CLT: " + str(Global.current_highscore.lap_2_time - get_current_lap_time()));
 				gui.update_time_difference(2, Global.current_highscore.lap_2_time - get_current_lap_time())
 			3:
-				print("CLT: " + str(Global.current_highscore.lap_3_time - get_current_lap_time()));
 				gui.update_time_difference(3, Global.current_highscore.lap_3_time - get_current_lap_time())
+
+func update_speedometer():
+	gui.speedometer.update_current_speed(player.get_display_speed());
 
 func start_countdown():
 	countdown_delay.start();

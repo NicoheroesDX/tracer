@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://cquisj7vtrreh"]
+[gd_scene load_steps=13 format=3 uid="uid://cquisj7vtrreh"]
 
 [ext_resource type="Script" uid="uid://by1rr6kulop7p" path="res://src/gui/driving/drivingInterface.gd" id="1_inayc"]
+[ext_resource type="PackedScene" uid="uid://bgj0hgg8nnmco" path="res://src/gui/driving/Speedometer.tscn" id="2_aop6t"]
 [ext_resource type="PackedScene" uid="uid://ba7ll0ksgd800" path="res://src/gui/driving/EndScreen.tscn" id="2_b6iiy"]
 [ext_resource type="AudioStream" uid="uid://bq1rp4w8w6oig" path="res://src/car/assets/sounds/countdown.ogg" id="3_ndpky"]
 [ext_resource type="AudioStream" uid="uid://bxq4xacar2i3y" path="res://src/car/assets/sounds/countdown_start.ogg" id="4_aop6t"]
@@ -410,6 +411,17 @@ layout_mode = 2
 [node name="BottomRight" type="VBoxContainer" parent="Grid"]
 custom_minimum_size = Vector2(648, 280)
 layout_mode = 2
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Grid/BottomRight"]
+layout_mode = 2
+theme_override_constants/margin_right = 32
+
+[node name="Speedometer" parent="Grid/BottomRight/MarginContainer" instance=ExtResource("2_aop6t")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
 
 [node name="BoostLabelContainer" type="CenterContainer" parent="."]
 offset_right = 1152.0

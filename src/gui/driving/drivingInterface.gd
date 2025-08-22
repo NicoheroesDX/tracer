@@ -19,7 +19,8 @@ extends CanvasLayer;
 @onready var animation: AnimationPlayer = $AnimationPlayer;
 @onready var end_screen: EndScreen = $EndScreen;
 
-@onready var boost_label: Label = $BoostLabelContainer/BoostLabel
+@onready var boost_label: Label = $BoostLabelContainer/BoostLabel;
+@onready var speedometer: Speedometer = %Speedometer;
 
 var is_race_frozen: bool = false;
 

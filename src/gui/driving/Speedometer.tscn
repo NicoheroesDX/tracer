@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=3 uid="uid://bgj0hgg8nnmco"]
+
+[ext_resource type="Script" uid="uid://bv2714yylqnev" path="res://src/gui/driving/speedometer.gd" id="1_ta3yy"]
+[ext_resource type="Texture2D" uid="uid://crw2v7bfshqmp" path="res://src/gui/driving/assets/graphics/speedometer_bg.png" id="1_usqki"]
+
+[sub_resource type="Gradient" id="Gradient_ta3yy"]
+offsets = PackedFloat32Array(0, 0.506024, 0.536145, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a4dqw"]
+gradient = SubResource("Gradient_ta3yy")
+width = 130
+
+[node name="Speedometer" type="CenterContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -80.0
+offset_right = 80.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(80, 80)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_ta3yy")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_usqki")
+
+[node name="Pointer" type="Node2D" parent="."]
+position = Vector2(80, 80)
+
+[node name="PointerGraphic" type="TextureRect" parent="Pointer"]
+custom_minimum_size = Vector2(0, 6)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -65.0
+offset_top = -3.0
+offset_right = 65.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_a4dqw")
+
+[node name="LabelMargin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 75
+
+[node name="Speed" type="Label" parent="LabelMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.890196, 0.909804, 0.917647, 1)
+theme_override_font_sizes/font_size = 32
+text = "300"

@@ -79,8 +79,8 @@ func _physics_process(delta: float) -> void:
 	if is_allowed_to_move and Input.is_action_pressed("car_reverse"):
 		velocity -= direction * (DECELERATION * Input.get_action_strength("car_reverse")) * speed_effect;
 	
-	engine_sound.pitch_scale = 0.5 + (current_speed * 0.003)
-	engine_sound.volume_db = min(-12 + (current_speed * 0.02), 0.0)
+	engine_sound.pitch_scale = 0.5 + (velocity.length() * 0.003)
+	engine_sound.volume_db = min(-12 + (velocity.length() * 0.02), 0.0)
 	
 	velocity *= RESITANCE;
 	move_and_slide();
@@ -107,6 +107,9 @@ func apply_default_effects():
 
 func turn_off_engine_sounds():
 	engine_sound.stop();
+
+func get_display_speed():
+	return (velocity.length()*0.2)+0.3
 
 func destroy():
 	if not is_destroyed:
