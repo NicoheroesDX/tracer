@@ -2,6 +2,9 @@ extends Node2D
 
 @onready var player_camera: Camera2D = $PlayerCamera;
 @onready var player: Car = $Player;
+
+@onready var ghost: Ghost = $Ghost;
+
 @onready var tile_map: TileMap = $TileMap;
 @onready var checkpoint_list: Node = $CheckPoints;
 @onready var finish_line: FinishLine = %FinishLine;
@@ -33,6 +36,9 @@ var checkpoints_crossed = 0;
 func _ready() -> void:
 	Global.toggle_music(true);
 	player.connect_to_map(tile_map);
+	ghost.connect_to_map(tile_map);
+	ghost.set_inputs(Global.current_player_ghost_inputs);
+	
 	player.destroyed.connect(on_player_destroyed);
 	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);
 	finish_line.player_crossed.connect(on_player_crossed_finish);
@@ -64,13 +70,16 @@ func _process(delta: float) -> void:
 	update_lap_time();
 	update_speedometer();
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float) -> void:	
 	if (is_race_started and not is_race_over):
 		player.is_allowed_to_move = true;
+		if not Global.current_player_ghost_inputs.is_empty():
+			ghost.start();
 	else:
 		player.is_allowed_to_move = false;
 	
 	player.is_in_boost_area = false;
+	ghost.is_in_boost_area = false;
 	
 	if (checkpoints_crossed < checkpoint_amount):
 		toggle_barrier_active(barrier_front, false);
@@ -160,7 +169,7 @@ func on_player_lap_finished():
 			reset_all_checkpoints();
 			trail_first.remove_collision();
 			trail_second.remove_collision();
-			apply_slowo_effect();
+			#apply_slowo_effect();
 			trail_boost_area.generate_booster(trail_first, trail_second);
 			gui.display_time(3);
 		3:
@@ -181,6 +190,11 @@ func on_player_race_finished():
 	if (Global.current_highscore == null or score_from_current_race.get_combined_time() < Global.current_highscore.get_combined_time()):
 		Global.save_highscore(score_from_current_race);
 		Global.current_highscore = score_from_current_race;
+		player.ghost_recorder.save_ghost();
+		Global.current_player_ghost_inputs = Global.load_player_ghost();
+	elif Global.current_player_ghost_inputs.is_empty():
+		player.ghost_recorder.save_ghost();
+		Global.current_player_ghost_inputs = Global.load_player_ghost();
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):

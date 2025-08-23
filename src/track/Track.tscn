@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b5iv5vbfa6rt7"]
+[gd_scene load_steps=23 format=3 uid="uid://b5iv5vbfa6rt7"]
 
 [ext_resource type="Script" uid="uid://cnomqw3pclhre" path="res://src/track/track.gd" id="1_6ssuh"]
 [ext_resource type="TileSet" uid="uid://cmwg5ogwr1r7v" path="res://src/track/assets/tilesets/TileSet.tres" id="2_n2lqg"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cquisj7vtrreh" path="res://src/gui/driving/DrivingInterface.tscn" id="7_3twuj"]
 [ext_resource type="Texture2D" uid="uid://dqb7kg21lqc0e" path="res://src/track/assets/graphics/front_death_barrier.png" id="9_1b56g"]
 [ext_resource type="Texture2D" uid="uid://cv2ugiwmqm4h0" path="res://src/track/assets/graphics/back_death_barrier.png" id="10_yx7m4"]
+[ext_resource type="PackedScene" uid="uid://cmejqc0vjaed2" path="res://src/car/Ghost.tscn" id="11_yx7m4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eqjh1"]
 size = Vector2(36, 424.5)
@@ -126,6 +127,9 @@ zoom = Vector2(1.5, 1.5)
 
 [node name="Player" parent="." instance=ExtResource("5_ydi2n")]
 z_index = 10
+position = Vector2(-336, 102)
+
+[node name="Ghost" parent="." instance=ExtResource("11_yx7m4")]
 position = Vector2(-336, 102)
 
 [node name="DrivingInterface" parent="." instance=ExtResource("7_3twuj")]

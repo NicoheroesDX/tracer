@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://t4t8p2u07gtw"]
+
+[ext_resource type="Script" uid="uid://68x08g3cpvpy" path="res://src/car/ghostRecorder.gd" id="1_cwuu1"]
+
+[node name="GhostRecorder" type="Node"]
+script = ExtResource("1_cwuu1")

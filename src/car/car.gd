@@ -13,6 +13,8 @@ signal destroyed_animation_ended;
 @onready var trail_decay_sound: AudioStreamPlayer2D = $TrailDecaySound;
 @onready var boost_sound: AudioStreamPlayer2D = $BoostSound;
 
+@onready var ghost_recorder: GhostRecorder = $GhostRecorder;
+
 var map: TileMap;
 
 var current_speed: float = 0.0;
@@ -81,6 +83,11 @@ func _physics_process(delta: float) -> void:
 	
 	engine_sound.pitch_scale = 0.5 + (velocity.length() * 0.003)
 	engine_sound.volume_db = min(-12 + (velocity.length() * 0.02), 0.0)
+	
+	if is_allowed_to_move and ghost_recorder != null:
+		ghost_recorder.capture_input(input_direction, Input.is_action_pressed("car_accelerate"),\
+			Input.get_action_strength("car_accelerate"), Input.is_action_pressed("car_reverse"),\
+			Input.get_action_strength("car_reverse"), is_in_boost_area);
 	
 	velocity *= RESITANCE;
 	move_and_slide();
