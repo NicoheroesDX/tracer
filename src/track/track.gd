@@ -21,6 +21,8 @@ extends Node2D
 @onready var barrier_front: Area2D = $FrontDeathBarrier;
 @onready var barrier_back: Area2D = $BackDeathBarrier;
 
+@onready var trail_pen: TrailPen = $TrailPen;
+
 var is_race_started: bool = false;
 var is_race_over: bool = false;
 
@@ -30,6 +32,9 @@ var current_lap: int = 1;
 var current_lap_start_msec: int = -1;
 var lap_times: Array[int] = [0, 0, 0]
 
+var trail_first_draw_complete: bool = false;
+var trail_second_draw_complete: bool = false;
+
 var checkpoint_amount = 0;
 var checkpoints_crossed = 0;
 
@@ -38,6 +43,7 @@ func _ready() -> void:
 	player.connect_to_map(tile_map);
 	ghost.connect_to_map(tile_map);
 	ghost.set_inputs(Global.current_player_ghost_inputs);
+	trail_pen.connect_to_world(trail_first, trail_second, trail_boost_area);
 	
 	player.destroyed.connect(on_player_destroyed);
 	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);
@@ -51,6 +57,9 @@ func _ready() -> void:
 	
 	trail_first.attach_to_car(player)
 	trail_second.attach_to_car(player)
+	
+	trail_first.attach_to_boost_area(trail_boost_area);
+	trail_second.attach_to_boost_area(trail_boost_area);
 	
 	toggle_barrier_active(barrier_front, false);
 	toggle_barrier_active(barrier_back, true);
@@ -89,9 +98,10 @@ func _physics_process(delta: float) -> void:
 		toggle_barrier_active(barrier_back, false);
 	
 	if trail_boost_area.is_active:
-		for body in trail_boost_area.get_overlapping_bodies():
-			if (body.get_groups().has("player")):
-				player.is_in_boost_area = true;
+		for segment in trail_boost_area.boost_segments:
+			for body in segment.get_overlapping_bodies():
+				if (body.get_groups().has("player")):
+					player.is_in_boost_area = true;
 
 func apply_slowo_effect():
 	gui.boost_label.show();
@@ -152,6 +162,11 @@ func set_current_lap_time(msec: int):
 
 func on_player_crossed_checkpoint():
 	checkpoints_crossed += 1;
+	match (current_lap):
+		1:
+			trail_first.is_current_segment_complete = true;
+		2:
+			trail_second.is_current_segment_complete = true;
 
 func on_player_crossed_finish():
 	if (checkpoint_amount == checkpoints_crossed):
@@ -161,16 +176,18 @@ func on_player_lap_finished():
 	gui.freeze_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
 	match (current_lap):
 		1:
+			trail_first.push_points_to_boost_area();
 			update_difference_to_highscore();
 			reset_all_checkpoints();
 			gui.display_time(2);
+			trail_boost_area.is_first_lap = false;
 		2:
+			trail_second.push_points_to_boost_area();
 			update_difference_to_highscore();
 			reset_all_checkpoints();
 			trail_first.remove_collision();
 			trail_second.remove_collision();
-			#apply_slowo_effect();
-			trail_boost_area.generate_booster(trail_first, trail_second);
+			trail_boost_area.activate();
 			gui.display_time(3);
 		3:
 			update_difference_to_highscore();
@@ -197,20 +214,26 @@ func on_player_race_finished():
 		Global.current_player_ghost_inputs = Global.load_player_ghost();
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
-	if (body.get_groups().has("player")):
-		match (current_lap):
-			1:
-				trail_first.is_emitting = false;
-			2:
-				trail_second.is_emitting = false;
+	if is_race_started:
+		if (body.get_groups().has("player")):
+			# LOGIC_X
+			match (current_lap):
+				1:
+					trail_first.is_emitting = false;
+					trail_first_draw_complete = true;
+					trail_first.push_points_to_boost_area();
+				2:
+					trail_second.is_emitting = false;
+					trail_second_draw_complete = true;
+					trail_second.push_points_to_boost_area();
 
 func _on_charge_zone_body_exited(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
 		match (current_lap):
 			1:
-				trail_first.is_emitting = true;
+				trail_first.is_emitting = !trail_first_draw_complete;
 			2:
-				trail_second.is_emitting = true;
+				trail_second.is_emitting = !trail_second_draw_complete;
 
 func _on_countdown_timer_timeout() -> void:
 	current_lap_start_msec = Time.get_ticks_msec();
@@ -238,5 +261,6 @@ func _on_front_death_barrier_body_entered(body: Node2D) -> void:
 		player.destroy();
 
 func _on_back_death_barrier_body_entered(body: Node2D) -> void:
+	# TODO: Rename into charge gate, and to LOGIC_X here
 	if (body.get_groups().has("player")):
 		player.destroy();

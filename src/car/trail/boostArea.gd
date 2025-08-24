@@ -1,24 +1,37 @@
 class_name BoostArea;
-extends Area2D;
+extends Node2D;
 
 var is_active: bool = false;
 
-@onready var collision: CollisionPolygon2D = $Collision;
-@onready var visuals: Polygon2D = $Visuals;
+var boost_segments: Array[BoostSegment] = [];
 
-func generate_booster(first_trail: Trail, second_trail: Trail):
-	var poly_points = [];
-	var first_trail_points = first_trail.visuals.points;
-	var second_trail_points_reversed = second_trail.visuals.points.duplicate();
-	second_trail_points_reversed.reverse();
-	
-	for point in first_trail_points:
-		poly_points.append(point);
-		
-	for point in second_trail_points_reversed:
-		poly_points.append(point);
-	
-	visuals.polygon = poly_points;
-	collision.polygon = poly_points;
-	
+var is_first_lap: bool = true;
+
+func activate():
 	is_active = true;
+	
+	for segment in boost_segments:
+		segment.visualize();
+
+func push_points(points: PackedVector2Array):
+	if is_first_lap:
+		create_new_segment(points);
+	else:
+		add_next_missing_points(points);
+
+func create_new_segment(points_from_first_lap: PackedVector2Array):
+	var new_segment = BoostSegment.new();
+	new_segment.first_trail_points = points_from_first_lap;
+	boost_segments.append(new_segment);
+
+func add_next_missing_points(points_from_second_lap: PackedVector2Array):
+	var ind = -1;
+	for segment in boost_segments:
+		ind += 1;
+		
+		if segment.second_trail_points.is_empty():
+			segment.second_trail_points = points_from_second_lap;
+			segment.generate_booster();
+			add_child(segment)
+			print("Added segment to scene!");
+			return;

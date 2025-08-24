@@ -2,11 +2,5 @@
 
 [ext_resource type="Script" uid="uid://bw1ifnx4asb1l" path="res://src/car/trail/boostArea.gd" id="1_bnfeo"]
 
-[node name="BoostArea" type="Area2D"]
-collision_layer = 2
+[node name="BoostArea" type="Node2D"]
 script = ExtResource("1_bnfeo")
-
-[node name="Visuals" type="Polygon2D" parent="."]
-color = Color(0.729412, 0.572549, 1, 0.784314)
-
-[node name="Collision" type="CollisionPolygon2D" parent="."]

@@ -29,7 +29,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if ghost_controller.is_active:
 		sprite.modulate = default_sprite_modulation;
-		var current_input = ghost_controller.get_next_input();
+		var current_input: InputCapture = ghost_controller.get_next_input();
 		
 		apply_effects_for_road_type(get_current_road_type());
 		
@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 		
 		var boost = 1.0;
 		
-		if is_in_boost_area:
+		if current_input.is_boosting:
 			boost = BOOST_MULTIPLIER;
 			
 		if is_allowed_to_move and current_input.is_accelerating:
