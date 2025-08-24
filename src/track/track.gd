@@ -18,10 +18,8 @@ extends Node2D
 @onready var countdown_delay: Timer = $CountdownTimer;
 @onready var slowmo_timer: Timer = $SlowmoTimer;
 
-@onready var barrier_front: Area2D = $FrontDeathBarrier;
-@onready var barrier_back: Area2D = $BackDeathBarrier;
-
-@onready var trail_pen: TrailPen = $TrailPen;
+@onready var gate_front: Area2D = $FrontChargeGate;
+@onready var gate_back: Area2D = $BackChargeGate;
 
 var is_race_started: bool = false;
 var is_race_over: bool = false;
@@ -43,7 +41,6 @@ func _ready() -> void:
 	player.connect_to_map(tile_map);
 	ghost.connect_to_map(tile_map);
 	ghost.set_inputs(Global.current_player_ghost_inputs);
-	trail_pen.connect_to_world(trail_first, trail_second, trail_boost_area);
 	
 	player.destroyed.connect(on_player_destroyed);
 	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);
@@ -61,8 +58,8 @@ func _ready() -> void:
 	trail_first.attach_to_boost_area(trail_boost_area);
 	trail_second.attach_to_boost_area(trail_boost_area);
 	
-	toggle_barrier_active(barrier_front, false);
-	toggle_barrier_active(barrier_back, true);
+	toggle_gate_closed(gate_front, false);
+	toggle_gate_closed(gate_back, true);
 	
 	for checkpoint in checkpoint_list.get_children():
 		checkpoint_amount += 1;
@@ -91,11 +88,11 @@ func _physics_process(delta: float) -> void:
 	ghost.is_in_boost_area = false;
 	
 	if (checkpoints_crossed < checkpoint_amount):
-		toggle_barrier_active(barrier_front, false);
-		toggle_barrier_active(barrier_back, true);
+		toggle_gate_closed(gate_front, false);
+		toggle_gate_closed(gate_back, true);
 	else:
-		toggle_barrier_active(barrier_front, true);
-		toggle_barrier_active(barrier_back, false);
+		toggle_gate_closed(gate_front, true);
+		toggle_gate_closed(gate_back, false);
 	
 	if trail_boost_area.is_active:
 		for segment in trail_boost_area.boost_segments:
@@ -144,9 +141,9 @@ func reset_all_checkpoints():
 	for checkpoint in checkpoint_list.get_children():
 		checkpoint.reset();
 
-func toggle_barrier_active(barrier: Area2D, is_now_active: bool):
-	barrier.visible = is_now_active;
-	barrier.monitoring = is_now_active;
+func toggle_gate_closed(gate: Area2D, is_now_closed: bool):
+	gate.visible = is_now_closed;
+	gate.monitoring = is_now_closed;
 
 func update_camera_position():
 	player_camera.global_position = player.global_position;
@@ -214,18 +211,12 @@ func on_player_race_finished():
 		Global.current_player_ghost_inputs = Global.load_player_ghost();
 
 func _on_charge_zone_body_entered(body: Node2D) -> void:
-	if is_race_started:
-		if (body.get_groups().has("player")):
-			# LOGIC_X
-			match (current_lap):
-				1:
-					trail_first.is_emitting = false;
-					trail_first_draw_complete = true;
-					trail_first.push_points_to_boost_area();
-				2:
-					trail_second.is_emitting = false;
-					trail_second_draw_complete = true;
-					trail_second.push_points_to_boost_area();
+	if (body.get_groups().has("player")):
+		match (current_lap):
+			1:
+				trail_first.is_emitting = false;
+			2:
+				trail_second.is_emitting = false;
 
 func _on_charge_zone_body_exited(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
@@ -256,11 +247,20 @@ func _on_slowmo_timer_timeout() -> void:
 	gui.animation.speed_scale = 1;
 	gui.toggle_side_ui(true);
 
-func _on_front_death_barrier_body_entered(body: Node2D) -> void:
+func _on_front_charge_gate_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
 		player.destroy();
 
-func _on_back_death_barrier_body_entered(body: Node2D) -> void:
-	# TODO: Rename into charge gate, and to LOGIC_X here
+func _on_back_charge_gate_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
-		player.destroy();
+		match (current_lap):
+			1:
+				if not trail_first_draw_complete:
+					trail_first.is_emitting = false;
+					trail_first_draw_complete = true;
+					trail_first.push_points_to_boost_area();
+			2:
+				if not trail_second_draw_complete:
+					trail_first.is_emitting = false;
+					trail_second_draw_complete = true;
+					trail_second.push_points_to_boost_area();

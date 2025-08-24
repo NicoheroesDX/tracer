@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b5iv5vbfa6rt7"]
+[gd_scene load_steps=23 format=3 uid="uid://b5iv5vbfa6rt7"]
 
 [ext_resource type="Script" uid="uid://cnomqw3pclhre" path="res://src/track/track.gd" id="1_6ssuh"]
 [ext_resource type="TileSet" uid="uid://cmwg5ogwr1r7v" path="res://src/track/assets/tilesets/TileSet.tres" id="2_n2lqg"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://dqb7kg21lqc0e" path="res://src/track/assets/graphics/front_death_barrier.png" id="9_1b56g"]
 [ext_resource type="Texture2D" uid="uid://cv2ugiwmqm4h0" path="res://src/track/assets/graphics/back_death_barrier.png" id="10_yx7m4"]
 [ext_resource type="PackedScene" uid="uid://cmejqc0vjaed2" path="res://src/car/Ghost.tscn" id="11_yx7m4"]
-[ext_resource type="PackedScene" uid="uid://carwxxioywaaf" path="res://src/temp/TrailPen.tscn" id="12_aqxv5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eqjh1"]
 size = Vector2(36, 424.5)
@@ -144,34 +143,32 @@ wait_time = 3.5
 one_shot = true
 ignore_time_scale = true
 
-[node name="FrontDeathBarrier" type="Area2D" parent="."]
+[node name="FrontChargeGate" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FrontDeathBarrier"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FrontChargeGate"]
 position = Vector2(-336, -176)
 shape = SubResource("RectangleShape2D_5qt4g")
 
-[node name="Sprite2D" type="Sprite2D" parent="FrontDeathBarrier"]
+[node name="Sprite2D" type="Sprite2D" parent="FrontChargeGate"]
 position = Vector2(-336, -176)
 texture = ExtResource("9_1b56g")
 
-[node name="BackDeathBarrier" type="Area2D" parent="."]
+[node name="BackChargeGate" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BackDeathBarrier"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BackChargeGate"]
 position = Vector2(-336, 240)
 shape = SubResource("RectangleShape2D_7qejy")
 
-[node name="Sprite2D" type="Sprite2D" parent="BackDeathBarrier"]
+[node name="Sprite2D" type="Sprite2D" parent="BackChargeGate"]
 position = Vector2(-336, 240)
 texture = ExtResource("10_yx7m4")
-
-[node name="TrailPen" parent="." instance=ExtResource("12_aqxv5")]
 
 [connection signal="body_entered" from="ChargeZone" to="." method="_on_charge_zone_body_entered"]
 [connection signal="body_exited" from="ChargeZone" to="." method="_on_charge_zone_body_exited"]
 [connection signal="timeout" from="CountdownTimer" to="." method="_on_countdown_timer_timeout"]
 [connection signal="timeout" from="SlowmoTimer" to="." method="_on_slowmo_timer_timeout"]
-[connection signal="body_entered" from="FrontDeathBarrier" to="." method="_on_front_death_barrier_body_entered"]
-[connection signal="body_entered" from="BackDeathBarrier" to="." method="_on_back_death_barrier_body_entered"]
+[connection signal="body_entered" from="FrontChargeGate" to="." method="_on_front_charge_gate_body_entered"]
+[connection signal="body_entered" from="BackChargeGate" to="." method="_on_back_charge_gate_body_entered"]
 
 [editable path="FinishLine"]
 [editable path="CheckPoints/Checkpoint01"]
