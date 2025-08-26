@@ -9,8 +9,10 @@ const SAVED_TARGET_GHOST_FILE_NAME = "target.ghost";
 const LAP_1_KEY = "highscore_lap_1";
 const LAP_2_KEY = "highscore_lap_2";
 const LAP_3_KEY = "highscore_lap_3";
+const CHECKPOINT_KEY_PREFIX = "check_"
 const KEY_VALUE_SEPARATOR = "=";
 const CSV_SEPARATOR = ";";
+const MAX_INDEX_LENGTH_CHECKPOINTS = 3;
 
 var current_highscore: Highscore;
 
@@ -31,6 +33,19 @@ func save_highscore(new_highscore: Highscore):
 	save_file.store_line(LAP_1_KEY + KEY_VALUE_SEPARATOR + str(new_highscore.lap_1_time));
 	save_file.store_line(LAP_2_KEY + KEY_VALUE_SEPARATOR + str(new_highscore.lap_2_time));
 	save_file.store_line(LAP_3_KEY + KEY_VALUE_SEPARATOR + str(new_highscore.lap_3_time));
+	
+	var checkpoint_index = 0;
+	for check in new_highscore.checkpoint_times:
+		save_file.store_line(\
+			CHECKPOINT_KEY_PREFIX +\
+			str(checkpoint_index).pad_zeros(3) +\
+			KEY_VALUE_SEPARATOR +\
+			str(check[0]) + CSV_SEPARATOR +\
+			str(check[1]) + CSV_SEPARATOR +\
+			str(check[2])\
+		);
+		checkpoint_index += 1;
+	
 	save_file.close();
 
 func load_highscore():
@@ -74,7 +89,34 @@ func load_highscore():
 		print("ERROR: Invalid amount of loaded lap times: size is " + str(extracted_times.size()));
 		return null;
 	
-	return Highscore.new(extracted_times.get(0), extracted_times.get(1), extracted_times.get(2));
+	if save_file.eof_reached():
+		print("ERROR: EOF reached");
+		return null;
+	
+	var extracted_checkpoint_times: Array = [];
+	
+	while not save_file.eof_reached():
+		var line: String = save_file.get_line().strip_edges();
+		
+		if line.length() == 0:
+			continue;
+		
+		if not line.begins_with(CHECKPOINT_KEY_PREFIX):
+			print("ERROR: Invalid checkpoint time key");
+			return null;
+		
+		line = line.substr(CHECKPOINT_KEY_PREFIX.length() + MAX_INDEX_LENGTH_CHECKPOINTS + KEY_VALUE_SEPARATOR.length());
+		var line_parts = line.split(CSV_SEPARATOR);
+		
+		if line_parts.size() != 3:
+			print("ERROR: Invalid amount of lap times " + str(line_parts.size()) + ". Expected: a lap count of 3");
+			return null;
+		
+		extracted_checkpoint_times.append([int(line_parts[0]), int(line_parts[1]), int(line_parts[2])]);
+	
+	print(extracted_checkpoint_times);
+	
+	return Highscore.new(extracted_times.get(0), extracted_times.get(1), extracted_times.get(2), extracted_checkpoint_times);
 
 func load_player_ghost():
 	if not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVED_PLAYER_GHOST_FILE_NAME):
@@ -92,8 +134,6 @@ func load_player_ghost():
 			continue;
 		
 		if line_parts.size() != 6:
-			print(line);
-			print(line_parts);
 			print("ERROR: Invalid CSV line length of " + str(line_parts.size()) + ". Expected: a length of 6");
 			return null;
 		

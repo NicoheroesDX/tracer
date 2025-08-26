@@ -10,8 +10,6 @@ func save_ghost():
 	var ghost_file = FileAccess.open(Global.SAVE_GAME_FOLDER + Global.SAVED_PLAYER_GHOST_FILE_NAME, FileAccess.WRITE);
 	var inputs_to_save = input_capture_history.duplicate();
 	
-	print("Saving ghost capture");
-	
 	for input: InputCapture in inputs_to_save:
 		ghost_file.store_line(\
 			str(input.input_axis) + Global.CSV_SEPARATOR +\
@@ -22,5 +20,4 @@ func save_ghost():
 			Global.to_binary_str(input.is_boosting)\
 		);
 	
-	print("Succesfully saved the ghost");
 	ghost_file.close();

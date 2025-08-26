@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://raftdcklq3bh"]
+
+[ext_resource type="Script" uid="uid://w4qxst2s86ce" path="res://src/gui/driving/timeDiff.gd" id="1_hgwuy"]
+[ext_resource type="Texture2D" uid="uid://bt352ietkxcn3" path="res://src/gui/driving/assets/graphics/triangle_neutral.svg" id="2_hgwuy"]
+
+[node name="TimeDiff" type="CenterContainer"]
+offset_right = 256.0
+offset_bottom = 60.0
+pivot_offset = Vector2(128, 32)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_hgwuy")
+
+[node name="TimeRect" type="Polygon2D" parent="."]
+position = Vector2(72, -8)
+color = Color(0, 0, 0, 0.5)
+polygon = PackedVector2Array(-64, 32, -56, 0, -40, -16, 40, -16, 56, 0, 40, 16, -32, 16)
+
+[node name="TimeInformation" type="HBoxContainer" parent="TimeRect"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -95.0
+offset_top = -25.0
+offset_right = 95.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="DiffTriangle" type="TextureRect" parent="TimeRect/TimeInformation"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("2_hgwuy")
+stretch_mode = 3
+
+[node name="DiffTime" type="Label" parent="TimeRect/TimeInformation"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "0.000"
+horizontal_alignment = 1
+vertical_alignment = 1

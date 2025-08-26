@@ -61,7 +61,15 @@ func _ready() -> void:
 	toggle_gate_closed(gate_front, false);
 	toggle_gate_closed(gate_back, true);
 	
-	for checkpoint in checkpoint_list.get_children():
+	var has_checkpoint_times = Global.current_highscore != null and not Global.current_highscore.checkpoint_times.is_empty()
+	
+	for checkpoint: Checkpoint in checkpoint_list.get_children():
+		if (has_checkpoint_times):
+			var targets = Global.current_highscore.checkpoint_times.get(checkpoint_amount);
+			checkpoint.lap_1_target = targets[0];
+			checkpoint.lap_2_target = targets[1];
+			checkpoint.lap_3_target = targets[2];
+		
 		checkpoint_amount += 1;
 		checkpoint.player_crossed.connect(on_player_crossed_checkpoint);
 	
@@ -120,10 +128,14 @@ func update_difference_to_highscore():
 		match(current_lap):
 			1:
 				gui.update_time_difference(1, Global.current_highscore.lap_1_time - get_current_lap_time())
+				gui.update_checkpoint_time_diff(Global.current_highscore.lap_1_time - get_current_lap_time())
 			2:
 				gui.update_time_difference(2, Global.current_highscore.lap_2_time - get_current_lap_time())
+				gui.update_checkpoint_time_diff((Global.current_highscore.lap_1_time + Global.current_highscore.lap_2_time) +\
+					lap_times[0] + get_current_lap_time())
 			3:
 				gui.update_time_difference(3, Global.current_highscore.lap_3_time - get_current_lap_time())
+				gui.time_diff.hide_ui();
 
 func update_speedometer():
 	gui.speedometer.update_current_speed(player.get_display_speed());
@@ -157,15 +169,22 @@ func get_current_lap_time():
 func set_current_lap_time(msec: int):
 	lap_times[current_lap-1] = msec;
 
-func on_player_crossed_checkpoint():
+func on_player_crossed_checkpoint(checkpoint: Checkpoint):
 	checkpoints_crossed += 1;
 	match (current_lap):
 		1:
 			trail_first.is_current_segment_complete = true;
+			checkpoint.lap_1_time = get_race_time();
+			gui.update_checkpoint_time_diff(checkpoint.lap_1_target - checkpoint.lap_1_time);
 		2:
 			trail_second.is_current_segment_complete = true;
+			checkpoint.lap_2_time = get_race_time();
+			gui.update_checkpoint_time_diff(checkpoint.lap_2_target - checkpoint.lap_2_time);
+		3:
+			checkpoint.lap_3_time = get_race_time();
+			gui.update_checkpoint_time_diff(checkpoint.lap_3_target - checkpoint.lap_3_time);
 
-func on_player_crossed_finish():
+func on_player_crossed_finish(_finish_line):
 	if (checkpoint_amount == checkpoints_crossed):
 		on_player_lap_finished();
 
@@ -198,7 +217,8 @@ func on_player_race_finished():
 	player.turn_off_engine_sounds();
 	is_race_over = true;
 	
-	var score_from_current_race = Highscore.new(lap_times[0], lap_times[1], lap_times[2]);
+	var score_from_current_race = Highscore.new(lap_times[0], lap_times[1], lap_times[2], \
+		Highscore.extract_checkpoint_times(checkpoint_list.get_children()));
 	
 	gui.show_victory_screen(lap_times);
 	if (Global.current_highscore == null or score_from_current_race.get_combined_time() < Global.current_highscore.get_combined_time()):

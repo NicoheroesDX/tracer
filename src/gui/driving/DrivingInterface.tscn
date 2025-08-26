@@ -1,17 +1,18 @@
-[gd_scene load_steps=13 format=3 uid="uid://cquisj7vtrreh"]
+[gd_scene load_steps=14 format=3 uid="uid://cquisj7vtrreh"]
 
 [ext_resource type="Script" uid="uid://by1rr6kulop7p" path="res://src/gui/driving/drivingInterface.gd" id="1_inayc"]
 [ext_resource type="PackedScene" uid="uid://bgj0hgg8nnmco" path="res://src/gui/driving/Speedometer.tscn" id="2_aop6t"]
 [ext_resource type="PackedScene" uid="uid://ba7ll0ksgd800" path="res://src/gui/driving/EndScreen.tscn" id="2_b6iiy"]
 [ext_resource type="AudioStream" uid="uid://bq1rp4w8w6oig" path="res://src/car/assets/sounds/countdown.ogg" id="3_ndpky"]
+[ext_resource type="PackedScene" uid="uid://raftdcklq3bh" path="res://src/gui/driving/TimeDiff.tscn" id="3_pbwr0"]
 [ext_resource type="AudioStream" uid="uid://bxq4xacar2i3y" path="res://src/car/assets/sounds/countdown_start.ogg" id="4_aop6t"]
 
-[sub_resource type="Gradient" id="Gradient_47t6m"]
+[sub_resource type="Gradient" id="Gradient_aop6t"]
 offsets = PackedFloat32Array(0.603896, 0.92562)
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_inayc"]
-gradient = SubResource("Gradient_47t6m")
+gradient = SubResource("Gradient_aop6t")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inayc"]
 bg_color = Color(0, 0, 0, 0.796078)
@@ -38,7 +39,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Center/Margin/CountdownProgress:value")
+tracks/1/path = NodePath("Center/BarMargin/CountdownProgress:value")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -50,7 +51,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Center/Margin/CountdownProgress:visible")
+tracks/2/path = NodePath("Center/BarMargin/CountdownProgress:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -74,7 +75,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Center/Margin/CountdownProgress:modulate")
+tracks/4/path = NodePath("Center/BarMargin/CountdownProgress:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -139,7 +140,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Center/Margin/CountdownProgress:value")
+tracks/1/path = NodePath("Center/BarMargin/CountdownProgress:value")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -151,7 +152,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Center/Margin/CountdownProgress:visible")
+tracks/2/path = NodePath("Center/BarMargin/CountdownProgress:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -175,7 +176,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Center/Margin/CountdownProgress:modulate")
+tracks/4/path = NodePath("Center/BarMargin/CountdownProgress:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -401,7 +402,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="TopRight" type="VBoxContainer" parent="Grid"]
-custom_minimum_size = Vector2(648, 280)
+custom_minimum_size = Vector2(500, 280)
 layout_mode = 2
 
 [node name="BottomLeft" type="VBoxContainer" parent="Grid"]
@@ -424,6 +425,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 
 [node name="BoostLabelContainer" type="CenterContainer" parent="."]
+visible = false
 offset_right = 1152.0
 offset_bottom = 384.0
 
@@ -455,19 +457,28 @@ text = "GO!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Margin" type="MarginContainer" parent="Center"]
+[node name="BarMargin" type="MarginContainer" parent="Center"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_constants/margin_top = 200
 
-[node name="CountdownProgress" type="ProgressBar" parent="Center/Margin"]
+[node name="CountdownProgress" type="ProgressBar" parent="Center/BarMargin"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_inayc")
 theme_override_styles/fill = SubResource("StyleBoxFlat_b6iiy")
 show_percentage = false
 
+[node name="TimeMargin" type="MarginContainer" parent="Center"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 50
+
+[node name="TimeDiff" parent="Center/TimeMargin" instance=ExtResource("3_pbwr0")]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="EndScreen" parent="." instance=ExtResource("2_b6iiy")]
+visible = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

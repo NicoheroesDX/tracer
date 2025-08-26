@@ -1,7 +1,7 @@
 class_name TargetArea;
 extends Area2D;
 
-signal player_crossed;
+signal player_crossed(target);
 
 # @Abstract
 func on_player_entered() -> void:

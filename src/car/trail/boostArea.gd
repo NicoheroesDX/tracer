@@ -33,5 +33,4 @@ func add_next_missing_points(points_from_second_lap: PackedVector2Array):
 			segment.second_trail_points = points_from_second_lap;
 			segment.generate_booster();
 			add_child(segment)
-			print("Added segment to scene!");
 			return;

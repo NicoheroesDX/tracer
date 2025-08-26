@@ -14,13 +14,15 @@ extends CanvasLayer;
 @onready var lap_3_diff: Label = %Lap3Difference;
 
 @onready var countdown: Label = $Center/Countdown;
-@onready var countdown_progress: ProgressBar = $Center/Margin/CountdownProgress;
+@onready var countdown_progress: ProgressBar = $Center/BarMargin/CountdownProgress;
 
 @onready var animation: AnimationPlayer = $AnimationPlayer;
 @onready var end_screen: EndScreen = $EndScreen;
 
 @onready var boost_label: Label = $BoostLabelContainer/BoostLabel;
 @onready var speedometer: Speedometer = %Speedometer;
+
+@onready var time_diff: TimeDiff = %TimeDiff;
 
 var is_race_frozen: bool = false;
 
@@ -107,6 +109,9 @@ func show_lose_screen(lap_times: Array[int]):
 	end_screen.toggle_mood(false);
 	end_screen.refresh_data(lap_times);
 	end_screen.show_and_enable_controls();
+
+func update_checkpoint_time_diff(new_time: int):
+	time_diff.update(new_time);
 
 static func get_sign_for_difference(difference: int):
 	if (difference < 0):
