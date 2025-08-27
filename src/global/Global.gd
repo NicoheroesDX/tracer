@@ -14,6 +14,8 @@ const KEY_VALUE_SEPARATOR = "=";
 const CSV_SEPARATOR = ";";
 const MAX_INDEX_LENGTH_CHECKPOINTS = 3;
 
+const JS_DOWNLOAD_SCRIPT_PATH = "res://src/javascript/download_file.txt";
+
 var current_highscore: Highscore;
 
 var current_player_ghost_inputs: Array[InputCapture] = [];
@@ -47,6 +49,14 @@ func save_highscore(new_highscore: Highscore):
 		checkpoint_index += 1;
 	
 	save_file.close();
+
+func download_highscore():
+	var download_function = FileAccess.open(JS_DOWNLOAD_SCRIPT_PATH, FileAccess.READ).get_as_text();
+	
+	var content := "This is the content."
+	var filename := "test.txt"
+	JavaScriptBridge.eval("console.log('GodotJava!');");
+	JavaScriptBridge.eval(download_function)
 
 func load_highscore():
 	if not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVE_FILE_NAME):

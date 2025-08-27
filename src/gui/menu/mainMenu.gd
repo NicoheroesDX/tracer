@@ -5,7 +5,7 @@ var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus");
 
 @onready var score_container: VBoxContainer = %ScoreContainer;
 @onready var highscore_time: Label = %HighscoreTime;
-@onready var start_button: Button = $Button;
+@onready var start_button: Button = $Start;
 @onready var music_mute: CheckButton = %MusicButton;
 @onready var sfx_mute: CheckButton = %SFXButton;
 
@@ -24,8 +24,11 @@ func _ready() -> void:
 	music_mute.button_pressed = AudioServer.is_bus_mute(music_audio_bus);
 	sfx_mute.button_pressed = AudioServer.is_bus_mute(sfx_audio_bus);
 
-func _on_button_pressed() -> void:
-	Global.change_scene_with_transition("res://src/track/Track.tscn")
+func _on_start_pressed() -> void:
+	Global.change_scene_with_transition("res://src/track/Track.tscn")#
+
+func _on_save_pressed() -> void:
+	Global.download_highscore();
 
 func _on_music_button_toggled(toggled_on: bool) -> void:
 	AudioServer.set_bus_mute(music_audio_bus, toggled_on);
