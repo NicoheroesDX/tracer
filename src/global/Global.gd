@@ -51,12 +51,9 @@ func save_highscore(new_highscore: Highscore):
 	save_file.close();
 
 func download_highscore():
-	var download_function = FileAccess.open(JS_DOWNLOAD_SCRIPT_PATH, FileAccess.READ).get_as_text();
-	
 	var content := "This is the content."
 	var filename := "test.txt"
-	JavaScriptBridge.eval("console.log('GodotJava!');");
-	JavaScriptBridge.eval(download_function)
+	WebOnly.download_file(content, filename);
 
 func load_highscore():
 	if not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVE_FILE_NAME):
