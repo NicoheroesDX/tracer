@@ -101,11 +101,13 @@ func freeze_time(lap: int, text: String):
 			is_lap_3_frozen = true;
 
 func show_victory_screen(lap_times: Array[int]):
+	time_diff.hide_ui();
 	end_screen.toggle_mood(true);
 	end_screen.refresh_data(lap_times);
 	end_screen.show_and_enable_controls();
 
 func show_lose_screen(lap_times: Array[int]):
+	time_diff.hide_ui();
 	end_screen.toggle_mood(false);
 	end_screen.refresh_data(lap_times);
 	end_screen.show_and_enable_controls();

@@ -128,10 +128,10 @@ func update_difference_to_highscore():
 		match(current_lap):
 			1:
 				gui.update_time_difference(1, Global.current_highscore.lap_1_time - get_current_lap_time())
-				gui.update_checkpoint_time_diff(Global.current_highscore.lap_1_time - get_current_lap_time())
+				update_checkpoint_time_diff(Global.current_highscore.lap_1_time - get_current_lap_time())
 			2:
 				gui.update_time_difference(2, Global.current_highscore.lap_2_time - get_current_lap_time())
-				gui.update_checkpoint_time_diff((Global.current_highscore.lap_1_time + Global.current_highscore.lap_2_time) +\
+				update_checkpoint_time_diff((Global.current_highscore.lap_1_time + Global.current_highscore.lap_2_time) +\
 					lap_times[0] + get_current_lap_time())
 			3:
 				gui.update_time_difference(3, Global.current_highscore.lap_3_time - get_current_lap_time())
@@ -169,20 +169,24 @@ func get_current_lap_time():
 func set_current_lap_time(msec: int):
 	lap_times[current_lap-1] = msec;
 
+func update_checkpoint_time_diff(time_diff: int):
+	if Global.current_highscore != null and not Global.current_highscore.checkpoint_times.is_empty():
+		gui.update_checkpoint_time_diff(time_diff);
+
 func on_player_crossed_checkpoint(checkpoint: Checkpoint):
 	checkpoints_crossed += 1;
 	match (current_lap):
 		1:
 			trail_first.is_current_segment_complete = true;
 			checkpoint.lap_1_time = get_race_time();
-			gui.update_checkpoint_time_diff(checkpoint.lap_1_target - checkpoint.lap_1_time);
+			update_checkpoint_time_diff(checkpoint.lap_1_target - checkpoint.lap_1_time);
 		2:
 			trail_second.is_current_segment_complete = true;
 			checkpoint.lap_2_time = get_race_time();
-			gui.update_checkpoint_time_diff(checkpoint.lap_2_target - checkpoint.lap_2_time);
+			update_checkpoint_time_diff(checkpoint.lap_2_target - checkpoint.lap_2_time);
 		3:
 			checkpoint.lap_3_time = get_race_time();
-			gui.update_checkpoint_time_diff(checkpoint.lap_3_target - checkpoint.lap_3_time);
+			update_checkpoint_time_diff(checkpoint.lap_3_target - checkpoint.lap_3_time);
 
 func on_player_crossed_finish(_finish_line):
 	if (checkpoint_amount == checkpoints_crossed):
