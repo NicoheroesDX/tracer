@@ -20,4 +20,4 @@ static func download_file(file_name: String, file_content: PackedByteArray):
 		if (i < file_content.size() - 1):
 			u_int_8_array_string += ",";
 	
-	JavaScriptBridge.eval(JS_FUNCTION_DOWNLOAD_ZIP_FILE.format(u_int_8_array_string, sanitized_file_name));
+	JavaScriptBridge.eval(JS_FUNCTION_DOWNLOAD_ZIP_FILE.format([u_int_8_array_string, sanitized_file_name]));
