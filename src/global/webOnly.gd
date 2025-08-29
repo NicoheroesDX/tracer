@@ -17,4 +17,4 @@ static func download_file(file_name: String, file_content: PackedByteArray):
 	var sanitized_file_name = file_name.replace("'", "\\'")
 	var base64_file_content = Marshalls.raw_to_base64(file_content).replace("\n", "");
 	
-	JavaScriptBridge.eval(JS_FUNCTION_DOWNLOAD_ZIP_FILE.format(sanitized_file_name, base64_file_content));
+	JavaScriptBridge.eval(JS_FUNCTION_DOWNLOAD_ZIP_FILE.format([sanitized_file_name, base64_file_content]));
