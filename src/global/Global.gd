@@ -4,6 +4,7 @@ signal transition_complete;
 
 const SAVE_GAME_FOLDER = "user://";
 const SAVE_FILE_NAME = "tracer.data";
+const TARGET_FILE_NAME = "target.data";
 const SAVED_PLAYER_GHOST_FILE_NAME = "player.ghost";
 const SAVED_TARGET_GHOST_FILE_NAME = "target.ghost";
 const LAP_1_KEY = "highscore_lap_1";
@@ -13,8 +14,8 @@ const CHECKPOINT_KEY_PREFIX = "check_"
 const KEY_VALUE_SEPARATOR = "=";
 const CSV_SEPARATOR = ";";
 const MAX_INDEX_LENGTH_CHECKPOINTS = 3;
-
-const JS_DOWNLOAD_SCRIPT_PATH = "res://src/javascript/download_file.txt";
+const SHARED_GHOST_FILE_EXTENSION = ".trsg";
+const TEMP_FOLDER = SAVE_GAME_FOLDER + "temp/";
 
 var current_highscore: Highscore;
 
@@ -51,9 +52,42 @@ func save_highscore(new_highscore: Highscore):
 	save_file.close();
 
 func download_highscore():
-	var content := "This is the content."
-	var filename := "test.txt"
-	WebOnly.download_file(content, filename);
+	const file_name = "ghost_XX_YY_ZZZ" + SHARED_GHOST_FILE_EXTENSION;
+	const file_path = TEMP_FOLDER + file_name;
+	
+	if (create_shared_ghost_file(file_path)):
+		var ghost_file := FileAccess.open(file_path, FileAccess.READ);
+		if ghost_file:
+			var content := ghost_file.get_buffer(ghost_file.get_length());
+			ghost_file.close();
+			WebOnly.download_file(file_name, content);
+		else:
+			print("ERROR: Could not access ghost file");
+
+func create_shared_ghost_file(file_path: String) -> bool:
+	var save_game_directory := DirAccess.open(SAVE_GAME_FOLDER)
+	if not save_game_directory.dir_exists(TEMP_FOLDER):
+		var err = save_game_directory.make_dir(TEMP_FOLDER)
+		if err != OK:
+			print("ERROR: Failed to create folder");
+			return false;
+	
+	var zip_file = ZIPPacker.new();
+	var err = zip_file.open(file_path);
+	if err != OK:
+		print("ERROR: Failed to create archive");
+		return false;
+	
+	zip_file.start_file("hello.txt");
+	zip_file.write_file("Hello World".to_utf8_buffer());
+	zip_file.close_file();
+	
+	zip_file.start_file("bye.txt");
+	zip_file.write_file("Bye World".to_utf8_buffer());
+	zip_file.close_file();
+	
+	zip_file.close();
+	return true;
 
 func load_highscore():
 	if not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVE_FILE_NAME):
@@ -120,8 +154,6 @@ func load_highscore():
 			return null;
 		
 		extracted_checkpoint_times.append([int(line_parts[0]), int(line_parts[1]), int(line_parts[2])]);
-	
-	print(extracted_checkpoint_times);
 	
 	return Highscore.new(extracted_times.get(0), extracted_times.get(1), extracted_times.get(2), extracted_checkpoint_times);
 
