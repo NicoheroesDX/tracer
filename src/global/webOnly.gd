@@ -2,7 +2,7 @@ class_name WebOnly;
 extends Node;
 
 const JS_FUNCTION_DOWNLOAD_ZIP_FILE = """
-	const bytes = Uint8Array.from(atob('%s'), c => c.charCodeAt(0));
+	const bytes = new Uint8Array([%s]);
 	const blob = new Blob([bytes], {type: 'application/zip'});
 	const a = document.createElement('a');
 	a.href = URL.createObjectURL(blob);
@@ -13,6 +13,9 @@ const JS_FUNCTION_DOWNLOAD_ZIP_FILE = """
 
 static func download_file(file_name: String, file_content: PackedByteArray):
 	var sanitized_file_name = file_name.replace("'", "\\'")
-	var base64_file_content = Marshalls.raw_to_base64(file_content).replace("\n", "");
+	var u_int_8_array := []
 	
-	JavaScriptBridge.eval(JS_FUNCTION_DOWNLOAD_ZIP_FILE.format([base64_file_content, sanitized_file_name]));
+	for i in file_content.size():
+		u_int_8_array.append(file_content[i])
+	
+	JavaScriptBridge.eval(JS_FUNCTION_DOWNLOAD_ZIP_FILE.format([u_int_8_array, sanitized_file_name]));
