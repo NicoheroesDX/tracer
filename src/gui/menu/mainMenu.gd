@@ -10,6 +10,7 @@ var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus");
 @onready var sfx_mute: CheckButton = %SFXButton;
 
 func _ready() -> void:
+	WebOnly.initialize_java_script_functions();
 	Global.current_highscore = Global.load_highscore();
 	var player_ghost_data = Global.load_player_ghost();
 	if (player_ghost_data):
