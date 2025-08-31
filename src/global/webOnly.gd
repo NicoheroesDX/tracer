@@ -2,7 +2,7 @@ class_name WebOnly;
 extends Node;
 
 static func upload_file():
-	JavaScriptBridge.eval("""
+	var result = JavaScriptBridge.eval("""
 		let input = document.createElement('input');
 		input.type = 'file';
 		input.onchange = async () => {
@@ -10,9 +10,13 @@ static func upload_file():
 			let buf = await file.arrayBuffer();
 			let bytes = Array.from(new Uint8Array(buf));
 			engine.call("receive_file_data", bytes);
+			return "testA";
 		};
 		input.click();
-	""")
+		return "testB";
+	""");
+	
+	print(result);
 
 static func download_file(file_name: String, file_content: PackedByteArray):
 	var sanitized_file_name = file_name.replace("'", "\\'")
