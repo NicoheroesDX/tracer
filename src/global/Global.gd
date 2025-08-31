@@ -51,6 +51,9 @@ func save_highscore(new_highscore: Highscore):
 	
 	save_file.close();
 
+func upload_highscore():
+	WebOnly.upload_file();
+
 func download_highscore():
 	const file_name = "ghost_XX_YY_ZZZ" + SHARED_GHOST_FILE_EXTENSION;
 	const file_path = TEMP_FOLDER + file_name;

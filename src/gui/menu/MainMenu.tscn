@@ -232,7 +232,7 @@ vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [connection signal="pressed" from="Data" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Load" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Load" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Audio" to="." method="_on_button_pressed"]

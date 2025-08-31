@@ -24,6 +24,9 @@ func _ready() -> void:
 	music_mute.button_pressed = AudioServer.is_bus_mute(music_audio_bus);
 	sfx_mute.button_pressed = AudioServer.is_bus_mute(sfx_audio_bus);
 
+func _on_load_pressed() -> void:
+	Global.upload_highscore();
+
 func _on_start_pressed() -> void:
 	Global.change_scene_with_transition("res://src/track/Track.tscn")#
 

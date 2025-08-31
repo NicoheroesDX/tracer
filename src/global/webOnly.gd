@@ -1,6 +1,19 @@
 class_name WebOnly;
 extends Node;
 
+static func upload_file():
+	JavaScriptBridge.eval("""
+		let input = document.createElement('input');
+		input.type = 'file';
+		input.onchange = async () => {
+			let file = input.files[0];
+			let buf = await file.arrayBuffer();
+			let bytes = Array.from(new Uint8Array(buf));
+			engine.call("receive_file_data", bytes);
+		};
+		input.click();
+	""")
+
 static func download_file(file_name: String, file_content: PackedByteArray):
 	var sanitized_file_name = file_name.replace("'", "\\'")
 	var file_content_as_string = concat_to_string(file_content);
