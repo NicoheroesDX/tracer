@@ -15,7 +15,7 @@ static func upload_file():
 			};
 			input.click();
 			return "testB";
-		})
+		})()
 	""");
 	
 	print(result);
