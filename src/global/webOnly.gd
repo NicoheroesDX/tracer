@@ -1,8 +1,8 @@
 class_name WebOnly;
 extends Node;
 
-static func upload_file():
-	var my_callback = JavaScriptBridge.create_callback(Callable(WebOnly, "handle_file_upload"));
+func upload_file():
+	var my_callback = JavaScriptBridge.create_callback(Callable(self, "handle_file_upload"));
 	
 	JavaScriptBridge.eval("var my_callback = %s;" % my_callback.get_js_reference())
 	
@@ -19,7 +19,7 @@ static func upload_file():
 		input.click();
 	""");
 
-static func handle_file_upload():
+func handle_file_upload():
 	print("It was actually called!")
 
 static func download_file(file_name: String, file_content: PackedByteArray):
