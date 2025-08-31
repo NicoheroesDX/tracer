@@ -3,17 +3,19 @@ extends Node;
 
 static func upload_file():
 	var result = JavaScriptBridge.eval("""
-		let input = document.createElement('input');
-		input.type = 'file';
-		input.onchange = async () => {
-			let file = input.files[0];
-			let buf = await file.arrayBuffer();
-			let bytes = Array.from(new Uint8Array(buf));
-			
-			return "testA";
-		};
-		input.click();
-		return "testB";
+		(function(){
+			let input = document.createElement('input');
+			input.type = 'file';
+			input.onchange = async () => {
+				let file = input.files[0];
+				let buf = await file.arrayBuffer();
+				let bytes = Array.from(new Uint8Array(buf));
+				
+				return "testA";
+			};
+			input.click();
+			return "testB";
+		})
 	""");
 	
 	print(result);
