@@ -2,23 +2,25 @@ class_name WebOnly;
 extends Node;
 
 static func upload_file():
-	var result = JavaScriptBridge.eval("""
-		(function(){
-			let input = document.createElement('input');
-			input.type = 'file';
-			input.onchange = async () => {
-				let file = input.files[0];
-				let buf = await file.arrayBuffer();
-				let bytes = Array.from(new Uint8Array(buf));
-				
-				return "testA";
-			};
-			input.click();
-			return "testB";
-		})()
-	""");
+	var my_callback = JavaScriptBridge.create_callback(Callable(WebOnly, "handle_file_upload"));
 	
-	print(result);
+	JavaScriptBridge.eval("var my_callback = %s;" % my_callback.get_js_reference())
+	
+	var result = JavaScriptBridge.eval("""
+		let input = document.createElement('input');
+		input.type = 'file';
+		input.onchange = async () => {
+			let file = input.files[0];
+			let buf = await file.arrayBuffer();
+			let bytes = Array.from(new Uint8Array(buf));
+			
+			my_callback();
+		};
+		input.click();
+	""");
+
+static func handle_file_upload():
+	print("It was actually called!")
 
 static func download_file(file_name: String, file_content: PackedByteArray):
 	var sanitized_file_name = file_name.replace("'", "\\'")
