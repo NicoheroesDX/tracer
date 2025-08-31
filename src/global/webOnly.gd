@@ -9,7 +9,7 @@ static func upload_file():
 			let file = input.files[0];
 			let buf = await file.arrayBuffer();
 			let bytes = Array.from(new Uint8Array(buf));
-			engine.call("receive_file_data", bytes);
+			
 			return "testA";
 		};
 		input.click();
