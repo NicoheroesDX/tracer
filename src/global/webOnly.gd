@@ -4,7 +4,7 @@ extends Node;
 var my_callback: JavaScriptObject;
 
 func upload_file():
-	my_callback = JavaScriptBridge.create_callback(Callable(self, "handle_file_upload"));
+	my_callback = JavaScriptBridge.create_callback(handle_file_upload);
 	
 	JavaScriptBridge.eval("var my_callback = %s;" % my_callback.get_js_reference())
 	
