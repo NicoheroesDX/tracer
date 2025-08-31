@@ -21,7 +21,7 @@ func upload_file():
 		input.click();
 	""");
 
-func handle_file_upload():
+func handle_file_upload(args: Array):
 	print("It was actually called!")
 
 static func download_file(file_name: String, file_content: PackedByteArray):
