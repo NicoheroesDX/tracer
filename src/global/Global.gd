@@ -244,6 +244,24 @@ func change_scene(pathToScene):
 		
 		mainScene.add_child(instantiated_scene)
 
+func delete_target_data():
+	var dir = DirAccess.open(SAVE_GAME_FOLDER);
+	if dir.file_exists(TARGET_FILE_NAME):
+		dir.remove(TARGET_FILE_NAME)
+	if dir.file_exists(SAVED_TARGET_GHOST_FILE_NAME):
+		dir.remove(SAVED_TARGET_GHOST_FILE_NAME)
+	
+	Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn");
+
+func delete_record_data():
+	var dir = DirAccess.open(SAVE_GAME_FOLDER);
+	if dir.file_exists(SAVE_FILE_NAME):
+		dir.remove(SAVE_FILE_NAME)
+	if dir.file_exists(SAVED_PLAYER_GHOST_FILE_NAME):
+		dir.remove(SAVED_PLAYER_GHOST_FILE_NAME)
+	
+	Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn");
+
 static func to_binary_str(boolean_value: bool) -> String:
 	return "0" if boolean_value == false else "1";
 
