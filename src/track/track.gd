@@ -3,7 +3,8 @@ extends Node2D
 @onready var player_camera: Camera2D = $PlayerCamera;
 @onready var player: Car = $Player;
 
-@onready var ghost: Ghost = $Ghost;
+@onready var player_ghost: Ghost = $PlayerGhost;
+@onready var target_ghost: Ghost = $TargetGhost;
 
 @onready var tile_map: TileMap = $TileMap;
 @onready var checkpoint_list: Node = $CheckPoints;
@@ -39,8 +40,12 @@ var checkpoints_crossed = 0;
 func _ready() -> void:
 	Global.toggle_music(true);
 	player.connect_to_map(tile_map);
-	ghost.connect_to_map(tile_map);
-	ghost.set_inputs(Global.current_player_ghost_inputs);
+	player_ghost.connect_to_map(tile_map);
+	player_ghost.set_inputs(Global.current_player_ghost_inputs);
+	player_ghost.set_style(Color.hex(0xffffff66))
+	target_ghost.connect_to_map(tile_map);
+	target_ghost.set_inputs(Global.current_target_ghost_inputs);
+	target_ghost.set_style(Color.hex(0xff4444bb))
 	
 	player.destroyed.connect(on_player_destroyed);
 	player.destroyed_animation_ended.connect(on_player_destroyed_animation_ended);
@@ -88,12 +93,15 @@ func _physics_process(delta: float) -> void:
 	if (is_race_started and not is_race_over):
 		player.is_allowed_to_move = true;
 		if not Global.current_player_ghost_inputs.is_empty():
-			ghost.start();
+			player_ghost.start();
+		if not Global.current_target_ghost_inputs.is_empty():
+			target_ghost.start();
 	else:
 		player.is_allowed_to_move = false;
 	
 	player.is_in_boost_area = false;
-	ghost.is_in_boost_area = false;
+	player_ghost.is_in_boost_area = false;
+	target_ghost.is_in_boost_area = false;
 	
 	if (checkpoints_crossed < checkpoint_amount):
 		toggle_gate_closed(gate_front, false);

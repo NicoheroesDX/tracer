@@ -129,7 +129,10 @@ zoom = Vector2(1.5, 1.5)
 z_index = 10
 position = Vector2(-336, 102)
 
-[node name="Ghost" parent="." instance=ExtResource("11_yx7m4")]
+[node name="PlayerGhost" parent="." instance=ExtResource("11_yx7m4")]
+position = Vector2(-336, 102)
+
+[node name="TargetGhost" parent="." instance=ExtResource("11_yx7m4")]
 position = Vector2(-336, 102)
 
 [node name="DrivingInterface" parent="." instance=ExtResource("7_3twuj")]
