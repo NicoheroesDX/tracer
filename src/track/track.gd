@@ -66,11 +66,13 @@ func _ready() -> void:
 	toggle_gate_closed(gate_front, false);
 	toggle_gate_closed(gate_back, true);
 	
-	var has_checkpoint_times = Global.current_highscore != null and not Global.current_highscore.checkpoint_times.is_empty()
+	var score_to_check = get_score_to_check();
+	
+	var has_checkpoint_times = score_to_check != null and not score_to_check.checkpoint_times.is_empty()
 	
 	for checkpoint: Checkpoint in checkpoint_list.get_children():
 		if (has_checkpoint_times):
-			var targets = Global.current_highscore.checkpoint_times.get(checkpoint_amount);
+			var targets = score_to_check.checkpoint_times.get(checkpoint_amount);
 			checkpoint.lap_1_target = targets[0];
 			checkpoint.lap_2_target = targets[1];
 			checkpoint.lap_3_target = targets[2];
@@ -132,18 +134,35 @@ func update_lap_time() -> void:
 		gui.update_time(current_lap, DrivingInterface.format_time(get_current_lap_time()));
 
 func update_difference_to_highscore():
-	if (Global.current_highscore != null):
+	var score_to_check = get_score_to_check();
+	
+	if (score_to_check != null):
 		match(current_lap):
 			1:
-				gui.update_time_difference(1, Global.current_highscore.lap_1_time - get_current_lap_time())
-				update_checkpoint_time_diff(Global.current_highscore.lap_1_time - get_current_lap_time())
+				gui.update_time_difference(1,score_to_check.lap_1_time - get_current_lap_time())
+				update_checkpoint_time_diff(score_to_check.lap_1_time - get_current_lap_time())
 			2:
-				gui.update_time_difference(2, Global.current_highscore.lap_2_time - get_current_lap_time())
-				update_checkpoint_time_diff((Global.current_highscore.lap_1_time + Global.current_highscore.lap_2_time) +\
+				gui.update_time_difference(2, score_to_check.lap_2_time - get_current_lap_time())
+				update_checkpoint_time_diff((score_to_check.lap_1_time + score_to_check.lap_2_time) +\
 					lap_times[0] + get_current_lap_time())
 			3:
-				gui.update_time_difference(3, Global.current_highscore.lap_3_time - get_current_lap_time())
+				gui.update_time_difference(3, score_to_check.lap_3_time - get_current_lap_time())
 				gui.time_diff.hide_ui();
+
+func get_score_to_check():
+	var score_to_check = null;
+	
+	if (Global.current_highscore != null):
+		score_to_check = Global.current_highscore;
+	
+	if (Global.current_target != null):
+		score_to_check = Global.current_target;
+		
+		if (Global.current_highscore != null and\
+		Global.current_highscore.get_combined_time() < Global.current_target.get_combined_time()):
+			score_to_check = Global.current_highscore;
+	
+	return score_to_check;
 
 func update_speedometer():
 	gui.speedometer.update_current_speed(player.get_display_speed());
@@ -178,7 +197,9 @@ func set_current_lap_time(msec: int):
 	lap_times[current_lap-1] = msec;
 
 func update_checkpoint_time_diff(time_diff: int):
-	if Global.current_highscore != null and not Global.current_highscore.checkpoint_times.is_empty():
+	var score_to_check = get_score_to_check();
+	
+	if score_to_check != null and not score_to_check.checkpoint_times.is_empty():
 		gui.update_checkpoint_time_diff(time_diff);
 
 func on_player_crossed_checkpoint(checkpoint: Checkpoint):
