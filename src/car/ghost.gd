@@ -91,6 +91,9 @@ func apply_effects_for_road_type(road_type: String):
 func set_inputs(inputs: Array[InputCapture]):
 	ghost_controller.input_capture_history = inputs;
 
+func set_style(color: Color):
+	default_sprite_modulation = color;
+
 func start():
 	self.is_allowed_to_move = true;
 	ghost_controller.is_active = true;

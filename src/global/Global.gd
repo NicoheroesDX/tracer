@@ -4,6 +4,7 @@ signal transition_complete;
 
 const SAVE_GAME_FOLDER = "user://";
 const SAVE_FILE_NAME = "tracer.data";
+const TARGET_FILE_NAME = "target.data";
 const SAVED_PLAYER_GHOST_FILE_NAME = "player.ghost";
 const SAVED_TARGET_GHOST_FILE_NAME = "target.ghost";
 const LAP_1_KEY = "highscore_lap_1";
@@ -13,8 +14,12 @@ const CHECKPOINT_KEY_PREFIX = "check_"
 const KEY_VALUE_SEPARATOR = "=";
 const CSV_SEPARATOR = ";";
 const MAX_INDEX_LENGTH_CHECKPOINTS = 3;
+const SHARED_GHOST_FILE_EXTENSION = ".trsg";
+const TEMP_FOLDER = SAVE_GAME_FOLDER + "temp/";
+const TRSG_SEPARATOR_LINE = "$SEPERATOR_LINE"
 
 var current_highscore: Highscore;
+var current_target: Highscore;
 
 var current_player_ghost_inputs: Array[InputCapture] = [];
 var current_target_ghost_inputs: Array[InputCapture] = [];
@@ -48,23 +53,88 @@ func save_highscore(new_highscore: Highscore):
 	
 	save_file.close();
 
-func load_highscore():
+func upload_file():
+	WebOnly.upload_file();
+
+func download_ghost():
+	if not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVE_FILE_NAME) and \
+	   not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVED_PLAYER_GHOST_FILE_NAME):
+		print("ERROR: No Ghost to download");
+		return;
+	
+	const ghost_file_prefix = "ghost_";
+	var ghost_file_time = DrivingInterface.format_time(current_highscore.get_combined_time())\
+	.replace(".", "_").replace(":", "_");
+	
+	var file_name = ghost_file_prefix + ghost_file_time + SHARED_GHOST_FILE_EXTENSION;
+	var file_path = TEMP_FOLDER + file_name;
+	
+	if (create_shared_ghost_file(file_path)):
+		var ghost_file := FileAccess.open(file_path, FileAccess.READ);
+		if ghost_file:
+			var content := ghost_file.get_buffer(ghost_file.get_length());
+			ghost_file.close();
+			WebOnly.download_file(file_name, content);
+		else:
+			print("ERROR: Could not access ghost file");
+
+func create_shared_ghost_file(file_path: String) -> bool:
+	var save_game_directory := DirAccess.open(SAVE_GAME_FOLDER)
+	if not save_game_directory.dir_exists(TEMP_FOLDER):
+		var err = save_game_directory.make_dir(TEMP_FOLDER)
+		if err != OK:
+			print("ERROR: Failed to create folder");
+			return false;
+	
+	var time_data := FileAccess.open(SAVE_GAME_FOLDER + SAVE_FILE_NAME, FileAccess.READ);
+	var ghost_inputs := FileAccess.open(SAVE_GAME_FOLDER + SAVED_PLAYER_GHOST_FILE_NAME, FileAccess.READ);
+	var shared_ghost_file := FileAccess.open(file_path, FileAccess.WRITE);
+	
+	while not time_data.eof_reached():
+		var line := time_data.get_line();
+		shared_ghost_file.store_line(line);
+	
+	shared_ghost_file.store_line(TRSG_SEPARATOR_LINE);
+	
+	while not ghost_inputs.eof_reached():
+		var line := ghost_inputs.get_line();
+		shared_ghost_file.store_line(line);
+	
+	time_data.close();
+	ghost_inputs.close();
+	shared_ghost_file.close();
+	
+	return true;
+
+func load_player_highscore():
 	if not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVE_FILE_NAME):
 		print("ERROR: Failed to load Highscore from file");
 		return;
 	
-	const expected_keys = [LAP_1_KEY, LAP_2_KEY, LAP_3_KEY];
 	var save_file = FileAccess.open(SAVE_GAME_FOLDER + SAVE_FILE_NAME, FileAccess.READ);
+	return load_highscore(save_file);
+
+func load_target_highscore():
+	if not FileAccess.file_exists(SAVE_GAME_FOLDER + TARGET_FILE_NAME):
+		print("ERROR: Failed to load Target from file");
+		return;
+	
+	var target_file = FileAccess.open(SAVE_GAME_FOLDER + TARGET_FILE_NAME, FileAccess.READ);
+	return load_highscore(target_file);
+
+func load_highscore(data_source: FileAccess):
+	const expected_keys = [LAP_1_KEY, LAP_2_KEY, LAP_3_KEY];
+	var source_file = data_source;
 	var extracted_times: Array[int] = [];
 	
 	for expected_key in expected_keys:
 		# Aborts process, when end of file is reached too early
-		if save_file.eof_reached():
+		if source_file.eof_reached():
 			print("ERROR: EOF reached");
 			return null;
 		
 		# Gets the next line and splits it on the separator
-		var line = save_file.get_line().strip_edges();
+		var line = source_file.get_line().strip_edges();
 		var line_parts = line.split(KEY_VALUE_SEPARATOR);
 		
 		# Aborts process, when line is not a valid key-value pair
@@ -89,14 +159,14 @@ func load_highscore():
 		print("ERROR: Invalid amount of loaded lap times: size is " + str(extracted_times.size()));
 		return null;
 	
-	if save_file.eof_reached():
+	if source_file.eof_reached():
 		print("ERROR: EOF reached");
 		return null;
 	
 	var extracted_checkpoint_times: Array = [];
 	
-	while not save_file.eof_reached():
-		var line: String = save_file.get_line().strip_edges();
+	while not source_file.eof_reached():
+		var line: String = source_file.get_line().strip_edges();
 		
 		if line.length() == 0:
 			continue;
@@ -114,8 +184,6 @@ func load_highscore():
 		
 		extracted_checkpoint_times.append([int(line_parts[0]), int(line_parts[1]), int(line_parts[2])]);
 	
-	print(extracted_checkpoint_times);
-	
 	return Highscore.new(extracted_times.get(0), extracted_times.get(1), extracted_times.get(2), extracted_checkpoint_times);
 
 func load_player_ghost():
@@ -123,7 +191,19 @@ func load_player_ghost():
 		print("ERROR: Failed to load Player Ghost from file");
 		return null;
 	
-	var ghost_file = FileAccess.open(SAVE_GAME_FOLDER + SAVED_PLAYER_GHOST_FILE_NAME, FileAccess.READ);
+	var player_ghost_file = FileAccess.open(SAVE_GAME_FOLDER + SAVED_PLAYER_GHOST_FILE_NAME, FileAccess.READ);
+	return load_ghost(player_ghost_file);
+
+func load_target_ghost():
+	if not FileAccess.file_exists(SAVE_GAME_FOLDER + SAVED_TARGET_GHOST_FILE_NAME):
+		print("ERROR: Failed to load Target Ghost from file");
+		return null;
+	
+	var target_ghost_file = FileAccess.open(SAVE_GAME_FOLDER + SAVED_TARGET_GHOST_FILE_NAME, FileAccess.READ);
+	return load_ghost(target_ghost_file);
+
+func load_ghost(data_source: FileAccess):
+	var ghost_file = data_source;
 	var extracted_inputs: Array[InputCapture] = [];
 	
 	while not ghost_file.eof_reached():
@@ -163,6 +243,24 @@ func change_scene(pathToScene):
 		var instantiated_scene = scene_to_instantiate.instantiate()
 		
 		mainScene.add_child(instantiated_scene)
+
+func delete_target_data():
+	var dir = DirAccess.open(SAVE_GAME_FOLDER);
+	if dir.file_exists(TARGET_FILE_NAME):
+		dir.remove(TARGET_FILE_NAME)
+	if dir.file_exists(SAVED_TARGET_GHOST_FILE_NAME):
+		dir.remove(SAVED_TARGET_GHOST_FILE_NAME)
+	
+	Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn");
+
+func delete_record_data():
+	var dir = DirAccess.open(SAVE_GAME_FOLDER);
+	if dir.file_exists(SAVE_FILE_NAME):
+		dir.remove(SAVE_FILE_NAME)
+	if dir.file_exists(SAVED_PLAYER_GHOST_FILE_NAME):
+		dir.remove(SAVED_PLAYER_GHOST_FILE_NAME)
+	
+	Global.change_scene_with_transition("res://src/gui/menu/MainMenu.tscn");
 
 static func to_binary_str(boolean_value: bool) -> String:
 	return "0" if boolean_value == false else "1";

@@ -20,63 +20,132 @@ offset_bottom = 2500.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.101961, 0.101961, 0.101961, 1)
+metadata/_edit_lock_ = true
 
 [node name="Logo" type="Sprite2D" parent="."]
 position = Vector2(584, 248)
 texture = ExtResource("1_aerc4")
+metadata/_edit_lock_ = true
 
-[node name="Button" type="Button" parent="."]
+[node name="Options" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 536.0
+offset_right = 184.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_neighbor_right = NodePath("../Load")
+focus_next = NodePath("../Load")
+focus_previous = NodePath("../About")
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Options"
+
+[node name="Load" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 240.0
+offset_top = 536.0
+offset_right = 400.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_neighbor_left = NodePath("../Options")
+focus_neighbor_right = NodePath("../Start")
+focus_next = NodePath("../Start")
+focus_previous = NodePath("../Options")
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Load"
+
+[node name="Start" type="Button" parent="."]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = 448.0
-offset_top = 512.0
+offset_top = 536.0
 offset_right = 704.0
 offset_bottom = 616.0
 grow_horizontal = 2
 grow_vertical = 0
-focus_neighbor_right = NodePath("../VBoxContainer/MusicButton")
-focus_neighbor_bottom = NodePath("../VBoxContainer/MusicButton")
-focus_next = NodePath("../VBoxContainer/MusicButton")
+focus_neighbor_left = NodePath("../Load")
+focus_neighbor_right = NodePath("../Save")
+focus_next = NodePath("../Save")
+focus_previous = NodePath("../Load")
 theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 40
 text = "Start"
 
+[node name="Save" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 752.0
+offset_top = 536.0
+offset_right = 912.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_neighbor_left = NodePath("../Start")
+focus_neighbor_right = NodePath("../About")
+focus_next = NodePath("../About")
+focus_previous = NodePath("../Start")
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Save"
+
+[node name="About" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 968.0
+offset_top = 536.0
+offset_right = 1128.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_neighbor_left = NodePath("../Save")
+focus_next = NodePath("../Options")
+focus_previous = NodePath("../Save")
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+disabled = true
+text = "About"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1112.0
-offset_top = 608.0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_left = 1008.0
+offset_top = 544.0
+offset_right = 1150.0
+offset_bottom = 616.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-
-[node name="MusicButton" type="CheckButton" parent="VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_neighbor_left = NodePath("../../Button")
-focus_neighbor_bottom = NodePath("../SFXButton")
-focus_next = NodePath("../SFXButton")
-focus_previous = NodePath("../../Button")
-text = "Mute Music"
-
-[node name="SFXButton" type="CheckButton" parent="VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_neighbor_left = NodePath("../../Button")
-focus_neighbor_top = NodePath("../MusicButton")
-focus_next = NodePath("../../Button")
-focus_previous = NodePath("../MusicButton")
-text = "Mute Sound"
 
 [node name="ScoreContainer" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -84,9 +153,9 @@ custom_minimum_size = Vector2(100, 0)
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 448.0
+offset_left = 704.0
 offset_top = 408.0
-offset_right = 704.0
+offset_right = 960.0
 offset_bottom = 512.0
 grow_vertical = 0
 
@@ -99,6 +168,7 @@ theme_override_font_sizes/font_size = 24
 text = "- RECORD TIME -"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="HighscoreTime" type="Label" parent="ScoreContainer"]
 unique_name_in_owner = true
@@ -109,7 +179,135 @@ theme_override_font_sizes/font_size = 36
 text = "00:00.000"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
-[connection signal="toggled" from="VBoxContainer/MusicButton" to="." method="_on_music_button_toggled"]
-[connection signal="toggled" from="VBoxContainer/SFXButton" to="." method="_on_sfx_button_toggled"]
+[node name="TargetContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 192.0
+offset_top = 408.0
+offset_right = 448.0
+offset_bottom = 512.0
+grow_vertical = 0
+
+[node name="TargetTitle" type="Label" parent="TargetContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_font_sizes/font_size = 24
+text = "- TARGET TIME -"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="TargetTime" type="Label" parent="TargetContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "00:00.000"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Dialog" type="ColorRect" parent="."]
+unique_name_in_owner = true
+offset_left = -1088.0
+offset_top = -632.0
+offset_right = 2152.0
+offset_bottom = 1192.0
+color = Color(0.101961, 0.101961, 0.101961, 1)
+
+[node name="Back" type="Button" parent="Dialog"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -508.0
+offset_top = -656.0
+offset_right = -348.0
+offset_bottom = -576.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Back"
+
+[node name="ClearRecord" type="Button" parent="Dialog"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 108.0
+offset_top = -824.0
+offset_right = 428.0
+offset_bottom = -744.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Clear Record Data"
+
+[node name="ClearTarget" type="Button" parent="Dialog"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -340.0
+offset_top = -824.0
+offset_right = -20.0
+offset_bottom = -744.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Clear Target Data"
+
+[node name="MusicButton" type="CheckButton" parent="Dialog"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 1776.0
+offset_top = 768.0
+offset_right = 2032.0
+offset_bottom = 821.0
+theme_override_font_sizes/font_size = 32
+text = "Mute Music"
+alignment = 1
+
+[node name="SFXButton" type="CheckButton" parent="Dialog"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 1296.0
+offset_top = 768.0
+offset_right = 1552.0
+offset_bottom = 821.0
+theme_override_font_sizes/font_size = 32
+text = "Mute Sound"
+alignment = 1
+
+[connection signal="pressed" from="Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Load" to="." method="_on_load_pressed"]
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Dialog/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Dialog/ClearRecord" to="." method="_on_clear_record_pressed"]
+[connection signal="pressed" from="Dialog/ClearTarget" to="." method="_on_clear_target_pressed"]
+[connection signal="toggled" from="Dialog/MusicButton" to="." method="_on_music_button_toggled"]
+[connection signal="toggled" from="Dialog/SFXButton" to="." method="_on_sfx_button_toggled"]
