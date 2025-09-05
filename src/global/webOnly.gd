@@ -3,9 +3,9 @@ extends Node;
 
 static func setup_device_rotation():
 	JavaScriptBridge.eval("""
-		window.gyro_alpha = 0;
-		window.gyro_beta = 0;
-		window.gyro_gamma = 0;
+		window.gyro_alpha = 1;
+		window.gyro_beta = 2;
+		window.gyro_gamma = 3;
 		window.addEventListener('deviceorientation', function(e) {
 			window.gyro_alpha = e.alpha;
 			window.gyro_beta = e.beta;
@@ -14,18 +14,18 @@ static func setup_device_rotation():
 	""", true);
 
 static func get_device_rotation_text() -> String:
-	var alpha_rotation = 0.0;
-	var result_rotation = JavaScriptBridge.eval("window.gyro_alpha;", true);
+	var alpha_rotation = 4;
+	var result_rotation = JavaScriptBridge.eval("window.gyro_alpha", true);
 	if (result_rotation != null):
 		alpha_rotation = result_rotation;
 		
-	var beta_rotation = 0.0;
-	result_rotation = JavaScriptBridge.eval("window.gyro_beta;", true);
+	var beta_rotation = 5;
+	result_rotation = JavaScriptBridge.eval("window.gyro_beta", true);
 	if (result_rotation != null):
 		beta_rotation = result_rotation;
 		
-	var gamma_rotation = 0.0;
-	result_rotation = JavaScriptBridge.eval("window.gyro_gamma;", true);
+	var gamma_rotation = 6;
+	result_rotation = JavaScriptBridge.eval("window.gyro_gamma", true);
 	if (result_rotation != null):
 		gamma_rotation = result_rotation;
 	
