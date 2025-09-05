@@ -73,10 +73,7 @@ func _process(delta: float) -> void:
 	music_mute.disabled = !settings_dialog_visible;
 	sfx_mute.disabled = !settings_dialog_visible;
 	
-	rotation_device.text = str(get_device_rotation());
-
-func get_device_rotation() -> float:
-	return WebOnly.get_device_rotation();
+	rotation_device.text = WebOnly.get_device_rotation_text();
 
 func is_dialog_open() -> bool:
 	return settings_dialog_visible or about_dialog_visible;
