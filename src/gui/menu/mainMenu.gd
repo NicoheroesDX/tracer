@@ -7,21 +7,25 @@ var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus");
 @onready var target_container: VBoxContainer = %TargetContainer;
 @onready var highscore_time: Label = %HighscoreTime;
 @onready var target_time: Label = %TargetTime;
-@onready var options_button: Button = $Options;
+@onready var settings_button: Button = $Options;
 @onready var load_button: Button = $Load;
 @onready var start_button: Button = $Start;
 @onready var save_button: Button = $Save;
 @onready var about_button: Button = $About;
 
-@onready var dialog: ColorRect = %Dialog;
+@onready var settings_dialog: ColorRect = %SettingsDialog;
+@onready var about_dialog: ColorRect = %AboutDialog;
 
-@onready var back_button: Button = %BackButton;
+@onready var about_back_button: Button = $AboutDialog/Back;
+
+@onready var settings_back_button: Button = $SettingsDialog/Back;
 @onready var clear_record: Button = %ClearRecord;
 @onready var clear_target: Button = %ClearTarget;
 @onready var music_mute: CheckButton = %MusicButton;
 @onready var sfx_mute: CheckButton = %SFXButton;
 
-var dialog_visible: bool = false;
+var settings_dialog_visible: bool = false;
+var about_dialog_visible: bool = false;
 var block_saving: bool = true;
 
 func _ready() -> void:
@@ -53,23 +57,25 @@ func _ready() -> void:
 	block_saving = Global.current_highscore == null or Global.current_player_ghost_inputs.is_empty();
 
 func _process(delta: float) -> void:
-	dialog.visible = dialog_visible;
+	settings_dialog.visible = settings_dialog_visible;
+	about_dialog.visible = about_dialog_visible;
 	
-	options_button.disabled = dialog_visible;
-	load_button.disabled = dialog_visible;
-	start_button.disabled = dialog_visible;
-	save_button.disabled = dialog_visible or block_saving;
+	settings_button.disabled = is_dialog_open();
+	load_button.disabled = is_dialog_open();
+	start_button.disabled = is_dialog_open();
+	save_button.disabled = is_dialog_open() or block_saving;
 	
-	clear_record.disabled = !dialog_visible;
-	clear_target.disabled = !dialog_visible;
-	music_mute.disabled = !dialog_visible;
-	sfx_mute.disabled = !dialog_visible;
+	clear_record.disabled = !settings_dialog_visible;
+	clear_target.disabled = !settings_dialog_visible;
+	music_mute.disabled = !settings_dialog_visible;
+	sfx_mute.disabled = !settings_dialog_visible;
 
+func is_dialog_open() -> bool:
+	return settings_dialog_visible or about_dialog_visible;
 
 func _on_options_pressed() -> void:
-	dialog_visible = true;
-	await get_tree().process_frame
-	back_button.call_deferred("grab_focus");
+	settings_dialog_visible = true;
+	settings_back_button.call_deferred("grab_focus");
 
 func _on_load_pressed() -> void:
 	Global.upload_file();
@@ -80,9 +86,17 @@ func _on_start_pressed() -> void:
 func _on_save_pressed() -> void:
 	Global.download_ghost();
 
-func _on_back_pressed() -> void:
-	dialog_visible = false;
-	options_button.call_deferred("grab_focus");
+func _on_about_pressed() -> void:
+	about_dialog_visible = true;
+	about_back_button.call_deferred("grab_focus");
+
+func _on_options_back_pressed() -> void:
+	settings_dialog_visible = false;
+	settings_button.call_deferred("grab_focus");
+
+func _on_about_back_pressed() -> void:
+	about_dialog_visible = false;
+	about_button.call_deferred("grab_focus");
 
 func _on_music_button_toggled(toggled_on: bool) -> void:
 	AudioServer.set_bus_mute(music_audio_bus, toggled_on);

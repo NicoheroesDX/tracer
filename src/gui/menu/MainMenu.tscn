@@ -128,24 +128,7 @@ focus_previous = NodePath("../Save")
 theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
-disabled = true
 text = "About"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-visible = false
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1008.0
-offset_top = 544.0
-offset_right = 1150.0
-offset_bottom = 616.0
-grow_horizontal = 0
-grow_vertical = 0
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
 [node name="ScoreContainer" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
@@ -215,7 +198,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="Dialog" type="ColorRect" parent="."]
+[node name="SettingsDialog" type="ColorRect" parent="."]
 unique_name_in_owner = true
 offset_left = -1088.0
 offset_top = -632.0
@@ -223,8 +206,7 @@ offset_right = 2152.0
 offset_bottom = 1192.0
 color = Color(0.101961, 0.101961, 0.101961, 1)
 
-[node name="Back" type="Button" parent="Dialog"]
-unique_name_in_owner = true
+[node name="Back" type="Button" parent="SettingsDialog"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -242,7 +224,7 @@ theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
 text = "Back"
 
-[node name="ClearRecord" type="Button" parent="Dialog"]
+[node name="ClearRecord" type="Button" parent="SettingsDialog"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
@@ -261,7 +243,7 @@ theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
 text = "Clear Record Data"
 
-[node name="ClearTarget" type="Button" parent="Dialog"]
+[node name="ClearTarget" type="Button" parent="SettingsDialog"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
@@ -280,7 +262,7 @@ theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
 text = "Clear Target Data"
 
-[node name="MusicButton" type="CheckButton" parent="Dialog"]
+[node name="MusicButton" type="CheckButton" parent="SettingsDialog"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_left = 1776.0
@@ -291,7 +273,7 @@ theme_override_font_sizes/font_size = 32
 text = "Mute Music"
 alignment = 1
 
-[node name="SFXButton" type="CheckButton" parent="Dialog"]
+[node name="SFXButton" type="CheckButton" parent="SettingsDialog"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_left = 1296.0
@@ -302,12 +284,70 @@ theme_override_font_sizes/font_size = 32
 text = "Mute Sound"
 alignment = 1
 
+[node name="AboutDialog" type="ColorRect" parent="."]
+unique_name_in_owner = true
+offset_left = -1088.0
+offset_top = -632.0
+offset_right = 2152.0
+offset_bottom = 1192.0
+color = Color(0.101961, 0.101961, 0.101961, 1)
+
+[node name="Back" type="Button" parent="AboutDialog"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 436.0
+offset_top = -656.0
+offset_right = 596.0
+offset_bottom = -576.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "Back"
+
+[node name="AboutText" type="RichTextLabel" parent="AboutDialog"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -216.0
+offset_right = 428.0
+offset_bottom = 296.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "[color=#ff69b4]- About TRacer -[/color]
+
+[color=#ff69b4]Version:[/color]
+[color=#00ffff]1.4[/color]
+
+[color=#ff69b4]Made by:[/color]
+[color=#00ffff]NicoheroesDX[/color]
+
+[color=#ff69b4]Developed using:[/color]
+[color=#00ffff]Godot Engine 4.4[/color]
+
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="pressed" from="Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="Load" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Save" to="." method="_on_save_pressed"]
-[connection signal="pressed" from="Dialog/Back" to="." method="_on_back_pressed"]
-[connection signal="pressed" from="Dialog/ClearRecord" to="." method="_on_clear_record_pressed"]
-[connection signal="pressed" from="Dialog/ClearTarget" to="." method="_on_clear_target_pressed"]
-[connection signal="toggled" from="Dialog/MusicButton" to="." method="_on_music_button_toggled"]
-[connection signal="toggled" from="Dialog/SFXButton" to="." method="_on_sfx_button_toggled"]
+[connection signal="pressed" from="About" to="." method="_on_about_pressed"]
+[connection signal="pressed" from="SettingsDialog/Back" to="." method="_on_options_back_pressed"]
+[connection signal="pressed" from="SettingsDialog/ClearRecord" to="." method="_on_clear_record_pressed"]
+[connection signal="pressed" from="SettingsDialog/ClearTarget" to="." method="_on_clear_target_pressed"]
+[connection signal="toggled" from="SettingsDialog/MusicButton" to="." method="_on_music_button_toggled"]
+[connection signal="toggled" from="SettingsDialog/SFXButton" to="." method="_on_sfx_button_toggled"]
+[connection signal="pressed" from="AboutDialog/Back" to="." method="_on_about_back_pressed"]
