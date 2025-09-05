@@ -200,6 +200,7 @@ metadata/_edit_lock_ = true
 
 [node name="SettingsDialog" type="ColorRect" parent="."]
 unique_name_in_owner = true
+visible = false
 offset_left = -1088.0
 offset_top = -632.0
 offset_right = 2152.0
@@ -286,6 +287,7 @@ alignment = 1
 
 [node name="AboutDialog" type="ColorRect" parent="."]
 unique_name_in_owner = true
+visible = false
 offset_left = -1088.0
 offset_top = -632.0
 offset_right = 2152.0
@@ -337,6 +339,13 @@ text = "[color=#ff69b4]- About TRacer -[/color]
 [color=#00ffff]Godot Engine 4.4[/color]
 
 "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Rotation" type="Label" parent="."]
+offset_right = 1152.0
+offset_bottom = 128.0
+text = "0.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 

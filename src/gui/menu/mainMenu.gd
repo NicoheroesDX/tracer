@@ -24,11 +24,14 @@ var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus");
 @onready var music_mute: CheckButton = %MusicButton;
 @onready var sfx_mute: CheckButton = %SFXButton;
 
+@onready var rotation_device: Label = $Rotation;
+
 var settings_dialog_visible: bool = false;
 var about_dialog_visible: bool = false;
 var block_saving: bool = true;
 
 func _ready() -> void:
+	WebOnly.setup_device_rotation();
 	Global.current_highscore = Global.load_player_highscore();
 	var player_ghost_data = Global.load_player_ghost();
 	if (player_ghost_data):
@@ -69,6 +72,11 @@ func _process(delta: float) -> void:
 	clear_target.disabled = !settings_dialog_visible;
 	music_mute.disabled = !settings_dialog_visible;
 	sfx_mute.disabled = !settings_dialog_visible;
+	
+	rotation_device.text = str(get_device_rotation());
+
+func get_device_rotation() -> float:
+	return WebOnly.get_device_rotation();
 
 func is_dialog_open() -> bool:
 	return settings_dialog_visible or about_dialog_visible;
