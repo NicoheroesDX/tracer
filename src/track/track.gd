@@ -31,9 +31,6 @@ var current_lap: int = 1;
 var current_lap_start_msec: int = -1;
 var lap_times: Array[int] = [0, 0, 0]
 
-var trail_first_draw_complete: bool = false;
-var trail_second_draw_complete: bool = false;
-
 var checkpoint_amount = 0;
 var checkpoints_crossed = 0;
 
@@ -83,17 +80,31 @@ func _ready() -> void:
 	Global.transition_complete.connect(start_countdown);
 
 func _process(delta: float) -> void:
-	if is_race_started and not is_race_over and not is_race_restarting and Input.is_action_just_pressed("race_restart"):
-		is_race_restarting = true;
-		Global.change_scene_with_transition("res://src/track/Track.tscn");
+	handle_restart();
 	
 	update_camera_position();
 	update_lap_time();
 	update_speedometer();
 
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:
 	if (is_race_started and not is_race_over):
 		player.is_allowed_to_move = true;
+		
+		if (Global.is_using_virtual_steering):
+			player.is_virtually_accelerated = gui.accelerate_button.is_pressed();
+			player.is_virtually_decelerated = gui.reverse_button.is_pressed();
+			
+			var virtual_input_direction = 0.0;
+			if (gui.steer_left_button.is_pressed() and not gui.steer_right_button.is_pressed()):
+				virtual_input_direction = -1.0;
+			elif (not gui.steer_left_button.is_pressed() and gui.steer_right_button.is_pressed()):
+				virtual_input_direction = 1.0;
+			player.virtual_input_direction = virtual_input_direction;
+			
+		elif (Global.is_using_gyroscope):
+			player.is_virtually_accelerated = gui.accelerate_button.is_pressed();
+			player.is_virtually_decelerated = gui.reverse_button.is_pressed();
+		
 		if not Global.current_player_ghost_inputs.is_empty():
 			player_ghost.start();
 		if not Global.current_target_ghost_inputs.is_empty():
@@ -118,13 +129,13 @@ func _physics_process(delta: float) -> void:
 				if (body.get_groups().has("player")):
 					player.is_in_boost_area = true;
 
-func apply_slowo_effect():
-	gui.boost_label.show();
-	Engine.time_scale = 0.01;
-	slowmo_timer.start();
-	gui.toggle_side_ui(false);
-	gui.animation.speed_scale = 100;
-	gui.start_countdown();
+func handle_restart():
+	var is_race_allowed_to_restart = is_race_started and not is_race_over and not is_race_restarting;
+	var is_reset_event_triggered = Input.is_action_just_pressed("race_restart") or gui.reset_button.is_pressed();
+	
+	if is_race_allowed_to_restart and is_reset_event_triggered:
+		is_race_restarting = true;
+		Global.change_scene_with_transition("res://src/track/Track.tscn");
 
 func update_lap_time() -> void:
 	if is_race_started and not is_race_over:
@@ -275,9 +286,9 @@ func _on_charge_zone_body_exited(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
 		match (current_lap):
 			1:
-				trail_first.is_emitting = !trail_first_draw_complete;
+				trail_first.is_emitting = true;
 			2:
-				trail_second.is_emitting = !trail_second_draw_complete;
+				trail_second.is_emitting = true;
 
 func _on_countdown_timer_timeout() -> void:
 	current_lap_start_msec = Time.get_ticks_msec();
@@ -306,14 +317,4 @@ func _on_front_charge_gate_body_entered(body: Node2D) -> void:
 
 func _on_back_charge_gate_body_entered(body: Node2D) -> void:
 	if (body.get_groups().has("player")):
-		match (current_lap):
-			1:
-				if not trail_first_draw_complete:
-					trail_first.is_emitting = false;
-					trail_first_draw_complete = true;
-					trail_first.push_points_to_boost_area();
-			2:
-				if not trail_second_draw_complete:
-					trail_first.is_emitting = false;
-					trail_second_draw_complete = true;
-					trail_second.push_points_to_boost_area();
+		player.destroy();

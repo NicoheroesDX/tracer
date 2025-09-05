@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cquisj7vtrreh"]
+[gd_scene load_steps=20 format=3 uid="uid://cquisj7vtrreh"]
 
 [ext_resource type="Script" uid="uid://by1rr6kulop7p" path="res://src/gui/driving/drivingInterface.gd" id="1_inayc"]
 [ext_resource type="PackedScene" uid="uid://bgj0hgg8nnmco" path="res://src/gui/driving/Speedometer.tscn" id="2_aop6t"]
@@ -14,6 +14,20 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_inayc"]
 gradient = SubResource("Gradient_aop6t")
 
+[sub_resource type="Gradient" id="Gradient_36rpr"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.6)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8iv0q"]
+gradient = SubResource("Gradient_36rpr")
+
+[sub_resource type="Gradient" id="Gradient_7putm"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.3, 0.3, 0.3, 0.8)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ld4nh"]
+gradient = SubResource("Gradient_7putm")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inayc"]
 bg_color = Color(0, 0, 0, 0.796078)
 
@@ -21,6 +35,12 @@ bg_color = Color(0, 0, 0, 0.796078)
 bg_color = Color(1, 0.368627, 0.219608, 1)
 border_width_top = 5
 border_color = Color(0.988105, 0.612676, 0.505791, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_usphw"]
+gradient = SubResource("Gradient_36rpr")
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m5r2p"]
+gradient = SubResource("Gradient_7putm")
 
 [sub_resource type="Animation" id="Animation_ndpky"]
 length = 0.001
@@ -123,8 +143,8 @@ tracks/7/keys = {
 
 [sub_resource type="Animation" id="Animation_wl5oh"]
 resource_name = "countdown"
-length = 5.0
-step = 0.5
+length = 2.0
+step = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -132,7 +152,7 @@ tracks/0/path = NodePath("Center/Countdown:text")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 2, 3.03333),
+"times": PackedFloat32Array(0, 0.4, 0.8, 1.2),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": ["3", "2", "1", "GO!"]
@@ -144,10 +164,10 @@ tracks/1/path = NodePath("Center/BarMargin/CountdownProgress:value")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.966667, 1, 1.96667, 2, 3, 3.03333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [100.0, 0.0, 100.0, 0.0, 100.0, 0.0, 100.0]
+"values": [100.0, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -156,7 +176,7 @@ tracks/2/path = NodePath("Center/BarMargin/CountdownProgress:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 3, 4),
+"times": PackedFloat32Array(0, 1.6, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, true, false]
@@ -168,7 +188,7 @@ tracks/3/path = NodePath("Center/Countdown:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 3.5, 4),
+"times": PackedFloat32Array(0, 1.8, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -180,7 +200,7 @@ tracks/4/path = NodePath("Center/BarMargin/CountdownProgress:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 3.5, 4),
+"times": PackedFloat32Array(0, 1.8, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -192,7 +212,7 @@ tracks/5/path = NodePath("Center/Countdown:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 3, 4),
+"times": PackedFloat32Array(0, 1.6, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, true, false]
@@ -204,7 +224,7 @@ tracks/6/path = NodePath("CountdownSound:playing")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 1, 2),
+"times": PackedFloat32Array(0, 0.4, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, true, true]
@@ -216,7 +236,7 @@ tracks/7/path = NodePath("StartSound:playing")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(3),
+"times": PackedFloat32Array(1.2),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -247,6 +267,7 @@ size_flags_horizontal = 4
 columns = 2
 
 [node name="TopLeft" type="VBoxContainer" parent="Grid"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(500, 280)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -402,14 +423,62 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="TopRight" type="VBoxContainer" parent="Grid"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(500, 280)
 layout_mode = 2
 
+[node name="ResetButton" type="TouchScreenButton" parent="Grid/TopRight"]
+unique_name_in_owner = true
+position = Vector2(528, -34)
+scale = Vector2(1.75, 1.75)
+texture_normal = SubResource("GradientTexture2D_8iv0q")
+texture_pressed = SubResource("GradientTexture2D_ld4nh")
+
+[node name="Text" type="Label" parent="Grid/TopRight/ResetButton"]
+offset_right = 64.0
+offset_bottom = 64.0
+text = "Reset"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="BottomLeft" type="VBoxContainer" parent="Grid"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 280)
 layout_mode = 2
+alignment = 2
+
+[node name="SteerLeftButton" type="TouchScreenButton" parent="Grid/BottomLeft"]
+unique_name_in_owner = true
+position = Vector2(8, 138)
+scale = Vector2(2.75, 2.75)
+texture_normal = SubResource("GradientTexture2D_8iv0q")
+texture_pressed = SubResource("GradientTexture2D_ld4nh")
+
+[node name="Text" type="Label" parent="Grid/BottomLeft/SteerLeftButton"]
+offset_right = 64.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 32
+text = "<"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SteerRightButton" type="TouchScreenButton" parent="Grid/BottomLeft"]
+unique_name_in_owner = true
+position = Vector2(192, 138)
+scale = Vector2(2.75, 2.75)
+texture_normal = SubResource("GradientTexture2D_8iv0q")
+texture_pressed = SubResource("GradientTexture2D_ld4nh")
+
+[node name="Text" type="Label" parent="Grid/BottomLeft/SteerRightButton"]
+offset_right = 64.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 32
+text = ">"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BottomRight" type="VBoxContainer" parent="Grid"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(648, 280)
 layout_mode = 2
 alignment = 2
@@ -443,6 +512,7 @@ text = "Get Ready for Boost Mode!"
 [node name="Center" type="CenterContainer" parent="."]
 offset_right = 1152.0
 offset_bottom = 648.0
+mouse_filter = 2
 
 [node name="Countdown" type="Label" parent="Center"]
 layout_mode = 2
@@ -476,6 +546,34 @@ theme_override_constants/margin_bottom = 50
 [node name="TimeDiff" parent="Center/TimeMargin" instance=ExtResource("3_pbwr0")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="ReverseButton" type="TouchScreenButton" parent="Center"]
+unique_name_in_owner = true
+position = Vector2(936, 280)
+scale = Vector2(1.5, 1.5)
+texture_normal = SubResource("GradientTexture2D_8iv0q")
+texture_pressed = SubResource("GradientTexture2D_ld4nh")
+
+[node name="Text" type="Label" parent="Center/ReverseButton"]
+offset_right = 64.0
+offset_bottom = 64.0
+text = "Rev."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AccelerateButton" type="TouchScreenButton" parent="Center"]
+unique_name_in_owner = true
+position = Vector2(1048, 280)
+scale = Vector2(1.5, 1.5)
+texture_normal = SubResource("GradientTexture2D_usphw")
+texture_pressed = SubResource("GradientTexture2D_m5r2p")
+
+[node name="Text" type="Label" parent="Center/AccelerateButton"]
+offset_right = 64.0
+offset_bottom = 64.0
+text = "Acc."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="EndScreen" parent="." instance=ExtResource("2_b6iiy")]
 visible = false

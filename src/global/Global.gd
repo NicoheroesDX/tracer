@@ -2,11 +2,15 @@ extends Node
 
 signal transition_complete;
 
+var music_audio_bus: int = AudioServer.get_bus_index("MusicBus");
+var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus");
+
 const SAVE_GAME_FOLDER = "user://";
 const SAVE_FILE_NAME = "tracer.data";
 const TARGET_FILE_NAME = "target.data";
 const SAVED_PLAYER_GHOST_FILE_NAME = "player.ghost";
 const SAVED_TARGET_GHOST_FILE_NAME = "target.ghost";
+const PREFERENCES_FILE_NAME = "pref.data"
 const LAP_1_KEY = "highscore_lap_1";
 const LAP_2_KEY = "highscore_lap_2";
 const LAP_3_KEY = "highscore_lap_3";
@@ -23,6 +27,9 @@ var current_target: Highscore;
 
 var current_player_ghost_inputs: Array[InputCapture] = [];
 var current_target_ghost_inputs: Array[InputCapture] = [];
+
+var is_using_gyroscope: bool = false;
+var is_using_virtual_steering: bool = false;
 
 func toggle_music(is_playing: bool):
 	var music_player = get_tree().root.get_node("MainScene").get_node("RaceMusic")
@@ -223,6 +230,47 @@ func load_ghost(data_source: FileAccess):
 		extracted_inputs.append(input_capture);
 	
 	return extracted_inputs;
+
+func save_preferences():
+	var pref_music_on = to_binary_str(!AudioServer.is_bus_mute(music_audio_bus));
+	var pref_sound_on = to_binary_str(!AudioServer.is_bus_mute(sfx_audio_bus));
+	var pref_gyro_on = to_binary_str(is_using_gyroscope);
+	var pref_steering_on = to_binary_str(is_using_virtual_steering);
+	
+	var preferences_string = pref_music_on + "," + pref_sound_on + "," + pref_gyro_on + "," + pref_steering_on;
+	
+	var preferences_file = FileAccess.open(SAVE_GAME_FOLDER + PREFERENCES_FILE_NAME, FileAccess.WRITE);
+	preferences_file.store_line(preferences_string);
+	preferences_file.close();
+
+func load_preferences():
+	if not FileAccess.file_exists(SAVE_GAME_FOLDER + PREFERENCES_FILE_NAME):
+		print("ERROR: Failed to load preferences from file");
+		return;
+	
+	var pref_file = FileAccess.open(SAVE_GAME_FOLDER + PREFERENCES_FILE_NAME, FileAccess.READ);
+	
+	if (pref_file.eof_reached()):
+		print("ERROR: Preferences file is empty");
+		return;
+	
+	var line = pref_file.get_line().strip_edges();
+	var line_parts = line.split(",");
+	
+	if (line_parts.size() != 4):
+		print("ERROR: Invalid amount of preferneces " + str(line_parts.size()) + ". Expected: a length of 4");
+		return;
+	else:
+		var is_pref_music_on = from_binary_str(line_parts[0]);
+		var is_pref_sound_on = from_binary_str(line_parts[1]);
+		var is_pref_gyro_on = from_binary_str(line_parts[2]);
+		var is_pref_steering_on = from_binary_str(line_parts[3]);
+		
+		AudioServer.set_bus_mute(Global.music_audio_bus, !is_pref_music_on);
+		AudioServer.set_bus_mute(Global.sfx_audio_bus, !is_pref_sound_on);
+		Global.is_using_gyroscope = is_pref_gyro_on;
+		Global.is_using_virtual_steering = is_pref_steering_on;
+
 
 func change_scene_with_transition(pathToScene):
 	var transitionLayer = get_tree().root.get_node("MainScene").get_node("TransitionLayer")
