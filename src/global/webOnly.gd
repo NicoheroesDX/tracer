@@ -7,9 +7,9 @@ static func setup_device_rotation():
 		window.gyro_beta = 0;
 		window.gyro_gamma = 0;
 		window.addEventListener('deviceorientation', function(e) {
-			window.game_steering = e.alpha;
-			window.game_steering = e.beta;
-			window.game_steering = e.gamma;
+			window.gyro_alpha = e.alpha;
+			window.gyro_beta = e.beta;
+			window.gyro_gamma = e.gamma;
 		});
 	""", true);
 
