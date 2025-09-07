@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	apply_effects_for_road_type(get_current_road_type());
 	
-	var input_direction: float = Input.get_axis("car_steer_left", "car_steer_right");
+	var input_direction: float = get_steering_input();
 	var turn_power: float = HANDLING / 200000;
 	
 	if is_destroyed:
@@ -94,6 +94,18 @@ func _physics_process(delta: float) -> void:
 
 func connect_to_map(tile_map: TileMap) -> void:
 	map = tile_map;
+
+func get_steering_input() -> float:
+	var input_value: float = Input.get_axis("car_steer_left", "car_steer_right");
+	var virtual_input_value: float = 0.0;
+	var gyro_value: float = clamp(WebOnly.get_device_rotation() / 50.0, -1.0, 1.0);
+	
+	var combined_value = input_value + virtual_input_value + gyro_value;
+	
+	if (combined_value >= 0):
+		return min(1.0, combined_value);
+	else:
+		return max(-1.0, combined_value);
 
 func get_current_road_type() -> String:
 	if (map != null):

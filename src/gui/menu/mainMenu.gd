@@ -21,14 +21,27 @@ var sfx_audio_bus: int = AudioServer.get_bus_index("SFXBus");
 @onready var settings_back_button: Button = $SettingsDialog/Back;
 @onready var clear_record: Button = %ClearRecord;
 @onready var clear_target: Button = %ClearTarget;
-@onready var music_mute: CheckButton = %MusicButton;
-@onready var sfx_mute: CheckButton = %SFXButton;
-
-@onready var rotation_device: Label = $Rotation;
+@onready var music_button: CheckButton = %MusicButton;
+@onready var sfx_button: CheckButton = %SFXButton;
+@onready var gyro_button: CheckButton = %GyroButton;
+@onready var mobile_button: CheckButton = %MobileButton;
 
 var settings_dialog_visible: bool = false;
 var about_dialog_visible: bool = false;
 var block_saving: bool = true;
+
+const TOGGLE_MUSIC_TEXT: String = "Music";
+const TOGGLE_SFX_TEXT: String = "Sound";
+const TOGGLE_GYRO_TEXT: String = "Gyro-Controls";
+const TOGGLE_STICK_TEXT: String = "Virtual Stick";
+
+const TOGGLE_INFIX_TEXT: String = ": ";
+
+const TOGGLE_TRUE_TEXT: String = "ON";
+const TOGGLE_FALSE_TEXT: String = "OFF";
+
+const TOGGLE_TRUE_COLOR: Color = Color.LIGHT_SKY_BLUE;
+const TOGGLE_FALSE_COLOR: Color = Color.LIGHT_SALMON;
 
 func _ready() -> void:
 	WebOnly.setup_device_rotation();
@@ -55,8 +68,14 @@ func _ready() -> void:
 		target_time.text = DrivingInterface.format_time(Global.current_target.get_combined_time());
 	
 	start_button.grab_focus();
-	music_mute.button_pressed = AudioServer.is_bus_mute(music_audio_bus);
-	sfx_mute.button_pressed = AudioServer.is_bus_mute(sfx_audio_bus);
+	music_button.button_pressed = !AudioServer.is_bus_mute(music_audio_bus);
+	_change_check_button_appearance(music_button, music_button.button_pressed, TOGGLE_MUSIC_TEXT);
+	sfx_button.button_pressed = !AudioServer.is_bus_mute(sfx_audio_bus);
+	_change_check_button_appearance(sfx_button, sfx_button.button_pressed, TOGGLE_SFX_TEXT);
+	gyro_button.button_pressed = false;
+	_change_check_button_appearance(gyro_button, gyro_button.button_pressed, TOGGLE_GYRO_TEXT);
+	mobile_button.button_pressed = false;
+	_change_check_button_appearance(mobile_button, mobile_button.button_pressed, TOGGLE_STICK_TEXT);
 	block_saving = Global.current_highscore == null or Global.current_player_ghost_inputs.is_empty();
 
 func _process(delta: float) -> void:
@@ -70,10 +89,10 @@ func _process(delta: float) -> void:
 	
 	clear_record.disabled = !settings_dialog_visible;
 	clear_target.disabled = !settings_dialog_visible;
-	music_mute.disabled = !settings_dialog_visible;
-	sfx_mute.disabled = !settings_dialog_visible;
-	
-	rotation_device.text = WebOnly.get_device_rotation_text();
+	music_button.disabled = !settings_dialog_visible;
+	sfx_button.disabled = !settings_dialog_visible;
+	gyro_button.disabled = !settings_dialog_visible;
+	mobile_button.disabled = !settings_dialog_visible;
 
 func is_dialog_open() -> bool:
 	return settings_dialog_visible or about_dialog_visible;
@@ -104,10 +123,28 @@ func _on_about_back_pressed() -> void:
 	about_button.call_deferred("grab_focus");
 
 func _on_music_button_toggled(toggled_on: bool) -> void:
-	AudioServer.set_bus_mute(music_audio_bus, toggled_on);
+	_change_check_button_appearance(music_button, toggled_on, TOGGLE_MUSIC_TEXT);
+	AudioServer.set_bus_mute(music_audio_bus, !toggled_on);
 
 func _on_sfx_button_toggled(toggled_on: bool) -> void:
-	AudioServer.set_bus_mute(sfx_audio_bus, toggled_on);
+	_change_check_button_appearance(sfx_button, toggled_on, TOGGLE_SFX_TEXT);
+	AudioServer.set_bus_mute(sfx_audio_bus, !toggled_on);
+
+func _on_gyro_button_toggled(toggled_on: bool) -> void:
+	_change_check_button_appearance(gyro_button, toggled_on, TOGGLE_GYRO_TEXT);
+	Global.is_using_gyroscope = toggled_on;
+
+func _on_mobile_button_toggled(toggled_on: bool) -> void:
+	_change_check_button_appearance(mobile_button, toggled_on, TOGGLE_STICK_TEXT);
+	Global.is_using_virtual_stick = toggled_on;
+
+func _change_check_button_appearance(check_button: CheckButton, toggled_on: bool, text: String):
+	check_button.text = text + TOGGLE_INFIX_TEXT + (TOGGLE_TRUE_TEXT if toggled_on else TOGGLE_FALSE_TEXT);
+	check_button.add_theme_color_override("font_color", TOGGLE_TRUE_COLOR if toggled_on else TOGGLE_FALSE_COLOR);
+	check_button.add_theme_color_override("font_focus_color", TOGGLE_TRUE_COLOR if toggled_on else TOGGLE_FALSE_COLOR);
+	check_button.add_theme_color_override("font_pressed_color", TOGGLE_TRUE_COLOR if toggled_on else TOGGLE_FALSE_COLOR);
+	check_button.add_theme_color_override("font_hover_color", TOGGLE_TRUE_COLOR if toggled_on else TOGGLE_FALSE_COLOR);
+	check_button.add_theme_color_override("font_hover_pressed_color", TOGGLE_TRUE_COLOR if toggled_on else TOGGLE_FALSE_COLOR);
 
 func _on_clear_record_pressed() -> void:
 	Global.delete_record_data();

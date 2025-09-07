@@ -13,23 +13,35 @@ static func setup_device_rotation():
 		});
 	""", true);
 
-static func get_device_rotation_text() -> String:
-	var alpha_rotation = 4;
-	var result_rotation = JavaScriptBridge.eval("window.gyro_alpha", true);
-	if (result_rotation != null):
-		alpha_rotation = result_rotation;
-		
-	var beta_rotation = 5;
-	result_rotation = JavaScriptBridge.eval("window.gyro_beta", true);
-	if (result_rotation != null):
-		beta_rotation = result_rotation;
-		
-	var gamma_rotation = 6;
-	result_rotation = JavaScriptBridge.eval("window.gyro_gamma", true);
-	if (result_rotation != null):
-		gamma_rotation = result_rotation;
+static func get_device_rotation() -> float:
+	if not Global.is_using_gyroscope:
+		return 0.0;
 	
-	return "A:" + str(alpha_rotation) + "     B:" + str(beta_rotation) + "     Y:" + str(gamma_rotation)
+	var orientation = DisplayServer.screen_get_orientation();
+	var alpha_rotation = JavaScriptBridge.eval("window.gyro_alpha", true);
+	var beta_rotation = JavaScriptBridge.eval("window.gyro_beta", true);
+	
+	if alpha_rotation == null or beta_rotation == null:
+		return 0.0;
+	
+	const landscape_orientations = [
+		DisplayServer.SCREEN_LANDSCAPE,
+		DisplayServer.SCREEN_REVERSE_LANDSCAPE,
+		DisplayServer.SCREEN_SENSOR_LANDSCAPE
+	]
+	
+	const portrait_orientations = [
+		DisplayServer.SCREEN_PORTRAIT,
+		DisplayServer.SCREEN_REVERSE_PORTRAIT,
+		DisplayServer.SCREEN_SENSOR_PORTRAIT
+	]
+	
+	if orientation in landscape_orientations:
+		return beta_rotation;
+	elif orientation in portrait_orientations:
+		return beta_rotation;
+	else:
+		return 0.0;
 
 static func upload_file():
 	var uploader = FileUploader.new();

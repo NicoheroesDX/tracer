@@ -24,6 +24,9 @@ var current_target: Highscore;
 var current_player_ghost_inputs: Array[InputCapture] = [];
 var current_target_ghost_inputs: Array[InputCapture] = [];
 
+var is_using_gyroscope: bool = false;
+var is_using_virtual_stick: bool = false;
+
 func toggle_music(is_playing: bool):
 	var music_player = get_tree().root.get_node("MainScene").get_node("RaceMusic")
 	if (music_player != null):
