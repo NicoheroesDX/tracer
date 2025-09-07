@@ -106,7 +106,7 @@ func connect_to_map(tile_map: TileMap) -> void:
 func get_steering_input() -> float:
 	var input_value: float = Input.get_axis("car_steer_left", "car_steer_right");
 	var virtual_input_value: float = 0.0;
-	var gyro_value: float = clamp(WebOnly.get_device_rotation() / 50.0, -1.0, 1.0);
+	var gyro_value: float = clamp(WebOnly.get_device_rotation() / 30.0, -1.0, 1.0);
 	
 	var combined_value = input_value + virtual_input_value + gyro_value;
 	
