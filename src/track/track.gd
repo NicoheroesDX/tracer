@@ -22,6 +22,8 @@ extends Node2D
 @onready var gate_front: Area2D = $FrontChargeGate;
 @onready var gate_back: Area2D = $BackChargeGate;
 
+@onready var speed_button: Button = $DrivingInterface/Speed;
+
 var is_race_started: bool = false;
 var is_race_over: bool = false;
 
@@ -91,9 +93,10 @@ func _process(delta: float) -> void:
 	update_lap_time();
 	update_speedometer();
 
-func _physics_process(delta: float) -> void:	
+func _physics_process(delta: float) -> void:
 	if (is_race_started and not is_race_over):
 		player.is_allowed_to_move = true;
+		player.is_virtually_accelerated = speed_button.is_pressed();
 		if not Global.current_player_ghost_inputs.is_empty():
 			player_ghost.start();
 		if not Global.current_target_ghost_inputs.is_empty():

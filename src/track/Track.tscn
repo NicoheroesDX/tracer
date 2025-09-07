@@ -137,6 +137,13 @@ position = Vector2(-336, 102)
 
 [node name="DrivingInterface" parent="." instance=ExtResource("7_3twuj")]
 
+[node name="Speed" type="Button" parent="DrivingInterface"]
+offset_left = 15.0
+offset_top = 514.0
+offset_right = 196.0
+offset_bottom = 635.0
+text = "Speed!"
+
 [node name="CountdownTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true

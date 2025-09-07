@@ -35,6 +35,8 @@ const RESITANCE: float = 0.91;
 var steering_effect: float = 1.0;
 var speed_effect: float = 1.0;
 
+var is_virtually_accelerated: bool = false;
+
 func _ready():
 	preload_particles();
 
@@ -75,11 +77,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		boost_sound.stop();
 		boost_particles.emitting = false;
-		
-	if is_allowed_to_move and Input.is_action_pressed("car_accelerate"):
-		velocity += direction * (ACCELERATION * Input.get_action_strength("car_accelerate")) * speed_effect * boost;
-	if is_allowed_to_move and Input.is_action_pressed("car_reverse"):
-		velocity -= direction * (DECELERATION * Input.get_action_strength("car_reverse")) * speed_effect;
+	
+	var acceleration_strength = Input.get_action_strength("car_accelerate")
+	var deceleration_strength = Input.get_action_strength("car_reverse")
+	
+	if (is_virtually_accelerated):
+		acceleration_strength = 1.0;
+	
+	if is_allowed_to_move and acceleration_strength > 0.0:
+		velocity += direction * (ACCELERATION * acceleration_strength) * speed_effect * boost;
+	if is_allowed_to_move and deceleration_strength < 0.0:
+		velocity -= direction * (DECELERATION * deceleration_strength) * speed_effect;
 	
 	engine_sound.pitch_scale = 0.5 + (velocity.length() * 0.003)
 	engine_sound.volume_db = min(-12 + (velocity.length() * 0.02), 0.0)
