@@ -138,7 +138,7 @@ position = Vector2(-336, 102)
 [node name="DrivingInterface" parent="." instance=ExtResource("7_3twuj")]
 
 [node name="CountdownTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 1.2
 one_shot = true
 
 [node name="SlowmoTimer" type="Timer" parent="."]
@@ -147,6 +147,7 @@ one_shot = true
 ignore_time_scale = true
 
 [node name="FrontChargeGate" type="Area2D" parent="."]
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FrontChargeGate"]
 position = Vector2(-336, -176)
@@ -157,6 +158,7 @@ position = Vector2(-336, -176)
 texture = ExtResource("9_1b56g")
 
 [node name="BackChargeGate" type="Area2D" parent="."]
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BackChargeGate"]
 position = Vector2(-336, 240)

@@ -1,7 +1,10 @@
 class_name DrivingInterface;
 extends CanvasLayer;
 
-@onready var grid: GridContainer = $Grid;
+@onready var top_left: VBoxContainer = %TopLeft;
+@onready var top_right: VBoxContainer = %TopRight;
+@onready var bottom_left: VBoxContainer = %BottomLeft;
+@onready var bottom_right: VBoxContainer = %BottomRight;
 
 @onready var race_time: Label = %TimeCount;
 
@@ -24,6 +27,12 @@ extends CanvasLayer;
 
 @onready var time_diff: TimeDiff = %TimeDiff;
 
+@onready var accelerate_button: TouchScreenButton = %AccelerateButton;
+@onready var reverse_button: TouchScreenButton = %ReverseButton;
+@onready var steer_left_button: TouchScreenButton = %SteerLeftButton;
+@onready var steer_right_button: TouchScreenButton = %SteerRightButton;
+@onready var reset_button: TouchScreenButton = %ResetButton;
+
 var is_race_frozen: bool = false;
 
 var is_lap_1_frozen: bool = false;
@@ -35,17 +44,36 @@ func _ready() -> void:
 	end_screen.hide();
 	lap_2_time.hide();
 	lap_3_time.hide();
-	
 	boost_label.hide();
+	accelerate_button.hide();
+	reverse_button.hide();
+	steer_left_button.hide();
+	steer_right_button.hide();
+	reset_button.hide();
+	
+	if Global.is_using_virtual_steering:
+		accelerate_button.show();
+		reverse_button.show();
+		steer_left_button.show();
+		steer_right_button.show();
+		reset_button.show();
+	elif Global.is_using_gyroscope:
+		accelerate_button.show();
+		reverse_button.show();
+		reset_button.show();
 	
 	countdown.hide();
 	countdown_progress.hide();
 
 func toggle_side_ui(is_visible: bool):
 	if (is_visible):
-		grid.show();
+		top_left.modulate.a = 1.0;
+		top_right.modulate.a = 1.0;
+		bottom_right.modulate.a = 1.0;
 	else:
-		grid.hide();
+		top_left.modulate.a = 0.0;
+		top_right.modulate.a = 0.0;
+		bottom_right.modulate.a = 0.0;
 
 func start_countdown():
 	animation.play("countdown");

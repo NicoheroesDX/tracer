@@ -7,7 +7,7 @@ func download_file(file_name: String, file_content: PackedByteArray):
 	
 	JavaScriptBridge.eval("""
 		const bytes = new Uint8Array([""" + file_content_as_string + """]);
-		const blob = new Blob([bytes], {type: 'application/zip'});
+		const blob = new Blob([bytes]);
 		const a = document.createElement('a');
 		a.href = URL.createObjectURL(blob);
 		a.download = '""" + sanitized_file_name + """';

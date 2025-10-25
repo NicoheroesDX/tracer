@@ -1,7 +1,75 @@
-[gd_scene load_steps=3 format=3 uid="uid://csf5lsgu5afao"]
+[gd_scene load_steps=20 format=3 uid="uid://csf5lsgu5afao"]
 
 [ext_resource type="Texture2D" uid="uid://cm8y0wsyh416w" path="res://src/gui/menu/assets/graphics/logo.png" id="1_aerc4"]
 [ext_resource type="Script" uid="uid://cai1est2dedi8" path="res://src/gui/menu/mainMenu.gd" id="1_s2s2c"]
+
+[sub_resource type="Gradient" id="Gradient_s2s2c"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7io5x"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_grc72"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1hhd2"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k5noj"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4ifmo"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1hmmi"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_32yhy"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_j8hnx"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_otht4"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_p5tlt"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_y3srr"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i5wlh"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i8vju"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1671k"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_r2r4a"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d7xck"]
+gradient = SubResource("Gradient_s2s2c")
+width = 1
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_s2s2c")
@@ -232,14 +300,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 108.0
-offset_top = -824.0
-offset_right = 428.0
-offset_bottom = -744.0
+offset_left = 68.0
+offset_top = -816.0
+offset_right = 516.0
+offset_bottom = -736.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
-theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.87451, 0, 0.164706, 1)
+theme_override_colors/font_color = Color(0.87271, 0, 0.164049, 1)
 theme_override_font_sizes/font_size = 30
 text = "Clear Record Data"
 
@@ -251,41 +319,118 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -340.0
-offset_top = -824.0
-offset_right = -20.0
-offset_bottom = -744.0
+offset_left = -428.0
+offset_top = -816.0
+offset_right = 20.0
+offset_bottom = -736.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_hover_color = Color(1, 0.411765, 0.705882, 1)
-theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.87451, 0, 0.164706, 1)
+theme_override_colors/font_color = Color(0.87451, 0, 0.164706, 1)
 theme_override_font_sizes/font_size = 30
 text = "Clear Target Data"
 
 [node name="MusicButton" type="CheckButton" parent="SettingsDialog"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 1776.0
-offset_top = 768.0
-offset_right = 2032.0
-offset_bottom = 821.0
+offset_left = 1192.0
+offset_top = 720.0
+offset_right = 1640.0
+offset_bottom = 800.0
 theme_override_font_sizes/font_size = 32
-text = "Mute Music"
+theme_override_icons/checked = SubResource("GradientTexture1D_7io5x")
+theme_override_icons/unchecked = SubResource("GradientTexture1D_grc72")
+theme_override_icons/checked_disabled = SubResource("GradientTexture1D_1hhd2")
+theme_override_icons/unchecked_disabled = SubResource("GradientTexture1D_k5noj")
+theme_override_icons/checked_mirrored = SubResource("GradientTexture1D_4ifmo")
+theme_override_icons/unchecked_mirrored = SubResource("GradientTexture1D_1hmmi")
+theme_override_icons/checked_disabled_mirrored = SubResource("GradientTexture1D_32yhy")
+theme_override_icons/unchecked_disabled_mirrored = SubResource("GradientTexture1D_j8hnx")
+text = "Music: ON"
 alignment = 1
 
 [node name="SFXButton" type="CheckButton" parent="SettingsDialog"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 1296.0
-offset_top = 768.0
-offset_right = 1552.0
-offset_bottom = 821.0
+offset_left = 1688.0
+offset_top = 720.0
+offset_right = 2136.0
+offset_bottom = 800.0
 theme_override_font_sizes/font_size = 32
-text = "Mute Sound"
+theme_override_icons/checked = SubResource("GradientTexture1D_otht4")
+theme_override_icons/unchecked = SubResource("GradientTexture1D_p5tlt")
+theme_override_icons/checked_disabled = SubResource("GradientTexture1D_y3srr")
+theme_override_icons/unchecked_disabled = SubResource("GradientTexture1D_i5wlh")
+theme_override_icons/checked_mirrored = SubResource("GradientTexture1D_i8vju")
+theme_override_icons/unchecked_mirrored = SubResource("GradientTexture1D_1671k")
+theme_override_icons/checked_disabled_mirrored = SubResource("GradientTexture1D_r2r4a")
+theme_override_icons/unchecked_disabled_mirrored = SubResource("GradientTexture1D_d7xck")
+text = "Sound: ON"
 alignment = 1
+
+[node name="GyroButton" type="CheckButton" parent="SettingsDialog"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 1192.0
+offset_top = 864.0
+offset_right = 1640.0
+offset_bottom = 944.0
+theme_override_font_sizes/font_size = 32
+theme_override_icons/checked = SubResource("GradientTexture1D_7io5x")
+theme_override_icons/unchecked = SubResource("GradientTexture1D_grc72")
+theme_override_icons/checked_disabled = SubResource("GradientTexture1D_1hhd2")
+theme_override_icons/unchecked_disabled = SubResource("GradientTexture1D_k5noj")
+theme_override_icons/checked_mirrored = SubResource("GradientTexture1D_4ifmo")
+theme_override_icons/unchecked_mirrored = SubResource("GradientTexture1D_1hmmi")
+theme_override_icons/checked_disabled_mirrored = SubResource("GradientTexture1D_32yhy")
+theme_override_icons/unchecked_disabled_mirrored = SubResource("GradientTexture1D_j8hnx")
+text = "Gyro-Controls: OFF"
+alignment = 1
+
+[node name="MobileButton" type="CheckButton" parent="SettingsDialog"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 1688.0
+offset_top = 864.0
+offset_right = 2136.0
+offset_bottom = 944.0
+theme_override_font_sizes/font_size = 32
+theme_override_icons/checked = SubResource("GradientTexture1D_7io5x")
+theme_override_icons/unchecked = SubResource("GradientTexture1D_grc72")
+theme_override_icons/checked_disabled = SubResource("GradientTexture1D_1hhd2")
+theme_override_icons/unchecked_disabled = SubResource("GradientTexture1D_k5noj")
+theme_override_icons/checked_mirrored = SubResource("GradientTexture1D_4ifmo")
+theme_override_icons/unchecked_mirrored = SubResource("GradientTexture1D_1hmmi")
+theme_override_icons/checked_disabled_mirrored = SubResource("GradientTexture1D_32yhy")
+theme_override_icons/unchecked_disabled_mirrored = SubResource("GradientTexture1D_j8hnx")
+text = "Virtual Stick: OFF"
+alignment = 1
+
+[node name="Asterix" type="Label" parent="SettingsDialog"]
+layout_mode = 0
+offset_left = 1552.0
+offset_top = 872.0
+offset_right = 1592.0
+offset_bottom = 917.0
+theme_override_font_sizes/font_size = 30
+text = "*"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GyroInfo" type="Label" parent="SettingsDialog"]
+layout_mode = 0
+offset_left = 1136.0
+offset_top = 1184.0
+offset_right = 2176.0
+offset_bottom = 1229.0
+theme_override_font_sizes/font_size = 20
+text = "* Only supported on Android and Landscape-Mode"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="AboutDialog" type="ColorRect" parent="."]
 unique_name_in_owner = true
+visible = false
 offset_left = -1088.0
 offset_top = -632.0
 offset_right = 2152.0
@@ -350,4 +495,6 @@ vertical_alignment = 1
 [connection signal="pressed" from="SettingsDialog/ClearTarget" to="." method="_on_clear_target_pressed"]
 [connection signal="toggled" from="SettingsDialog/MusicButton" to="." method="_on_music_button_toggled"]
 [connection signal="toggled" from="SettingsDialog/SFXButton" to="." method="_on_sfx_button_toggled"]
+[connection signal="toggled" from="SettingsDialog/GyroButton" to="." method="_on_gyro_button_toggled"]
+[connection signal="toggled" from="SettingsDialog/MobileButton" to="." method="_on_mobile_button_toggled"]
 [connection signal="pressed" from="AboutDialog/Back" to="." method="_on_about_back_pressed"]

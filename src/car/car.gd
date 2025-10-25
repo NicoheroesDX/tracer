@@ -35,6 +35,10 @@ const RESITANCE: float = 0.91;
 var steering_effect: float = 1.0;
 var speed_effect: float = 1.0;
 
+var is_virtually_accelerated: bool = false;
+var is_virtually_decelerated: bool = false;
+var virtual_input_direction: float = 0.0;
+
 func _ready():
 	preload_particles();
 
@@ -47,7 +51,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	apply_effects_for_road_type(get_current_road_type());
 	
-	var input_direction: float = Input.get_axis("car_steer_left", "car_steer_right");
+	var input_direction: float = get_steering_input();
 	var turn_power: float = HANDLING / 200000;
 	
 	if is_destroyed:
@@ -75,25 +79,46 @@ func _physics_process(delta: float) -> void:
 	else:
 		boost_sound.stop();
 		boost_particles.emitting = false;
-		
-	if is_allowed_to_move and Input.is_action_pressed("car_accelerate"):
-		velocity += direction * (ACCELERATION * Input.get_action_strength("car_accelerate")) * speed_effect * boost;
-	if is_allowed_to_move and Input.is_action_pressed("car_reverse"):
-		velocity -= direction * (DECELERATION * Input.get_action_strength("car_reverse")) * speed_effect;
+	
+	var acceleration_strength = Input.get_action_strength("car_accelerate")
+	var deceleration_strength = Input.get_action_strength("car_reverse")
+	
+	if (is_virtually_accelerated):
+		acceleration_strength = 1.0;
+	
+	if (is_virtually_decelerated):
+		deceleration_strength = 1.0;
+	
+	if is_allowed_to_move and acceleration_strength > 0.0:
+		velocity += direction * (ACCELERATION * acceleration_strength) * speed_effect * boost;
+	if is_allowed_to_move and deceleration_strength > 0.0:
+		velocity -= direction * (DECELERATION * deceleration_strength) * speed_effect;
 	
 	engine_sound.pitch_scale = 0.5 + (velocity.length() * 0.003)
 	engine_sound.volume_db = min(-12 + (velocity.length() * 0.02), 0.0)
 	
 	if is_allowed_to_move and ghost_recorder != null:
-		ghost_recorder.capture_input(input_direction, Input.is_action_pressed("car_accelerate"),\
-			Input.get_action_strength("car_accelerate"), Input.is_action_pressed("car_reverse"),\
-			Input.get_action_strength("car_reverse"), is_in_boost_area);
+		ghost_recorder.capture_input(input_direction, acceleration_strength > 0.0,\
+			acceleration_strength, deceleration_strength > 0.0,\
+			deceleration_strength, is_in_boost_area);
 	
 	velocity *= RESITANCE;
 	move_and_slide();
 
 func connect_to_map(tile_map: TileMap) -> void:
 	map = tile_map;
+
+func get_steering_input() -> float:
+	var input_value: float = Input.get_axis("car_steer_left", "car_steer_right");
+	var virtual_input_value: float = virtual_input_direction;
+	var gyro_value: float = clamp(WebOnly.get_device_rotation() / 30.0, -1.0, 1.0);
+	
+	var combined_value = input_value + virtual_input_value + gyro_value;
+	
+	if (combined_value >= 0):
+		return min(1.0, combined_value);
+	else:
+		return max(-1.0, combined_value);
 
 func get_current_road_type() -> String:
 	if (map != null):
