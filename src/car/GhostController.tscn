@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dfuplrwuqba5d"]
-
-[ext_resource type="Script" uid="uid://cx8mrhwqt4q4i" path="res://src/car/ghostController.gd" id="1_1jdb8"]
-
-[node name="GhostController" type="Node"]
-script = ExtResource("1_1jdb8")

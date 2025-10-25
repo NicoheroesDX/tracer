@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://53khnnwnfmxe" path="res://src/transition/TransitionLayer.tscn" id="1_4gxt3"]
 [ext_resource type="PackedScene" uid="uid://csf5lsgu5afao" path="res://src/gui/menu/MainMenu.tscn" id="1_hk4rc"]
-[ext_resource type="AudioStream" uid="uid://drqt55a635k5c" path="res://src/car/assets/sounds/race.wav" id="3_chrbn"]
+[ext_resource type="AudioStream" uid="uid://drqt55a635k5c" path="res://src/track/assets/music/race.wav" id="3_chrbn"]
 
 [node name="MainScene" type="Node"]
 

@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://c10tnamyrod6s" path="res://src/car/assets/sounds/car_sound.ogg" id="5_3c6cu"]
 [ext_resource type="AudioStream" uid="uid://bkkncdf0tg047" path="res://src/car/assets/sounds/trail_decay.ogg" id="6_btxpe"]
 [ext_resource type="AudioStream" uid="uid://ck05bi8iargom" path="res://src/car/assets/sounds/trail_sound.ogg" id="7_hddxh"]
-[ext_resource type="PackedScene" uid="uid://t4t8p2u07gtw" path="res://src/car/GhostRecorder.tscn" id="8_brkc7"]
+[ext_resource type="PackedScene" uid="uid://t4t8p2u07gtw" path="res://src/car/ghost/GhostRecorder.tscn" id="8_brkc7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hddxh"]
 size = Vector2(26, 31)

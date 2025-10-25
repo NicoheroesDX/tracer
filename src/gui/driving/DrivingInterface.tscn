@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://by1rr6kulop7p" path="res://src/gui/driving/drivingInterface.gd" id="1_inayc"]
 [ext_resource type="PackedScene" uid="uid://bgj0hgg8nnmco" path="res://src/gui/driving/Speedometer.tscn" id="2_aop6t"]
 [ext_resource type="PackedScene" uid="uid://ba7ll0ksgd800" path="res://src/gui/driving/EndScreen.tscn" id="2_b6iiy"]
-[ext_resource type="AudioStream" uid="uid://bq1rp4w8w6oig" path="res://src/car/assets/sounds/countdown.ogg" id="3_ndpky"]
+[ext_resource type="AudioStream" uid="uid://bq1rp4w8w6oig" path="res://src/gui/driving/assets/sounds/countdown.ogg" id="3_ndpky"]
 [ext_resource type="PackedScene" uid="uid://raftdcklq3bh" path="res://src/gui/driving/TimeDiff.tscn" id="3_pbwr0"]
-[ext_resource type="AudioStream" uid="uid://bxq4xacar2i3y" path="res://src/car/assets/sounds/countdown_start.ogg" id="4_aop6t"]
+[ext_resource type="AudioStream" uid="uid://bxq4xacar2i3y" path="res://src/gui/driving/assets/sounds/countdown_start.ogg" id="4_aop6t"]
 
 [sub_resource type="Gradient" id="Gradient_aop6t"]
 offsets = PackedFloat32Array(0.603896, 0.92562)

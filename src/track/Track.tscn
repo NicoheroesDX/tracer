@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cquisj7vtrreh" path="res://src/gui/driving/DrivingInterface.tscn" id="7_3twuj"]
 [ext_resource type="Texture2D" uid="uid://dqb7kg21lqc0e" path="res://src/track/assets/graphics/front_death_barrier.png" id="9_1b56g"]
 [ext_resource type="Texture2D" uid="uid://cv2ugiwmqm4h0" path="res://src/track/assets/graphics/back_death_barrier.png" id="10_yx7m4"]
-[ext_resource type="PackedScene" uid="uid://cmejqc0vjaed2" path="res://src/car/Ghost.tscn" id="11_yx7m4"]
+[ext_resource type="PackedScene" uid="uid://cmejqc0vjaed2" path="res://src/car/ghost/Ghost.tscn" id="11_yx7m4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eqjh1"]
 size = Vector2(36, 424.5)
